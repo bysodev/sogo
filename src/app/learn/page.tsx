@@ -2,7 +2,7 @@
 
 import { GeneralCard } from "@/components/general-card";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const vocales = ["A", "E", "I", "O", "U"];
 const numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -34,7 +34,7 @@ export default function Learn() {
       </div>
       <div className=" w-9/12 m-4 flex flex-wrap justify-center ">
         {vocales.map((value) => (
-          <GeneralCard url="" key={value} />
+          <GeneralCard key={value} />
         ))}
       </div>
       <div className=" w-9/12 bg-sky-600 grid grid-flow-col rounded-lg bg-opacity-90">
@@ -60,7 +60,7 @@ export default function Learn() {
 
       <div className=" w-9/12 m-4 flex flex-wrap justify-center ">
         {numeros.map((value) => (
-          <GeneralCard url="" key={value} />
+          <GeneralCard key={value} />
         ))}
       </div>
     </div>

@@ -1,10 +1,10 @@
 "use client";
-import Camara from "@/components/camara/Camara";
-import Image from "next/image";
+// import Camara from "@/components/camara/Camara";
 import A from "@/public/lesson/vocals/letra_A.jpg";
-import { FooterLesson } from "@/components/progress/FooterLesson";
-import { useState } from "react";
+import Image from "next/image";
+// import { FooterLesson } from "@/components/progress/FooterLesson";
 import { Progressbar } from "@/components/progress/Progressbar";
+import { useState } from "react";
 
 export default function Lesson() {
   const [progres, setprogress] = useState({

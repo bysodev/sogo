@@ -1,6 +1,5 @@
 "use client";
 
-import SideNavbar from "@/components/side-nav-bar";
 export default function RootLayout({
   children,
 }: {
@@ -8,7 +7,6 @@ export default function RootLayout({
 }) {
   return (
     <div className="flex w-full">
-      {/* <SideNavbar /> */}
       {children}
     </div>
   );

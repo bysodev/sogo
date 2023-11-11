@@ -1,15 +1,15 @@
 "use client";
-import { Enunciados } from "@/components/cards/Enunciados";
-import { GeneralCard } from "@/components/cards/GeneralCard";
-import Camara from "@/components/camara/Camara";
-import Image from "next/image";
+// import { Enunciados } from "@/components/cards/Enunciados";
+// import { GeneralCard } from "@/components/cards/GeneralCard";
+// import Camara from "@/components/camara/Camara";
 import A from "@/public/lesson/vocals/letra_A.jpg";
-import { FooterLesson } from "@/components/progress/FooterLesson";
-import { useState } from "react";
+import Image from "next/image";
+// import { FooterLesson } from "@/components/progress/FooterLesson";
 import { Progressbar } from "@/components/progress/Progressbar";
+import { useState } from "react";
 
-const vocales = ["A", "E", "I", "O", "U"];
-const numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+// const vocales = ["A", "E", "I", "O", "U"];
+// const numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 export default function LessonNumeros() {
   const [progres, setprogress] = useState({

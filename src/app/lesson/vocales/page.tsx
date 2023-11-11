@@ -1,16 +1,16 @@
 "use client";
-import { Enunciados } from "@/components/cards/Enunciados";
-import { GeneralCard } from "@/components/cards/GeneralCard";
+// import { Enunciados } from "@/components/cards/Enunciados";
+// import { GeneralCard } from "@/components/cards/GeneralCard";
+import { SignImageData } from "@/components/DiccionaryLesson";
 import Camara from "@/components/camara/Camara";
-import Image from "next/image";
 import { FooterLesson } from "@/components/progress/FooterLesson";
 import { ModalLesson } from "@/components/progress/ModalLesson";
-import { useEffect, useRef, useState } from "react";
 import { Progressbar } from "@/components/progress/Progressbar";
 import defaultImage from "@/public/lesson/vocals/letra_A.jpg";
-import { SignImageData } from "@/components/DiccionaryLesson";
 import { getSession } from "next-auth/react";
-import { DefaultSession } from "next-auth";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+// import { DefaultSession } from "next-auth";
 
 const vocales = ["A", "E", "I", "O", "U"];
 
@@ -184,9 +184,7 @@ export default function LessonVocales() {
           </div>
         </div>
         <FooterLesson
-          imagen={imagen}
           submit={submit}
-          setSubmit={setSubmit}
           comprobation={cambio}
           continuar={progres.continue}
           changeContinue={changeContinue}

@@ -1,20 +1,15 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { zustandStore } from "@/utilities/store/user";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import TooltipMessage from "../../../components/TooltipMessage";
+import TooltipMessage from "@/components/TooltipMessage";
 import IconLogo from "@/components/icons/IconLogo";
-import Link from "next/link";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 
 export default function LoginPage() {
   const { push } = useRouter();
-  const [fetchLoginUser, user] = zustandStore((state) => [
-    state.fetchLoginUser,
-    state.user,
-  ]);
 
   interface UseFormInputs {
     username: string;
@@ -61,8 +56,8 @@ export default function LoginPage() {
               <div className="grid gap-4">
                 <div
                   className={`flex flex-wrap text-sm border rounded-3xl p-3 ps-6 ${errors.username
-                      ? "text-red-600 border-red-400"
-                      : "text-gray-600 border-gray-400"
+                    ? "text-red-600 border-red-400"
+                    : "text-gray-600 border-gray-400"
                     } container-fluid`}
                 >
                   <input
@@ -85,8 +80,8 @@ export default function LoginPage() {
 
                 <div
                   className={`flex flex-wrap text-sm border rounded-3xl p-3 ps-6 ${errors.password
-                      ? "text-red-600 border-red-400"
-                      : "text-gray-600 border-gray-400"
+                    ? "text-red-600 border-red-400"
+                    : "text-gray-600 border-gray-400"
                     } container-fluid`}
                 >
                   <input

@@ -1,9 +1,8 @@
 "use client";
 import { showErrorMessage, showSuccessMessage } from "@/utilities/sweet-alert";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useState } from "react";
 import { getSession } from "next-auth/react";
+import Link from "next/link";
+import { useState } from "react";
 
 const URL_BACKPYTHON = process.env.NEXT_PUBLIC_API_BACKEND;
 
@@ -23,10 +22,9 @@ async function getVerified(token: string) {
   }
 }
 
-export default async function Verify() {
+export async function Verify() {
   const user = await getSession();
 
-  const params = useSearchParams();
   const [verified, setVerified] = useState(false);
 
   getVerified(user?.user?.accessToken + "").then((response) => {

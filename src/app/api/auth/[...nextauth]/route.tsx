@@ -20,7 +20,7 @@ const authOptions = {
         username: { label: 'Username', type: 'text', placeholder: 'jsmith' },
         password: { label: 'Password', type: 'password' }
       },
-      async authorize (credentials, req) {
+      async authorize(credentials) {
         const user = await fetchLoginUser(
           credentials?.username,
           credentials?.password
@@ -44,13 +44,13 @@ const authOptions = {
     maxAge: 1 * 1 * 30 * 60 // 30 minutos,
   },
   callbacks: {
-    async jwt ({ token, user }: any) {
+    async jwt({ token, user }: any) {
       if (user) {
         token.accessToken = user.token
       }
       return token
     },
-    async session ({ session, token }: any) {
+    async session({ session, token }: any) {
       if (token) {
         session.user.accessToken = token.accessToken
       }
