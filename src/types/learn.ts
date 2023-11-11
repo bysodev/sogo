@@ -1,10 +1,3 @@
-export enum Category{
-    numeros = 'numeros',
-    vocales = 'vocales',
-    abecedario = 'abecedario',
-    null = ''
-}
-
 export const category = {
     numeros: 'numeros',
     vocales: 'vocales',
@@ -13,7 +6,7 @@ export const category = {
 }
 
 export interface typeLearn {
-  categoria: Category;
+  categoria: string;
   cantidad: number;
   porcentaje: number;
   asiertos: number;

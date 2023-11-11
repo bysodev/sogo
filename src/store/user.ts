@@ -1,33 +1,38 @@
-import { Category, typeLearn } from "@/types/learn";
+import { typeLearn } from "@/types/learn";
 import { typeUser } from "@/types/user";
-import { showErrorMessage, showSuccessMessage } from "@/utilities";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+// import Cookies from "js-cookie";
+import { showErrorMessage, showSuccessMessage } from "@/utilities";
 // import { sendEmail } from "@/helpers/nodemailer";
 
 const url = process.env.NEXT_PUBLIC_API_BACKEND + "";
 const url_app = "http://localhost:3000";
 
 interface State {
-  user: typeUser | null;
+  user: typeUser;
   learn: typeLearn;
   token: string;
   validate: string;
-  fetchLoginUser: (username: string, password: string) => Promise<boolean>;
-  fetchRegisterUser: (name: string, password: string, email: string) => void;
-  fetchVerifyUser: (token: string) => void;
+  // fetchLoginUser: (username: string, password: string) => Promise<boolean>;
+  // fetchRegisterUser: (name: string, password: string, email: string) => void;
+  // fetchVerifyUser: (token: string) => void;
 }
 // persist(
 export const zustandStore = create<State>()(
   persist(
     (set) => ({
-      user: null,
+      user: {
+        username: '',
+        email: '',
+        token: ''
+      },
       learn: {
         asiertos: 0,
         cantidad: 0,
         continue: false,
         porcentaje: 0,
-        categoria: Category.null,
+        categoria: '',
       },
       token: "",
       validate: "",
@@ -54,6 +59,7 @@ export const zustandStore = create<State>()(
             const { access_token, respuesta, username, email } =
               await response.json();
             console.log({ access_token, respuesta });
+            // Cookies.set("token", access_token);
             set(() => ({ user: { username, email, token: access_token } }));
             showSuccessMessage(respuesta.respuesta);
             return true;
@@ -143,7 +149,7 @@ export const zustandStore = create<State>()(
         // console.log(process.env.API_BACKEND)
         // const res = await fetch('http://localhost:3000/api/user/login');
       },
-      fetchVerifyUser(token: string) {},
+      // fetchVerifyUser(token: string) {},
     }),
     {
       name: "user",

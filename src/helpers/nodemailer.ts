@@ -1,6 +1,6 @@
-import nodemailer from 'nodemailer'
+import nodemailer from 'nodemailer';
 
-import {templateConfirmUser} from '@/emails/templateConfirmUser'
+import { templateConfirmUser } from '@/emails/templateConfirmUser';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 
@@ -32,7 +32,7 @@ export const sendEmail = async (template: any, username: string, link: string, e
 		},
 	} as SMTPTransport.Options);
 // verify connection configuration
-	transport.verify(function (error, success) {
+	transport.verify(function (error) {
 		if (error) {
 		console.log(error);
 		} else {
