@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "prettier": "prettier --write .",
-    "prepare": "dlx husky install"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
