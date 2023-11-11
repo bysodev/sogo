@@ -1,8 +1,6 @@
 "use client";
-import { Metadata } from "next";
-import "./globals.css";
-import ProtectedProvider from "@/components/ProtectedProvider";
 import { SessionProvider } from "next-auth/react";
+import "./globals.css";
 // export const metadata: Metadata = {
 //   title: "Sogo Sign",
 //   description: "Plataforma de aprendizaje de Lengua de Señas Ecuatoriana",
@@ -44,8 +42,6 @@ export default function HomeLayout({
     <html lang="es">
       <body>
         <SessionProvider>{children}</SessionProvider>
-        {/* <ProtectedProvider> */}
-        {/* </ProtectedProvider> */}
       </body>
     </html>
   );
