@@ -1,9 +1,8 @@
-import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
+import { Category, typeLearn } from "@/types/learn";
 import { typeUser } from "@/types/user";
-import { Category, category, typeLearn } from "@/types/learn";
-import Cookies from "js-cookie";
 import { showErrorMessage, showSuccessMessage } from "@/utilities";
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 // import { sendEmail } from "@/helpers/nodemailer";
 
 const url = process.env.NEXT_PUBLIC_API_BACKEND + "";
@@ -55,7 +54,6 @@ export const zustandStore = create<State>()(
             const { access_token, respuesta, username, email } =
               await response.json();
             console.log({ access_token, respuesta });
-            Cookies.set("token", access_token);
             set(() => ({ user: { username, email, token: access_token } }));
             showSuccessMessage(respuesta.respuesta);
             return true;
