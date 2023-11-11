@@ -1,6 +1,6 @@
-import A from "@/public/lesson/vocals/letra_A.jpg";
 import Image from "next/image";
 
+const A = "/lesson/vocals/letra_A.jpg";
 export const GeneralCard = () => {
   return (
     <div className="rounded border-gray-300 border-2 flex shadow-md m-2">

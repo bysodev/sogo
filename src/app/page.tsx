@@ -1,15 +1,15 @@
 "use client";
-import React, { useMemo, useState } from "react";
-import { AiFillPlayCircle } from "react-icons/ai";
+import { Experience } from "@/components/Experience";
+import NavBar from "@/components/Navbar";
+import IconScroll from "@/components/icons/IconScroll";
+import { Canvas } from "@react-three/fiber";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import { Canvas } from "@react-three/fiber";
-import NavBar from "@/components/Navbar";
-import { Experience } from "@/components/Experience";
-import bgHand from "@/public/src/bgShapeHand.svg";
-import IconScroll from "@/components/icons/IconScroll";
-import dynamic from "next/dynamic";
+import { useMemo, useState } from "react";
+import { AiFillPlayCircle } from "react-icons/ai";
 
+const bgHand = "/src/bgShapeHand.svg";
 const Hand = dynamic(() => import("@/components/Hand"), { ssr: false });
 
 export default function Home() {

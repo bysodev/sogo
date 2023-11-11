@@ -2,8 +2,8 @@
 // import { Enunciados } from "@/components/cards/Enunciados";
 // import { GeneralCard } from "@/components/cards/GeneralCard";
 // import Camara from "@/components/camara/Camara";
-import A from "@/public/lesson/vocals/letra_A.jpg";
 import Image from "next/image";
+// import A from "/lesson/vocals/letra_A.jpg";
 // import { FooterLesson } from "@/components/progress/FooterLesson";
 import { Progressbar } from "@/components/progress/Progressbar";
 import { useState } from "react";
@@ -35,7 +35,7 @@ export default function LessonNumeros() {
         <div className="flex w-4/5 justify-between">
           <div className="w-2/5 m-2">
             <div className="flex flex-col justify-center rounded-xl shadow-md">
-              <Image src={A} alt="Letra A" />
+              <Image src={"/lesson/vocals/letra_A.jpg"} alt="Letra A" />
               <div className="text-center">
                 <h4 className="mb-2 block font-sans text-2xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
                   Natalie Paisley

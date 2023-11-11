@@ -1,13 +1,14 @@
-import { typeLearn } from "@/types/learn";
-import { typeUser } from "@/types/user";
-import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
+/* eslint-disable no-unused-vars */
+import { typeLearn } from '@/types/learn';
+import { typeUser } from '@/types/user';
+import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 // import Cookies from "js-cookie";
-import { showErrorMessage, showSuccessMessage } from "@/utilities";
+import { showErrorMessage, showSuccessMessage } from '@/utilities';
 // import { sendEmail } from "@/helpers/nodemailer";
 
-const url = process.env.NEXT_PUBLIC_API_BACKEND + "";
-const url_app = "http://localhost:3000";
+const url = process.env.NEXT_PUBLIC_API_BACKEND + '';
+const url_app = 'http://localhost:3000';
 
 interface State {
   user: typeUser;
@@ -15,7 +16,7 @@ interface State {
   token: string;
   validate: string;
   // fetchLoginUser: (username: string, password: string) => Promise<boolean>;
-  // fetchRegisterUser: (name: string, password: string, email: string) => void;
+  fetchRegisterUser: (name: string, password: string, email: string) => void;
   // fetchVerifyUser: (token: string) => void;
 }
 // persist(
@@ -25,7 +26,7 @@ export const zustandStore = create<State>()(
       user: {
         username: '',
         email: '',
-        token: ''
+        token: '',
       },
       learn: {
         asiertos: 0,
@@ -34,26 +35,26 @@ export const zustandStore = create<State>()(
         porcentaje: 0,
         categoria: '',
       },
-      token: "",
-      validate: "",
+      token: '',
+      validate: '',
 
       fetchLoginUser: async (username: string, password: string) => {
         var myHeader = new Headers();
-        myHeader.append("Accept", "application/json");
-        myHeader.append("Content-Type", "application/x-www-form-urlencoded");
+        myHeader.append('Accept', 'application/json');
+        myHeader.append('Content-Type', 'application/x-www-form-urlencoded');
 
         var urlencoded = new URLSearchParams();
-        urlencoded.append("username", username);
-        urlencoded.append("password", password);
+        urlencoded.append('username', username);
+        urlencoded.append('password', password);
 
         try {
           const response = await fetch(`${url}/user/token`, {
-            method: "POST",
+            method: 'POST',
             body: urlencoded,
             headers: myHeader,
-            credentials: "include",
+            credentials: 'include',
             // credentials: 'same-origin',
-            redirect: "follow",
+            redirect: 'follow',
           });
           if (response.status === 200) {
             const { access_token, respuesta, username, email } =
@@ -70,13 +71,13 @@ export const zustandStore = create<State>()(
             }
 
             if (response.status === 500)
-              showErrorMessage("Error en el servidor");
+              showErrorMessage('Error en el servidor');
 
             console.log(response.status);
             return false;
           }
         } catch (error) {
-          showErrorMessage("Problemas con la aplicación");
+          showErrorMessage('Problemas con la aplicación');
           console.error(error);
           return false;
         }
@@ -89,8 +90,8 @@ export const zustandStore = create<State>()(
         email: string
       ) => {
         var myHeader = new Headers();
-        myHeader.append("Accept", "application/json");
-        myHeader.append("Content-Type", "application/json");
+        myHeader.append('Accept', 'application/json');
+        myHeader.append('Content-Type', 'application/json');
 
         console.log(
           JSON.stringify({
@@ -102,48 +103,48 @@ export const zustandStore = create<State>()(
 
         try {
           const response = await fetch(`${url}/user/`, {
-            method: "POST",
+            method: 'POST',
             body: JSON.stringify({
               username: username,
               password: password,
               email: email,
             }),
             headers: myHeader,
-            redirect: "follow",
+            redirect: 'follow',
           });
           if (response.status === 201) {
             const respuesta = await response.json();
-            showSuccessMessage("Usuario registrado correctamente");
+            showSuccessMessage('Usuario registrado correctamente');
 
             try {
               const response = await fetch(`${url_app}/api/emails/`, {
-                method: "POST",
+                method: 'POST',
                 body: JSON.stringify({
                   username,
                   email,
                   token: respuesta.token,
                 }),
                 headers: myHeader,
-                redirect: "follow",
+                redirect: 'follow',
               });
               if (response.ok) {
                 showSuccessMessage(
-                  "El correo de verificación fue revisado exitosamente"
+                  'El correo de verificación fue revisado exitosamente'
                 );
               }
             } catch (e) {
               showErrorMessage(
-                "El correo de verificación no pudo ser enviado!! Comuniquese con la administración"
+                'El correo de verificación no pudo ser enviado!! Comuniquese con la administración'
               );
             }
           }
           if (response.status === 422) {
-            showErrorMessage("Fallo al no enviar los datos conpletos");
+            showErrorMessage('Fallo al no enviar los datos conpletos');
           }
         } catch (error) {
           console.error(error);
           showErrorMessage(
-            "Fallo al registrarse, comuniquese con la administración"
+            'Fallo al registrarse, comuniquese con la administración'
           );
         }
         // console.log(process.env.API_BACKEND)
@@ -152,7 +153,7 @@ export const zustandStore = create<State>()(
       // fetchVerifyUser(token: string) {},
     }),
     {
-      name: "user",
+      name: 'user',
       storage: createJSONStorage(() => localStorage),
     }
   )

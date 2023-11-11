@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 // import { BsFillMoonStarsFill } from "react-icons/bs";
-import logo from "@/public/src/logo-min.svg";
 import Image from "next/image";
 import Link from "next/link";
+const logo = "/src/logo-min.svg";
 export default function NavBar({ toggleDarkMode }: any) {
   const [navbar, setNavbar] = useState(false);
 
@@ -18,13 +18,11 @@ export default function NavBar({ toggleDarkMode }: any) {
 
   return (
     <nav
-      className={`sticky top-0 ${
-        navbar ? "h-screen" : ""
-      }  w-full md:h-auto z-10 ${
-        small
+      className={`sticky top-0 ${navbar ? "h-screen" : ""
+        }  w-full md:h-auto z-10 ${small
           ? "py-4 bg-gradient-to-br from-[#f4f6ff] via-[#dadfff] to-[#c3d3ff] dark:from-gray-900 dark:via-gray-950 dark:to-black rounded-b-md"
           : ""
-      }`}
+        }`}
     >
       <div className="justify-between md:items-center md:flex">
         <div>
@@ -79,11 +77,10 @@ export default function NavBar({ toggleDarkMode }: any) {
         </div>
         <div>
           <div
-            className={`flex-1 justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0 ${
-              navbar
+            className={`flex-1 justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0 ${navbar
                 ? "block bg-blue-100 dark:bg-gray-800 md:bg-transparent dark:md:bg-transparent p-4 rounded-lg"
                 : "hidden"
-            }`}
+              }`}
           >
             <ul className="text-gray-800 hover:text-gray-950 dark:text-white items-center justify-center space-y-8 md:flex md:space-x-6 md:space-y-0 font-medium">
               <li>

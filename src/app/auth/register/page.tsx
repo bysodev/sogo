@@ -1,11 +1,11 @@
 "use client";
-import { useForm } from "react-hook-form";
-import { zustandStore } from "@/utilities/store/user";
-import Link from "next/link";
 import TooltipMessage from "@/components/TooltipMessage";
 import IconLogo from "@/components/icons/IconLogo";
-import { rgxEmail } from "@/utilities/validators/auth-validators";
+import { zustandStore } from "@/store/user";
+import { rgxEmail } from "@/validators/auth-validators";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 
 export default function Home() {
   const fetchRegisterUser = zustandStore((state) => state.fetchRegisterUser);
@@ -27,17 +27,18 @@ export default function Home() {
 
   const { push } = useRouter();
 
-  async function onSubmit(data: UseFormInputs) {
-    const response = await fetchRegisterUser(
+  function onSubmit(data: UseFormInputs) {
+    // const response = await fetchRegisterUser(
+    fetchRegisterUser(
       data.username,
       data.password,
       data.email
     );
-    if (response) {
-      // Si las contraseñas coinciden, continuar con el reset y redirección
-      reset();
-      push("/auth/login");
-    }
+    // if (response) {
+    // Si las contraseñas coinciden, continuar con el reset y redirección
+    reset();
+    push("/auth/login");
+    // }
   }
 
   return (
@@ -60,8 +61,8 @@ export default function Home() {
               <div className="grid gap-4">
                 <div
                   className={`flex flex-wrap text-sm border rounded-3xl p-3 ps-6 ${errors.username
-                      ? "text-red-600 border-red-400"
-                      : "text-gray-600 border-gray-400"
+                    ? "text-red-600 border-red-400"
+                    : "text-gray-600 border-gray-400"
                     } container-fluid`}
                 >
                   <input
@@ -84,8 +85,8 @@ export default function Home() {
 
                 <div
                   className={`flex flex-wrap text-sm border rounded-3xl p-3 ps-6 ${errors.email
-                      ? "text-red-600 border-red-400"
-                      : "text-gray-600 border-gray-400"
+                    ? "text-red-600 border-red-400"
+                    : "text-gray-600 border-gray-400"
                     } container-fluid`}
                 >
                   <input
@@ -109,8 +110,8 @@ export default function Home() {
                 <section className="grid gap-4 2xl:grid-cols-2">
                   <div
                     className={`flex flex-wrap text-sm border rounded-3xl p-3 ps-6 ${errors.password
-                        ? "text-red-600 border-red-400"
-                        : "text-gray-600 border-gray-400"
+                      ? "text-red-600 border-red-400"
+                      : "text-gray-600 border-gray-400"
                       } container-fluid`}
                   >
                     <input
@@ -134,8 +135,8 @@ export default function Home() {
                   </div>
                   <div
                     className={`relative flex flex-wrap text-sm border rounded-3xl p-3 ps-6 ${errors.repass
-                        ? "text-red-600 border-red-400"
-                        : "text-gray-600 border-gray-400"
+                      ? "text-red-600 border-red-400"
+                      : "text-gray-600 border-gray-400"
                       } container-fluid`}
                   >
                     <input

@@ -1,8 +1,8 @@
-import A from "@/public/lesson/vocals/letra_A.jpg";
-import E from "@/public/lesson/vocals/letra_E.jpg";
-import I from "@/public/lesson/vocals/letra_I.jpg";
-import O from "@/public/lesson/vocals/letra_O.jpg";
-import U from "@/public/lesson/vocals/letra_U.jpg";
+const A = "/lesson/vocals/letra_A.jpg";
+const E = "/lesson/vocals/letra_E.jpg";
+const I = "/lesson/vocals/letra_I.jpg";
+const O = "/lesson/vocals/letra_O.jpg";
+const U = "/lesson/vocals/letra_U.jpg";
 
 export const SignImageData = [
   {

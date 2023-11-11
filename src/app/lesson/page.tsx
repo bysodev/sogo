@@ -1,11 +1,11 @@
 "use client";
 // import Camara from "@/components/camara/Camara";
-import A from "@/public/lesson/vocals/letra_A.jpg";
 import Image from "next/image";
 // import { FooterLesson } from "@/components/progress/FooterLesson";
 import { Progressbar } from "@/components/progress/Progressbar";
 import { useState } from "react";
 
+const A = "/lesson/vocals/letra_A.jpg";
 export default function Lesson() {
   const [progres, setprogress] = useState({
     preguntas: 12,

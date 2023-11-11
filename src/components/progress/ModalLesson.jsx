@@ -1,15 +1,18 @@
-import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, } from 'react'
+/* eslint-disable no-unused-vars */
+// import { Dialog, Transition } from '@headlessui/react'
+// import { Fragment, } from 'react'
 
-export function ModalLesson({isOpen, setIsOpen, guardar}) {
-
+export function ModalLesson({ isOpen, setIsOpen, guardar }) {
   function closeModal() {
-    setIsOpen(false)
+    setIsOpen(false);
   }
 
   return (
     <>
-      <Transition appear show={isOpen} as={Fragment}>
+      <div>Aun no implemnetado</div>
+    </>
+  );
+  /* <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
           <Transition.Child
             as={Fragment}
@@ -62,7 +65,5 @@ export function ModalLesson({isOpen, setIsOpen, guardar}) {
             </div>
           </div>
         </Dialog>
-      </Transition>
-    </>
-  )
+      </Transition> */
 }

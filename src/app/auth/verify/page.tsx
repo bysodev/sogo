@@ -2,7 +2,7 @@
 import { showErrorMessage, showSuccessMessage } from "@/utilities/sweet-alert";
 import { getSession } from "next-auth/react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const URL_BACKPYTHON = process.env.NEXT_PUBLIC_API_BACKEND;
 
@@ -22,19 +22,27 @@ async function getVerified(token: string) {
   }
 }
 
-export async function Verify() {
-  const user = await getSession();
 
+export default function Verify() {
   const [verified, setVerified] = useState(false);
 
-  getVerified(user?.user?.accessToken + "").then((response) => {
-    if (response?.ok) {
-      setVerified(true);
-      showSuccessMessage(response?.message);
-    } else {
-      showErrorMessage(response?.message);
-    }
-  });
+  useEffect(() => {
+    const fetchData = async () => {
+      const user = await getSession();
+      const response = await getVerified(user?.user?.accessToken + "");
+
+      if (response?.ok) {
+        setVerified(true);
+        showSuccessMessage(response?.message);
+      } else {
+        showErrorMessage(response?.message);
+      }
+    };
+
+    fetchData();
+  }, []); // Empty dependency array ensures this effect runs once when the component mounts
+
+
 
   return (
     <div className="container h-screen mx-auto">

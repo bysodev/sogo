@@ -6,12 +6,11 @@ import Camara from "@/components/camara/Camara";
 import { FooterLesson } from "@/components/progress/FooterLesson";
 import { ModalLesson } from "@/components/progress/ModalLesson";
 import { Progressbar } from "@/components/progress/Progressbar";
-import defaultImage from "@/public/lesson/vocals/letra_A.jpg";
 import { getSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-// import { DefaultSession } from "next-auth";
 
+const defaultImage = "/lesson/vocals/letra_A.jpg";
 const vocales = ["A", "E", "I", "O", "U"];
 
 async function verification(img64: string, vocal: string) {
@@ -43,28 +42,31 @@ async function verification(img64: string, vocal: string) {
   }
 }
 
-const getLesson = async () => {
-  const user = await getSession();
+// const getLesson = async () => {
+//   const user = await getSession();
 
-  var myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  myHeaders.append("Authorization", `Bearer ${user?.user?.accessToken}`);
+//   var myHeaders = new Headers();
+//   myHeaders.append("Content-Type", "application/json");
+//   myHeaders.append("Authorization", `Bearer ${user?.user?.accessToken}`);
 
-  const res = await fetch(`http://127.0.0.1:8000/user/lesson/vocales`, {
-    method: "GET",
-    headers: myHeaders,
-    credentials: "include",
-    redirect: "follow",
-  });
-  return res.json();
-};
+//   const res = await fetch(`http://127.0.0.1:8000/user/lesson/vocales`, {
+//     method: "GET",
+//     headers: myHeaders,
+//     credentials: "include",
+//     redirect: "follow",
+//   });
+//   return res.json();
+// };
 
 export default function LessonVocales() {
   const timeLocal = new Date();
   const webcamRef = useRef(null);
   const [submit, setSubmit] = useState(true);
   const [imagen, setImagen] = useState("");
+  // Almacena la imagen actual en el estado del componente
+  const [currentImage, setCurrentImage] = useState(defaultImage);
   let [isOpen, setIsOpen] = useState(true);
+
   const [progres, setprogress] = useState({
     preguntas: 5,
     porcentaje: 0,
@@ -74,8 +76,7 @@ export default function LessonVocales() {
     vocal: vocales[0],
   });
 
-  // Almacena la imagen actual en el estado del componente
-  const [currentImage, setCurrentImage] = useState(defaultImage);
+
 
   useEffect(() => {
     const updateImage = () => {
