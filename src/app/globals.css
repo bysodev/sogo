@@ -2,26 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+/* @layer components {
+  input {
+    @apply text-sm text-gray-600 border rounded-md p-3 border-gray-400;
   }
+} */
+
+.hand-color button.type-white {
+  background-color: rgb(227, 179, 158);
+  border-color: rgb(173, 109, 81);
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.hand-color button.type-brown {
+  background-color: rgb(98, 65, 34);
+  border-color: rgb(54, 32, 12);
+}
+
+.hand-color button.type-yellow {
+  background-color: rgb(255, 227, 46);
+  border-color: rgb(198, 174, 14);
 }

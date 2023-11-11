@@ -1,113 +1,127 @@
-import Image from 'next/image';
+"use client";
+import React, { useMemo, useState } from "react";
+import { AiFillPlayCircle } from "react-icons/ai";
+import Image from "next/image";
+import Link from "next/link";
+import { Canvas } from "@react-three/fiber";
+import NavBar from "@/components/Navbar";
+import { Experience } from "@/components/Experience";
+import bgHand from "@/public/src/bgShapeHand.svg";
+import IconScroll from "@/components/icons/IconScroll";
+import dynamic from "next/dynamic";
+
+const Hand = dynamic(() => import("@/components/Hand"), { ssr: false });
 
 export default function Home() {
+  const [currentColor, setCurrentColor] = useState(0xe7a183);
+
+  const updateColor = (color: number) => {
+    setCurrentColor(color);
+  };
+
+  const colorButtons = [
+    { label: "White", color: 0xe7a183 },
+    { label: "Brown", color: 0x8a5d34 },
+    { label: "Yellow", color: 0xffd721 },
+  ];
+
+  const [darkMode, setDarkMode] = useState(false);
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
+  const memoizedDarkMode = useMemo(() => darkMode, [darkMode]);
+
+  console.log({ darkMode, memoizedDarkMode });
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
+    <div className={darkMode ? "dark" : ""}>
+      <div className="bg-gradient-to-br from-[#f4f6ff] via-[#dadfff] to-[#c3d3ff] dark:from-gray-900 dark:via-gray-950 dark:to-black">
+        <div className="min-h-screen w-full xl:max-w-fit m-auto">
+          <main className="grid place-items-center gap-y-10 md:gap-y-20 lg:gap-y-20 xl:gap-y-0 mx-10 md:mx-14 lg:mx-20 xl:mx-32 py-5">
+            <NavBar toggleDarkMode={toggleDarkMode} />
+            <SectionHand
+              bgHand={bgHand}
+              currentColor={currentColor}
+              colorButtons={colorButtons}
+              updateColor={updateColor}
             />
-          </a>
+            <section id="features" className="w-full h-screen">
+              <h5 className="font-bold text-4xl text-center md:text-start sm:text-6xl xl:text-7xl 2xl:text-8xl text-gray-950 dark:text-white">
+                Características
+              </h5>
+            </section>
+            <footer></footer>
+          </main>
         </div>
       </div>
+    </div>
+  );
+}
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+function SectionHand({ bgHand, currentColor, colorButtons, updateColor }: any) {
+  return (
+    <>
+      <section className="lg:h-screen grid place-items-center gap-20 lg:gap-0">
+        <div className="block md:flex gap-20 md:gap-10">
+          <main className="grid space-y-4 md:space-y-8 w-full md:w-3/5">
+            <h5 className="font-bold text-5xl text-center md:text-start sm:text-6xl xl:text-7xl 2xl:text-8xl text-gray-950 dark:text-white">
+              Aprendizaje de Lengua de Señas
+            </h5>
+            <p className="text-base md:text-xl text-center md:text-start 2xl:text-2xl text-gray-700 dark:text-gray-300">
+              La mejor plataforma de aprendizaje de Lengua de Señas Ecuatoriana
+              (LSE).
+            </p>
+            <p className="italic text-xs md:text-sm text-center md:text-start 2xl:text-base text-gray-700 dark:text-gray-300">
+              Aprender LSE no solo te permitirá comunicarte de manera efectiva
+              con personas sordas, sino que también te abrirá las puertas para
+              comprender su cultura y perspectivas únicas
+            </p>
+            <div className="grid md:flex gap-4 m-auto md:m-0 font-bold">
+              <Link
+                href={`/learn`}
+                className="md:1/2 p-2 px-7 bg-gray-900 hover:bg-gray-950 rounded-full text-white dark:bg-white dark:text-gray-900"
+              >
+                Empezar Ahora
+              </Link>
+              <div className="flex justify-center items-center gap-x-2 font-medium text md:1/2 dark:text-white">
+                <AiFillPlayCircle size={25} color={"currentColor"} />
+                <span>Ver Video</span>
+              </div>
+            </div>
+          </main>
+          <aside className="m-auto md:m-0 md:w-2/5 relative grid place-items-center">
+            <Image
+              src={bgHand}
+              alt="Forma del fondo para el modelo de la mano"
+            />
+            <div className="absolute h-full w-full">
+              <Canvas
+                camera={{
+                  fov: 60,
+                  position: [0, 10, 0.8],
+                }}
+              >
+                <Experience />
+                <Hand color={currentColor} />
+              </Canvas>
+            </div>
+            <div className="absolute top-0 left-0 grid gap-2  m-auto hand-color">
+              {colorButtons.map((button: any) => (
+                <button
+                  key={button.label}
+                  className={`h-12 w-12 border-4 rounded-full type-${button.label.toLowerCase()}`}
+                  onClick={() => updateColor(button.color)}
+                  type="button"
+                ></button>
+              ))}
+            </div>
+          </aside>
+        </div>
+        <footer className="grid place-items-center text-gray-950 dark:text-white">
+          <IconScroll />
+        </footer>
+      </section>
+    </>
   );
 }
