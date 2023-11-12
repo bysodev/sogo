@@ -170,9 +170,6 @@ export default function Home() {
               >
                 Registrar cuenta
               </button>
-              <div className="flex flex-row items-center gap-4 my-8">
-                <div className="h-0.5 w-full bg-gray-300"></div>
-              </div>
               <div className="text-center mt-4 text-sm font-semibold text-gray-400 align-baseline">
                 <p>¿Ya tienes una cuenta?</p>
                 <Link

@@ -6,7 +6,7 @@ import { Canvas } from "@react-three/fiber";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { AiFillPlayCircle } from "react-icons/ai";
 
 const bgHand = "/src/bgShapeHand.svg";
@@ -25,21 +25,41 @@ export default function Home() {
     { label: "Yellow", color: 0xffd721 },
   ];
 
-  const [darkMode, setDarkMode] = useState(false);
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
+  // const [darkMode, setDarkMode] = useState(() => {
+  //   const savedDarkMode = localStorage.getItem('darkMode');
+  //   return savedDarkMode ? JSON.parse(savedDarkMode) : false;
+  // });
+
+  // const toggleDarkMode = () => {
+  //   const newDarkMode = !darkMode;
+  //   setDarkMode(newDarkMode);
+  //   localStorage.setItem('darkMode', JSON.stringify(newDarkMode));
+  // };
+
+  // useEffect(() => {
+  //   // Este efecto se ejecutará cuando darkMode cambie
+  //   localStorage.setItem('darkMode', JSON.stringify(darkMode));
+  // }, [darkMode]);
+
+  const [theme, setTheme] = useState('');
+
+  useEffect(() => {
+    const localTheme = window.localStorage.getItem('theme') || "";
+    setTheme(localTheme);
+  }, []);
+
+  const switchTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    window.localStorage.setItem('theme', newTheme);
+    setTheme(newTheme);
   };
 
-  const memoizedDarkMode = useMemo(() => darkMode, [darkMode]);
-
-  console.log({ darkMode, memoizedDarkMode });
-
   return (
-    <div className={darkMode ? "dark" : ""}>
+    <div className={theme}>
       <div className="bg-gradient-to-br from-[#f4f6ff] via-[#dadfff] to-[#c3d3ff] dark:from-gray-900 dark:via-gray-950 dark:to-black">
         <div className="min-h-screen w-full xl:max-w-fit m-auto">
           <main className="grid place-items-center gap-y-10 md:gap-y-20 lg:gap-y-20 xl:gap-y-0 mx-10 md:mx-14 lg:mx-20 xl:mx-32 py-5">
-            <NavBar toggleDarkMode={toggleDarkMode} />
+            <NavBar toggleDarkMode={switchTheme} />
             <SectionHand
               bgHand={bgHand}
               currentColor={currentColor}
@@ -92,6 +112,7 @@ function SectionHand({ bgHand, currentColor, colorButtons, updateColor }: any) {
           </main>
           <aside className="m-auto md:m-0 md:w-2/5 relative grid place-items-center">
             <Image
+              fill
               src={bgHand}
               alt="Forma del fondo para el modelo de la mano"
             />

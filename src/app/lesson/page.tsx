@@ -29,7 +29,7 @@ export default function Lesson() {
         <div className="flex w-4/5 justify-between">
           <div className="w-2/5 m-2">
             <div className="flex flex-col justify-center rounded-xl shadow-md">
-              <Image src={A} alt="Letra A" />
+              <Image width={150} height={150} src={A} alt="Letra A" />
               <div className="text-center">
                 <h4 className="mb-2 block font-sans text-2xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
                   Natalie Paisley

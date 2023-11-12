@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-// import { BsFillMoonStarsFill } from "react-icons/bs";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { BsFillMoonStarsFill } from "react-icons/bs";
 const logo = "/src/logo-min.svg";
 export default function NavBar({ toggleDarkMode }: any) {
   const [navbar, setNavbar] = useState(false);
@@ -18,10 +18,9 @@ export default function NavBar({ toggleDarkMode }: any) {
 
   return (
     <nav
-      className={`sticky top-0 ${navbar ? "h-screen" : ""
-        }  w-full md:h-auto z-10 ${small
-          ? "py-4 bg-gradient-to-br from-[#f4f6ff] via-[#dadfff] to-[#c3d3ff] dark:from-gray-900 dark:via-gray-950 dark:to-black rounded-b-md"
-          : ""
+      className={`sticky z-40 w-full backdrop-blur lg:z-50 ${small
+        ? "top-4 lg:border-b lg:border-slate-900/10 dark:border-slate-50/[0.06] bg-white/70 supports-backdrop-blur:bg-white/60 dark:bg-black/70 p-4 rounded-full"
+        : ""
         }`}
     >
       <div className="justify-between md:items-center md:flex">
@@ -29,6 +28,8 @@ export default function NavBar({ toggleDarkMode }: any) {
           <div className="flex items-center justify-between md:block">
             <Link href={"#"} className="flex items-center relatieve">
               <Image
+                width={40}
+                height={40}
                 src={logo}
                 className="h-4 w-4 sm:h-6 sm:w-6 dark:invert mr-0.5"
                 alt="Sogo Sign Logo"
@@ -78,41 +79,39 @@ export default function NavBar({ toggleDarkMode }: any) {
         <div>
           <div
             className={`flex-1 justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0 ${navbar
-                ? "block bg-blue-100 dark:bg-gray-800 md:bg-transparent dark:md:bg-transparent p-4 rounded-lg"
-                : "hidden"
+              ? "block bg-blue-100 dark:bg-gray-800 md:bg-transparent dark:md:bg-transparent p-4 rounded-lg"
+              : "hidden"
               }`}
           >
             <ul className="text-gray-800 hover:text-gray-950 dark:text-white items-center justify-center space-y-8 md:flex md:space-x-6 md:space-y-0 font-medium">
               <li>
                 <a onClick={() => setNavbar(false)} href="#features">
                   Características
-                </a>{" "}
+                </a>
               </li>
               <li>
                 <a onClick={() => setNavbar(false)} href="#">
                   Acerca de
-                </a>{" "}
+                </a>
               </li>
               <li>
                 <a onClick={() => setNavbar(false)} href="#">
                   Contacto
-                </a>{" "}
+                </a>
               </li>
               <li className="block sm:hidden md:block">
-                {/* <BsFillMoonStarsFill
+                <BsFillMoonStarsFill
                   onClick={toggleDarkMode}
                   className="cursor-pointer"
-                /> */}
-                <button className="cursor-pointer" onClick={toggleDarkMode} > Mode </button>
+                />
               </li>
             </ul>
 
             <div className="text-gray-800 hover:text-gray-950 dark:text-white font-medium w-full mt-3 grid sm:flex gap-2 sm:gap-4 items-center md:hidden p-4 rounded text-center">
-              {/* <BsFillMoonStarsFill
+              <BsFillMoonStarsFill
                 onClick={toggleDarkMode}
                 className="cursor-pointer hidden sm:block md:hidden flex-none"
-              /> */}
-              <button className="cursor-pointer hidden sm:block md:hidden flex-none" onClick={toggleDarkMode} > Mode </button>
+              />
               <Link
                 className="text-gray-800 border-2 border-gray-950 hover:text-gray-950 dark:text-white dark:border-white rounded-full p-2 sm:flex-1 w-full sm:w-1/2"
                 href={`auth/login`}

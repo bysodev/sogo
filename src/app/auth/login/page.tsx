@@ -128,7 +128,7 @@ export default function LoginPage() {
               </div>
               <div className="grid md:grid-flow-row sm:grid-cols-2 gap-4 text-sm">
                 <button
-                  onClick={() => signIn("google")}
+                  onClick={() => signIn("google", { callbackUrl: '/lesson' })}
                   className="items-center inline-flex justify-center gap-2 2xl:gap-4 py-3 px-4 w-full font-semibold text-gray-950 border border-gray-600 rounded-full hover:bg-gray-50"
                   type="button"
                 >
@@ -142,7 +142,7 @@ export default function LoginPage() {
                   <span>Google</span>
                 </button>
                 <button
-                  onClick={() => signIn("github")}
+                  onClick={() => signIn("github", { callbackUrl: '/lesson' })}
                   className="items-center inline-flex justify-center gap-2 2xl:gap-4 py-3 px-4 w-full font-semibold text-gray-950 border border-gray-600 rounded-full hover:bg-gray-50"
                   type="button"
                 >
