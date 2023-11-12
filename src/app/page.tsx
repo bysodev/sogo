@@ -25,22 +25,6 @@ export default function Home() {
     { label: "Yellow", color: 0xffd721 },
   ];
 
-  // const [darkMode, setDarkMode] = useState(() => {
-  //   const savedDarkMode = localStorage.getItem('darkMode');
-  //   return savedDarkMode ? JSON.parse(savedDarkMode) : false;
-  // });
-
-  // const toggleDarkMode = () => {
-  //   const newDarkMode = !darkMode;
-  //   setDarkMode(newDarkMode);
-  //   localStorage.setItem('darkMode', JSON.stringify(newDarkMode));
-  // };
-
-  // useEffect(() => {
-  //   // Este efecto se ejecutará cuando darkMode cambie
-  //   localStorage.setItem('darkMode', JSON.stringify(darkMode));
-  // }, [darkMode]);
-
   const [theme, setTheme] = useState('');
 
   useEffect(() => {

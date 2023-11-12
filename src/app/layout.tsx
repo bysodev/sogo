@@ -19,6 +19,20 @@ export const metadata: Metadata = {
     { name: "Anthony", url: "https://github.com/Anthonymgd" },
     { name: "Bryan", url: "https://github.com/bysodev" },
   ],
+  icons: [
+    {
+      rel: 'icon',
+      type: 'image/x-icon',
+      url: '/src/favicon.svg',
+      media: '(prefers-color-scheme: light)',
+    },
+    {
+      rel: 'icon',
+      type: 'image/png',
+      url: '/src/favicon-dark.svg',
+      media: '(prefers-color-scheme: dark)',
+    },
+  ],
   robots: {
     index: false,
     follow: true,
