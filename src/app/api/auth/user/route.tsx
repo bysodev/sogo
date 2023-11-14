@@ -6,9 +6,10 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const username = searchParams.get('username');
   const password = searchParams.get('password');
-  console.log({username, password})
   if (!username || !password) {
-    return false
+    return new Response('No se logro la petición', {
+      status: 401,
+    })
   }
 
   const myHeaders = new Headers({
