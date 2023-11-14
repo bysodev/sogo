@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     return new Response('No se logro la petición', {
       status: 401,
     })
-  }
+  } 
 
   const myHeaders = new Headers({
     Accept: 'application/json',
