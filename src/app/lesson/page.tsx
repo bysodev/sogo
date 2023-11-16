@@ -7,7 +7,7 @@ import { FaLock } from "react-icons/fa6";
 
 const BASE_LESSON = "/lesson/"
 
-export const SpotLearn = [
+const SpotLearn: (SpotLearnItemWithLesson | SpotLearnItemWithoutLesson)[] = [
   {
     id: 1,
     left: "0",
@@ -48,37 +48,40 @@ export const SpotLearn = [
     left: "5em",
   },
   {
-    id: 8,
+    id: 9,
     left: "0",
   },
   {
-    id: 8,
+    id: 10,
     left: "-5em",
   }
 ]
 
-export default function Learn() {
+// Define the types
+type SpotLearnItemWithLesson = {
+  id: number;
+  left: string;
+  icon: React.ComponentType<any>; // Adjust the type if needed
+  state: string;
+  lesson: {
+    title: string;
+    message: string;
+    url: string;
+  };
+};
 
-  return (
-    <>
-      <div className="ms-52 grid place-items-center gap-12 w-full p-10">
-        <section className="bg-gray-800 flex rounded-xl p-4 w-full">
-          <article className="w-5/6  font-bold">
-            <header className="text-gray-400 ">ETAPA 1, SECCIÓN 1</header>
-            <p className="text-white text-xl">Números del 0 al 9</p>
-          </article>
-          <aside className="w-1/6 border-l-2 border-gray-600 grid place-items-center text-white"><BsBookmarkStarFill size={40} /></aside>
-        </section>
-        <LevelStage />
-      </div>
-    </>
-  )
-}
+type SpotLearnItemWithoutLesson = {
+  id: number;
+  left: string;
+  icon?: undefined;
+  state?: undefined;
+  lesson?: undefined;
+};
 
 
 
 
-export const LevelStage = () => {
+const LevelStage = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [currentMessage, setCurrentMessage] = React.useState<any | null>(null);
 
@@ -131,3 +134,23 @@ export const LevelStage = () => {
     </>
   );
 };
+
+const Lesson = () => {
+
+  return (
+    <>
+      <div className="ms-52 grid place-items-center gap-12 w-full p-10">
+        <section className="bg-gray-800 flex rounded-xl p-4 w-full">
+          <article className="w-5/6  font-bold">
+            <header className="text-gray-400 ">ETAPA 1, SECCIÓN 1</header>
+            <p className="text-white text-xl">Números del 0 al 9</p>
+          </article>
+          <aside className="w-1/6 border-l-2 border-gray-600 grid place-items-center text-white"><BsBookmarkStarFill size={40} /></aside>
+        </section>
+        <LevelStage />
+      </div>
+    </>
+  )
+}
+
+export default Lesson;
