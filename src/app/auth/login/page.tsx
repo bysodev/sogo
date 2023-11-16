@@ -2,6 +2,7 @@
 
 import TooltipMessage from "@/components/TooltipMessage";
 import IconLogo from "@/components/icons/IconLogo";
+import { showErrorMessage } from "@/utilities";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,6 +31,9 @@ export default function LoginPage() {
       redirect: false,
     });
     console.log(response);
+    if(!response?.ok)
+      showErrorMessage(response?.error)
+
     if (response?.status === 200) {
       reset();
       push("/learn");

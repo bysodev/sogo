@@ -1,14 +1,71 @@
 "use client";
 import TooltipMessage from "@/components/TooltipMessage";
 import IconLogo from "@/components/icons/IconLogo";
-import { zustandStore } from "@/store/user";
+import { showErrorMessage, showSuccessMessage } from "@/utilities";
 import { rgxEmail } from "@/validators/auth-validators";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+const url_app = process.env.NEXT_PUBLIC_ROUTE_APP
+const myHeaders = new Headers({
+  'Accept': 'application/json',
+  'Content-Type': 'application/json'
+})
+
+async function fetchRegister(username: string, password: string, email: string) {
+  const respuesta = await fetch(`${url_app}/api/auth/user/`, {
+    method: 'POST',
+    body: JSON.stringify({
+      username,
+      password,
+      email
+    }),
+    headers: myHeaders,
+    redirect: 'follow'
+  })
+
+  if( respuesta.status === 201 ){
+    showSuccessMessage(
+      'Su cuenta fue creada exitosamente, ahora espere la verificación'
+    );
+    const data = await respuesta.json();
+    console.log(data)
+    fetchVerification( data['username'], email, data['token'] )
+
+  }else{
+    showErrorMessage(
+      'La aplicación esta fallando con las consultas'
+    );
+  }
+}
+
+async function fetchVerification(username: string, email: string, token: string) {
+  console.log({username, email, token})
+  try {
+    const response = await fetch(`${url_app}/api/emails/`, {
+      method: 'POST',
+      body: JSON.stringify({
+        username,
+        email,
+        token,
+      }),
+      headers: myHeaders,
+      redirect: 'follow',
+    });
+    if (response.ok) {
+      showSuccessMessage(
+        'El correo de verificación fue enviado exitosamente'
+      );
+    }
+  } catch (e) {
+    showErrorMessage(
+      'El correo de verificación no pudo ser enviado!! Comuniquese con la administración'
+    );
+  }
+}
 
 export default function Home() {
-  const fetchRegisterUser = zustandStore((state) => state.fetchRegisterUser);
+  // const fetchRegisterUser = zustandStore((state) => state.fetchRegisterUser);
 
   interface UseFormInputs {
     username: string;
@@ -27,18 +84,10 @@ export default function Home() {
 
   const { push } = useRouter();
 
-  function onSubmit(data: UseFormInputs) {
-    // const response = await fetchRegisterUser(
-    fetchRegisterUser(
-      data.username,
-      data.password,
-      data.email
-    );
-    // if (response) {
-    // Si las contraseñas coinciden, continuar con el reset y redirección
-    reset();
-    push("/auth/login");
-    // }
+  async function onSubmit(data: UseFormInputs) {
+    fetchRegister( data.username, data.password, data.email )
+    // reset();
+    // push("/auth/login");
   }
 
   return (
