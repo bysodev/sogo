@@ -9,7 +9,7 @@ import IconLogo from "./icons/IconLogo";
 
 const SideNavbar = () => {
     const menus = [
-        { name: "Dashboard", link: "/", icon: MdSpaceDashboard },
+        { name: "Inicio", link: "/", icon: MdSpaceDashboard },
         { name: "Cuenta", link: "/", icon: FaUser },
         { name: "Aprendizaje", link: "/learn", icon: FaGraduationCap },
         { name: "Lecciones", link: "/lesson", icon: FaBookBookmark },
