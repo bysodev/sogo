@@ -86,8 +86,8 @@ export default function Home() {
 
   async function onSubmit(data: UseFormInputs) {
     fetchRegister( data.username, data.password, data.email )
-    // reset();
-    // push("/auth/login");
+    reset();
+    push("/auth/login");
   }
 
   return (
