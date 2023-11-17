@@ -30,8 +30,7 @@ export default function LoginPage() {
       password: data.password,
       redirect: false,
     });
-    console.log(response);
-    if(!response?.ok)
+    if (!response?.ok)
       showErrorMessage(response?.error)
 
     if (response?.status === 200) {

@@ -21,32 +21,20 @@ const authOptions = {
                 password: { label: 'Password', type: 'password' }
             },
             async authorize(credentials) {
-                // const user = await GET(
-                //     credentials?.username,
-                //     credentials?.password
-                // )
-                // if (!user) throw new Error('Usuario no encontrado')
-                // return {
-                //     id: user.id,
-                //     name: user.username,
-                //     email: user.email,
-                //     token: user.access_token
-                // }
                 const response = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/user?username=${credentials?.username}&password=${credentials?.password}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
                         "Content-Type": "application/json",
                     },
-                    // credentials: 'include',
-                    // redirect: 'follow',
                 })
-                if (response.status !== 200) throw new Error('La petición ha fallado')
 
+                if (response.status !== 200) {
+                    const error = await response.text();
+                    throw new Error(error)
+                }
                 const user = await response.json();
-
                 if (!user) throw new Error('Usuario no encontrado')
-                
                 return {
                     id: user.id,
                     name: user.username,

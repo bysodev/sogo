@@ -8,14 +8,13 @@ const URL_BACKPYTHON = process.env.NEXT_PUBLIC_API_BACKEND;
 
 async function getVerified(token: string) {
   try {
-    const res = await fetch(`${URL_BACKPYTHON}/user/verified?token=${token}`);
-    const data = await res.json();
-    console.log(res.status)
-    if (res.status === 200) {
-      return { ok: true, message: data.respuesta };
+    const response = await fetch(`${URL_BACKPYTHON}/user/verified?token=${token}`);
+    const data = await response.json();
+    if (response.status === 200) {
+      return { ok: true, message: data.detail };
     }
-    if (res.status === 401) {
-      return { ok: false, message: data.respuesta };
+    if (response.status === 401) {
+      return { ok: false, message: data.detail };
     }
   } catch (e) {
     return { ok: false, message: "Algo fallo con el sistema" };
@@ -27,16 +26,14 @@ export default function Verify() {
   const token = params.get('token');
   const [verified, setVerified] = useState(false);
   const [process, setProcess] = useState(false);
-  console.log(token)
-
-  function btnVerify(){
-    if( !verified ) {
-      getVerified(token+'').then(response => {
-        if (response?.ok) {
+  function btnVerify() {
+    if (!verified) {
+      getVerified(token + '').then(responseponse => {
+        if (responseponse?.ok) {
           setVerified(true);
-          showSuccessMessage(response?.message);
+          showSuccessMessage(responseponse?.message);
         } else {
-          showErrorMessage(response?.message);
+          showErrorMessage(responseponse?.message);
         }
       });
     }
@@ -56,35 +53,35 @@ export default function Verify() {
               backgroundRepeat: "no-repeat",
             }}
           ></div>
-          {(!process) ? 
+          {(!process) ?
             (
               <div className="w-full lg:w-1/2 bg-white p-5 rounded-lg lg:rounded-l-none">
                 <div className="px-8 text-center">
                   <h3 className="pt-4 mb-2 text-step-2 capitalize font-bold">
                     Inicializar el proceso de verificación!
                   </h3>
-                 
+
                   {
                     !token ?
-                    (
-                      <p className="mb-4 text-step--1 text-gray-700">
-                        Usted acaba de ingresar con un link que no es el correcto, comuniquese con administración!!
-                      </p>
-                    ):
-                    (
-                      <button
-                        className="mt-2 py-3 px-4 w-full font-bold text-white bg-gray-900 rounded-full hover:bg-gray-950 "
-                        onClick={() => btnVerify()}
-                        id="submit-login"
-                      >
-                        Comenzar
-                      </button>
-                    )
+                      (
+                        <p className="mb-4 text-step--1 text-gray-700">
+                          Usted acaba de ingresponsear con un link que no es el correcto, comuniquese con administración!!
+                        </p>
+                      ) :
+                      (
+                        <button
+                          className="mt-2 py-3 px-4 w-full font-bold text-white bg-gray-900 rounded-full hover:bg-gray-950 "
+                          onClick={() => btnVerify()}
+                          id="submit-login"
+                        >
+                          Comenzar
+                        </button>
+                      )
                   }
-                 
+
                 </div>
               </div>
-            ):(
+            ) : (
               <div className="w-full lg:w-1/2 bg-white p-5 rounded-lg lg:rounded-l-none">
                 <div className="px-8 text-center">
                   <h3 className="pt-4 mb-2 text-step-2 capitalize font-bold">

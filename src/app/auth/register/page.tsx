@@ -13,34 +13,40 @@ const myHeaders = new Headers({
 })
 
 async function fetchRegister(username: string, password: string, email: string) {
-  const respuesta = await fetch(`${url_app}/api/auth/user/`, {
-    method: 'POST',
-    body: JSON.stringify({
-      username,
-      password,
-      email
-    }),
-    headers: myHeaders,
-    redirect: 'follow'
-  })
+  const myHeaders = new Headers({
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  });
 
-  if( respuesta.status === 201 ){
-    showSuccessMessage(
-      'Su cuenta fue creada exitosamente, ahora espere la verificación'
-    );
-    const data = await respuesta.json();
-    console.log(data)
-    fetchVerification( data['username'], email, data['token'] )
-
-  }else{
-    showErrorMessage(
-      'La aplicación esta fallando con las consultas'
-    );
+  try {
+    const response = await fetch(`${url_app}/api/auth/user/`, {
+      method: 'POST',
+      body: JSON.stringify({
+        username,
+        password,
+        email
+      }),
+      headers: myHeaders,
+      redirect: 'follow'
+    });
+    if (response.status === 201) {
+      showSuccessMessage(
+        'Su cuenta fue creada exitosamente, ahora espere la verificación'
+      );
+      const data = await response.json();
+      fetchVerification(data['username'], email, data['token']);
+      return true;
+    } else {
+      const error = await response.text();
+      showErrorMessage(error);
+      return false;
+    }
+  } catch (error) {
+    showErrorMessage('Problemas con el servidor');
   }
 }
 
 async function fetchVerification(username: string, email: string, token: string) {
-  console.log({username, email, token})
   try {
     const response = await fetch(`${url_app}/api/emails/`, {
       method: 'POST',
@@ -65,8 +71,6 @@ async function fetchVerification(username: string, email: string, token: string)
 }
 
 export default function Home() {
-  // const fetchRegisterUser = zustandStore((state) => state.fetchRegisterUser);
-
   interface UseFormInputs {
     username: string;
     email: string;
@@ -85,9 +89,11 @@ export default function Home() {
   const { push } = useRouter();
 
   async function onSubmit(data: UseFormInputs) {
-    fetchRegister( data.username, data.password, data.email )
-    reset();
-    push("/auth/login");
+    const val = await fetchRegister(data.username, data.password, data.email)
+    if (val) {
+      reset();
+      push("/auth/login");
+    }
   }
 
   return (
