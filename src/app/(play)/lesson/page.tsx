@@ -106,7 +106,7 @@ const LevelStage = () => {
             key={item.id}
             className={`spot-lesson rounded-full ${item.state === "current" ? "text-white bg-red-600" : "text-gray-400 bg-gray-300"} `}
             style={{ marginLeft: item.left }}
-            onClick={(event) => handleClick(event, item.lesson)}
+            onClick={(event) => item.lesson ? handleClick(event, item.lesson) : null}
           >
             <span className="back opacity-50"></span>
             <span className={`front border ${item.state === "current" ? "border-red-600" : "border-gray-300"} `}>
@@ -139,7 +139,7 @@ const Lesson = () => {
 
   return (
     <>
-      <div className="ms-52 grid place-items-center gap-12 w-full p-10">
+      <div className="grid place-items-center gap-12 w-full p-10">
         <section className="bg-gray-800 flex rounded-xl p-4 w-full">
           <article className="w-5/6  font-bold">
             <header className="text-gray-400 ">ETAPA 1, SECCIÓN 1</header>

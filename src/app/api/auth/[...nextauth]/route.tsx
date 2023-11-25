@@ -2,7 +2,6 @@ import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GitHubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
-// import GET from '../user/register'
 
 const authOptions = {
     providers: [
@@ -29,17 +28,12 @@ const authOptions = {
                     },
                 })
 
-                if (response.status !== 200) {
-                    const error = await response.text();
-                    throw new Error(error)
-                }
                 const user = await response.json();
-                if (!user) throw new Error('Usuario no encontrado')
-                return {
-                    id: user.id,
-                    name: user.username,
-                    email: user.email,
-                    token: user.access_token
+
+                if (user) {
+                    return user;
+                } else {
+                    return null;
                 }
             }
         })
@@ -50,20 +44,42 @@ const authOptions = {
     },
     secret: process.env.SECRET_KEY,
     session: {
-        maxAge: 1 * 1 * 30 * 60 // 30 minutos,
+        maxAge: 30 * 60, // 30 minutos,
     },
     callbacks: {
-        async jwt({ token, user }: any) {
+        jwt: async ({ token, user }: any) => {
             if (user) {
-                token.accessToken = user.token
+                token.name = user.username
+                token.accessToken = user.accessToken
             }
             return token
         },
-        async session({ session, token }: any) {
+        session: async ({ session, token }: any) => {
             if (token) {
-                session.user.accessToken = token.accessToken
+                session.accessToken = token.accessToken
             }
             return session
+        },
+        signIn: async ({ user, account, profile, isNewUser }: any) => {
+            if (account.provider === 'google' || account.provider === 'github') {
+                const { name, email, id } = user;
+                const response = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/user/`, {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        "username": name,
+                        "password": id,
+                        "email": email
+                    }),
+                    headers: {
+                        'Accept': 'application/json',
+                        "Content-Type": "application/json",
+                    },
+                });
+
+                const userData = await response.json();
+                console.log(userData)
+            }
+            return true;
         }
     }
 }

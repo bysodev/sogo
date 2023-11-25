@@ -6,18 +6,20 @@ import Camara from "@/components/camara/Camara";
 import { FooterLesson } from "@/components/progress/FooterLesson";
 import { ModalLesson } from "@/components/progress/ModalLesson";
 import { Progressbar } from "@/components/progress/Progressbar";
-import { getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 const defaultImage = "/lesson/vocals/letra_A.jpg";
 const vocales = ["A", "E", "I", "O", "U"];
 
-async function verification(img64: string, vocal: string) {
-  const user = await getSession();
+
+
+async function Verification(img64: string, vocal: string, token: string) {
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
-  myHeaders.append("Authorization", `Bearer ${user?.user?.accessToken}`);
+  // myHeaders.append("Authorization", `Bearer ${user?.user?.accessToken}`);
+  myHeaders.append("Authorization", `Bearer ${token}`);
 
   var raw = JSON.stringify({
     learn: "numeros",
@@ -59,6 +61,7 @@ async function verification(img64: string, vocal: string) {
 // };
 
 export default function LessonVocales() {
+  const { data: session } = useSession();
   const timeLocal = new Date();
   const webcamRef = useRef(null);
   const [submit, setSubmit] = useState(true);
@@ -115,7 +118,7 @@ export default function LessonVocales() {
     setSubmit(false);
     if (progres.porcentaje != 100) {
       if (typeof imagen === "string") {
-        verification(imagen, progres.vocal).then(async (response) => {
+        Verification(imagen, progres.vocal, session?.accessToken || "").then(async (response) => {
           if (!response.ok) {
             // Si la respuesta no es exitosa, lanza una excepción
             // console.log(await response.json());

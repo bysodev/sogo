@@ -78,3 +78,47 @@ export async function POST(request: Request) {
     })
   }
 }
+
+// LOGIN OR REGISTER PROVIDER
+export async function PUT(request: Request) {
+  const { username, password, email } = await request.json()
+
+  if (!username || !password || !email) {
+    return new Response('No se logro la petición, faltan campos', {
+      status: 401,
+    })
+  }
+  console.log(JSON.stringify({
+    username,
+    password,
+    email
+  }))
+  const myHeaders = new Headers({
+    Accept: 'application/json',
+    'Content-Type': 'application/x-www-form-urlencoded'
+  })
+  try {
+    const response = await fetch(`${url}/user/loginProvider`, {
+      method: 'POST',
+      body: JSON.stringify({
+        username,
+        password,
+        email
+      }),
+      headers: myHeaders,
+      credentials: 'include',
+      redirect: 'follow'
+    })
+    const userData = await response.json()
+    if (response.status === 200) {
+      return new Response(JSON.stringify(userData), {
+        status: 200,
+      })
+    }
+    return new Response(userData.detail, { status: response.status })
+  } catch (error) {
+    return new Response('Error al procesar la solicitud', {
+      status: 501,
+    })
+  }
+}

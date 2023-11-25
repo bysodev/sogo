@@ -10,14 +10,9 @@ async function getVerified(token: string) {
   try {
     const response = await fetch(`${URL_BACKPYTHON}/user/verified?token=${token}`);
     const data = await response.json();
-    if (response.status === 200) {
-      return { ok: true, message: data.detail };
-    }
-    if (response.status === 401) {
-      return { ok: false, message: data.detail };
-    }
+    return { ok: response.status, message: data.detail };
   } catch (e) {
-    return { ok: false, message: "Algo fallo con el sistema" };
+    return { ok: 400, message: "Algo fallo con el sistema" };
   }
 }
 
@@ -28,12 +23,15 @@ export default function Verify() {
   const [process, setProcess] = useState(false);
   function btnVerify() {
     if (!verified) {
-      getVerified(token + '').then(responseponse => {
-        if (responseponse?.ok) {
+      getVerified(token + '').then(response => {
+        if (response.ok === 200) {
           setVerified(true);
-          showSuccessMessage(responseponse?.message);
+          showSuccessMessage(response?.message);
+        } else if (response?.ok === 401) {
+          setVerified(true);
+          showErrorMessage(response?.message);
         } else {
-          showErrorMessage(responseponse?.message);
+          showErrorMessage(response?.message);
         }
       });
     }

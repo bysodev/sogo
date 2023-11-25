@@ -11,8 +11,8 @@ export default function Learn() {
   const router = useRouter();
 
   return (
-    <div className="grid place-content-center place-items-center mt-12">
-      <div className=" w-9/12 bg-sky-600 grid grid-flow-col rounded-lg bg-opacity-90">
+    <div className="grid place-content-center place-items-center">
+      <div className=" w-9/12 bg-sky-600 grid grid-flow-col rounded-lg bg-opacity-90 mt-10">
         <div className="p-2">
           <div className="w-fit m-2 p-1 bg-white text-sky-600 text-center rounded-md  ">
             <h5>VOCABULARIO</h5>
