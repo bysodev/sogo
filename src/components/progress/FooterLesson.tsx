@@ -4,42 +4,18 @@ export const FooterLesson = ({comprobation, continuar, changeContinue, submit}: 
 
 
     return (
-        <div className='w-full mt-6 flex justify-center flex-row flex-wrap'>
-            <div className={`w-full ${continuar ? 'hidden' : ''} `}>
-                <div className='w-full'>
-                    <hr />
-                </div>
-                <div className='flex justify-between p-4 w-3/5'>
-                    <div>   
-                        <button
-                            onClick={() => {
-                            console.log('Nos regresamos')
-                            }}
-                            type="button"
-                            className="px-6 pb-2 pt-2.5 inline-block bg-slate-500 shadow-sm rounded-full bg-primary text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out">
-                            SALIR
-                        </button>
-                    </div>
-                  
-                    <div>
-                        <button
-                            onClick={() => {
-                                comprobation();
-                            }}
-                            type="button"
-                            className="px-6 pb-2 pt-2.5 inline-block bg-green-600 shadow-sm rounded-full bg-primary text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out"
-                            disabled={!submit}
-                        >
-                            COMPROBAR
-                        </button>
-                    </div>
-                </div>
-                <div className='w-full'>
-                    <hr />
-                </div>
-            </div>
+        <div className='w-full flex place-content-center '>
 
-            <div className={`w-full ${continuar ? '' : 'hidden'} `}>
+            {
+                !continuar &&  
+                    <FotterLessonPrincipal  
+                        submit={submit}
+                        comprobation={comprobation}
+                    />
+            }
+           
+
+            <div className={`w-full flex flex-col place-content-center items-center ${continuar ? '' : 'hidden'} `}>
                 <div className='w-full'>
                     <hr />
                 </div>
@@ -77,6 +53,36 @@ export const FooterLesson = ({comprobation, continuar, changeContinue, submit}: 
                 </div>
             </div>
             
+        </div>
+    )
+}
+
+const FotterLessonPrincipal = ({comprobation, submit}: {comprobation: Function, submit: Boolean}) => {
+    return (
+        <div className='flex justify-between p-4 w-3/5'>
+            <div>   
+                <button
+                    onClick={() => {
+                    console.log('Nos regresamos')
+                    }}
+                    type="button"
+                    className="px-6 pb-2 pt-2.5 inline-block bg-slate-500 shadow-sm rounded-full bg-primary text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out">
+                    SALIR
+                </button>
+            </div>
+        
+            <div>
+                <button
+                    onClick={() => {
+                        comprobation();
+                    }}
+                    type="button"
+                    className="px-6 pb-2 pt-2.5 inline-block bg-green-600 shadow-sm rounded-full bg-primary text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out"
+                    disabled={!submit}
+                >
+                    COMPROBAR
+                </button>
+            </div>
         </div>
     )
 }

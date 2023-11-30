@@ -2,18 +2,23 @@
 // import { Enunciados } from "@/components/cards/Enunciados";
 // import { GeneralCard } from "@/components/cards/GeneralCard";
 import { SignImageData } from "@/components/DiccionaryLesson";
-import Camara from "@/components/camara/Camara";
+import DrawerBotton from "@/components/DrawerBotton";
+import Camara from '@/components/camara/Camara';
+import CompleteLesson from "@/components/progress/CompleteLesson";
 import { FooterLesson } from "@/components/progress/FooterLesson";
-import { ModalLesson } from "@/components/progress/ModalLesson";
 import { Progressbar } from "@/components/progress/Progressbar";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 const defaultImage = "/lesson/vocals/letra_A.jpg";
-const vocales = ["A", "E", "I", "O", "U"];
+// const vocales = ["A", "E", "I", "O", "U"];
+const vocales = ["A", "E"];
 
-
+interface WebVideoElementWithScreenshot extends HTMLVideoElement {
+  getScreenshot(): Promise<string>;
+}
 
 async function Verification(img64: string, vocal: string, token: string) {
   var myHeaders = new Headers();
@@ -22,12 +27,14 @@ async function Verification(img64: string, vocal: string, token: string) {
   myHeaders.append("Authorization", `Bearer ${token}`);
 
   var raw = JSON.stringify({
-    learn: "numeros",
+    learn: "vocales",
     imagen: img64,
     extension: "jpeg",
     tipo: "byte64",
     vocal: vocal,
   });
+
+  console.log(raw)
 
   try {
     const res = await fetch(`http://127.0.0.1:8000/user/lesson/vocales`, {
@@ -39,39 +46,28 @@ async function Verification(img64: string, vocal: string, token: string) {
     });
     return res;
   } catch (error) {
-    // console.log(error)
+    console.log(error)
     return { ok: false };
   }
 }
 
-// const getLesson = async () => {
-//   const user = await getSession();
-
-//   var myHeaders = new Headers();
-//   myHeaders.append("Content-Type", "application/json");
-//   myHeaders.append("Authorization", `Bearer ${user?.user?.accessToken}`);
-
-//   const res = await fetch(`http://127.0.0.1:8000/user/lesson/vocales`, {
-//     method: "GET",
-//     headers: myHeaders,
-//     credentials: "include",
-//     redirect: "follow",
-//   });
-//   return res.json();
-// };
-
 export default function LessonVocales() {
   const { data: session } = useSession();
-  const timeLocal = new Date();
-  const webcamRef = useRef(null);
+  const webcamRef= useRef<WebVideoElementWithScreenshot>(null);
   const [submit, setSubmit] = useState(true);
-  const [imagen, setImagen] = useState("");
-  // Almacena la imagen actual en el estado del componente
+  const [imagen, setImagen] = useState<any>("");
   const [currentImage, setCurrentImage] = useState(defaultImage);
   let [isOpen, setIsOpen] = useState(true);
+  const [drawer, setDrawer ] = useState( false );
+  const [toggleTime, setToogleTime] = useState("3");
+  const [counter, setCounter] = useState(3);
+
+  const handleToogleTime = ( event: React.MouseEvent<HTMLElement>, newTime: string) => {
+    setToogleTime(newTime)
+  }
 
   const [progres, setprogress] = useState({
-    preguntas: 5,
+    preguntas: vocales.length,
     porcentaje: 0,
     asiertos: 0,
     tipo: "vocales",
@@ -79,8 +75,28 @@ export default function LessonVocales() {
     vocal: vocales[0],
   });
 
+  useEffect(() => {
+    if( counter <= 0 ){
+      foto()
+      return;
+    } 
+    const timeout = setTimeout(() => {
+      setCounter(count => count - 1)
+    }, 1000);
 
+    return () => clearTimeout(timeout)
+  }, [counter])
 
+  const foto = () => {
+    var captura = webcamRef?.current?.getScreenshot();
+    setImagen(captura);
+  };
+
+  const setFoto = () => {
+    setImagen("")
+    setCounter( parseInt(toggleTime) )
+  }
+  
   useEffect(() => {
     const updateImage = () => {
       const letter = progres.vocal;
@@ -92,28 +108,6 @@ export default function LessonVocales() {
     updateImage();
   }, [progres.vocal]); // Actualiza la imagen cuando progres.vocal cambia
 
-  const [time, settime] = useState(timeLocal);
-
-  useEffect(() => {
-    let startTime = new Date();
-    settime(startTime);
-  }, []);
-
-  const guardar = () => {
-    const newTime = new Date();
-    const diference = newTime.getTime() - time.getTime();
-
-    const hours = Math.floor(diference / 3600000); // 1 hora = 3600000 milisegundos
-    const minutes = Math.floor((diference % 3600000) / 60000); // 1 minuto = 60000 milisegundos
-    const seconds = Math.floor((diference % 60000) / 1000); // 1 segundo = 1000 milisegundos
-
-    const formattedHours = hours.toString().padStart(2, "0");
-    const formattedMinutes = minutes.toString().padStart(2, "0");
-    const formattedSeconds = seconds.toString().padStart(2, "0");
-
-    console.log(`${formattedHours}:${formattedMinutes}:${formattedSeconds}`);
-  };
-
   const cambio = async () => {
     setSubmit(false);
     if (progres.porcentaje != 100) {
@@ -122,12 +116,13 @@ export default function LessonVocales() {
           if (!response.ok) {
             // Si la respuesta no es exitosa, lanza una excepción
             // console.log(await response.json());
+            setFoto()
             return;
           }
           // La respuesta fue exitosa, maneja los datos de la respuesta
           const data = await (response as Response).json();
           console.log(data);
-          if (data.result === progres.vocal)
+          if (data.result === progres.vocal){
             setprogress((pro) => ({
               ...pro,
               asiertos: pro.asiertos + 1,
@@ -135,6 +130,10 @@ export default function LessonVocales() {
               vocal: vocales[pro.asiertos + 1],
               continue: true,
             }));
+          }else{
+            setFoto()
+          }
+            
         });
       }
     }
@@ -145,55 +144,80 @@ export default function LessonVocales() {
       ...pro,
       continue: false,
     }));
+    setFoto()
   };
+
 
   return (
     <>
       {progres.porcentaje === 100 ? (
-        <ModalLesson isOpen={isOpen} setIsOpen={setIsOpen} guardar={guardar} />
+        <CompleteLesson />
+        // <CompleteLesson isOpen={isOpen} setIsOpen={setIsOpen} />
       ) : (
-        ""
+        <div className="flex flex-col min-h-screen">
+          <div className="flex-auto flex items-center">
+            <Progressbar porcentaje={progres.porcentaje} setDrawer={setDrawer} />
+            {/* <button
+              onClick={() => {
+                setprogress((pro) => ({
+                  ...pro,
+                  asiertos: pro.asiertos + 1,
+                  porcentaje: ((pro.asiertos + 1) / pro.preguntas) * 100,
+                  continue: true,
+                }));
+              }}
+            >
+              CLICK
+            </button> */}
+          </div>
+          <div className="flex-auto flex place-content-center">
+            <div className="flex w-4/5 justify-center items-center">
+              <div className="w-2/5 mx-auto">
+                <Image
+                  className="rounded-xl shadow-md"
+                  src={currentImage}
+                  height={300}
+                  width={300}
+                  alt="Letra A"
+                /> 
+              </div>
+              <div className="w-2/5 h-full content-center mx-auto">
+                <ToggleButtonGroup
+                  color="primary"
+                  value={toggleTime}
+                  exclusive
+                  onChange={handleToogleTime}
+                  aria-label="Platform"
+                >
+                  <ToggleButton value="3">3 Sec</ToggleButton>
+                  <ToggleButton value="5">5 Sec</ToggleButton>
+                  <ToggleButton value="7">7 Sec</ToggleButton>
+                </ToggleButtonGroup>
+                <div className="">
+                  <Camara
+                    webcamRef={webcamRef}
+                    imagen={imagen}
+                    counter={counter}
+                    setFoto={setFoto}
+                  />
+                </div>
+              </div>
+              
+            </div>  
+          </div>
+          <div className="flex-auto sm:pb-10">
+            <DrawerBotton drawer={drawer} setDrawer={setDrawer} />
+            <FooterLesson
+              submit={submit}
+              comprobation={cambio}
+              continuar={progres.continue}
+              changeContinue={changeContinue}
+            /> 
+          </div>
+      </div>
       )}
 
-      <div className="flex flex-row flex-wrap justify-center w-full">
-        <Progressbar porcentaje={progres.porcentaje} />
-        <button
-          onClick={() => {
-            setprogress((pro) => ({
-              ...pro,
-              asiertos: pro.asiertos + 1,
-              porcentaje: ((pro.asiertos + 1) / pro.preguntas) * 100,
-              continue: true,
-            }));
-          }}
-        >
-          CLICK
-        </button>
-        <div className="flex w-4/5 justify-between">
-          <div className="w-2/5 mx-auto">
-            <Image
-              className="rounded-xl shadow-md"
-              src={currentImage}
-              height={300}
-              width={300}
-              alt="Letra A"
-            />
-          </div>
-          <div className="w-2/5">
-            <Camara
-              webcamRef={webcamRef}
-              imagen={imagen}
-              setImagen={setImagen}
-            />
-          </div>
-        </div>
-        <FooterLesson
-          submit={submit}
-          comprobation={cambio}
-          continuar={progres.continue}
-          changeContinue={changeContinue}
-        />
-      </div>
+     
     </>
   );
 }

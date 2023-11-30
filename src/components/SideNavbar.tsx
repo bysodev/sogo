@@ -10,7 +10,7 @@ import IconLogo from "./icons/IconLogo";
 const SideNavbar: React.FC<{ isOpen: boolean; onToggle: () => void }> = ({ isOpen, onToggle }) => {
     const menus = [
         { name: "Inicio", link: "/", icon: MdSpaceDashboard },
-        { name: "Cuenta", link: "/", icon: FaUser },
+        { name: "Cuenta", link: "/profile", icon: FaUser },
         { name: "Aprendizaje", link: "/learn", icon: FaGraduationCap },
         { name: "Lecciones", link: "/lesson", icon: FaBookBookmark },
         { name: "Cerrar Sesión", link: "/", icon: BiSolidLogOut, logout: true },

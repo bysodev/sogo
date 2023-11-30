@@ -8,7 +8,7 @@ import { MdSpaceDashboard } from "react-icons/md";
 const BottomNavbar = () => {
     const menus = [
         { name: "Inicio", link: "/", icon: MdSpaceDashboard },
-        { name: "Cuenta", link: "#", icon: FaUser },
+        { name: "Cuenta", link: "/profile", icon: FaUser },
         { name: "Aprendizaje", link: "/learn", icon: FaGraduationCap },
         { name: "Lecciones", link: "/lesson", icon: FaBookBookmark },
         { name: "Salir", link: "/", icon: BiSolidLogOut, logout: true },

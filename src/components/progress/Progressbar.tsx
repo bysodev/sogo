@@ -1,16 +1,35 @@
-export const Progressbar = ({porcentaje}: {porcentaje: number}) => {
+import { default as LinearProgress, linearProgressClasses } from '@mui/material/LinearProgress';
+import { styled } from '@mui/material/styles';
+import { Dispatch, SetStateAction } from 'react';
 
+const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+    height: 10,
+    borderRadius: 5,
+    [`&.${linearProgressClasses.colorPrimary}`]: {
+      backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
+    },
+    [`& .${linearProgressClasses.bar}`]: {
+      borderRadius: 5,
+      backgroundColor: theme.palette.mode === 'light' ? '#1a90ff' : '#308fe8',
+    },
+  }));
+
+export const Progressbar = ({porcentaje, setDrawer}: {porcentaje: number, setDrawer: Dispatch<SetStateAction<boolean>>}) => {
     // let wid = `h-5 bg-slate-600 w-${porcentaje}`
-
     return (
-    <div className='w-4/5 mt-6'>
-        <h6 className='text-center'>Progress</h6>
-        <div className="mb-6 h-px w-full bg-neutral-200 dark:bg-neutral-600">
-            <div className="h-px bg-primary w-1/4"></div>
-        </div>
-        <div className="mb-6 h-5 w-full bg-neutral-200 dark:bg-neutral-600">
-            {/* <div className={`h-5 bg-slate-600 w-${porcentaje}`}></div> */}
-            <div className='h-5 bg-slate-600' style={{width: `${porcentaje}%`}} ></div>
+    <div className='w-full flex place-content-center items-center'>
+        <div className='flex items-center gap-4 w-4/5'>
+            <button 
+                onClick={() =>{
+                    setDrawer(true)
+                }}
+                className=""
+            >
+                <span>X</span>
+            </button>
+            <div className='w-full'>
+                <BorderLinearProgress variant="determinate" value={porcentaje} />
+            </div>
         </div>
     </div>
     );

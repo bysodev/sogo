@@ -1,26 +1,41 @@
 "use client";
-import Webcam from "react-webcam";
 import Image from "next/image";
+import Webcam from "react-webcam";
 
-export default function Camara({ webcamRef, imagen, setImagen }) {
-  const foto = () => {
-    var captura = webcamRef.current.getScreenshot();
-    setImagen(captura);
-  };
+export default function Camara({ webcamRef, imagen, counter, setFoto }) {
 
   return (
-    <div className="App">
-      <Webcam
-        audio={false}
-        height={640}
-        ref={webcamRef}
-        screenshotFormat="image/jpeg"
-        width={480}
-      />
-      <br />
-      <button onClick={foto}>Hacer captura</button>
-      <hr />
-      {imagen && <Image src={imagen} alt="" width={640} height={480} />}
+    <div className="w-full h-auto relative overflow-hidden rounded-xl">
+      <div className="w-full min-h-full">
+        <Webcam
+          audio={false}
+          ref={webcamRef}
+          height={640}
+          width={480}
+          screenshotFormat="image/jpeg"
+        />
+      </div>
+
+      <div className="w-full h-full absolute overflow-hidden top-0 left-0 ">
+        {imagen && <Image src={imagen} alt="" width={640} height={480} />}
+      </div>
+      
+      <div className="w-full h-full absolute overflow-hidden top-0 left-0 ">
+        <button 
+          onClick={() => {
+           setFoto()
+          }}
+          className="w-full h-full text-center"
+        >
+          <span className={`opacity-90 text-white ${ counter <= 0 ? 'text-4xl' : 'text-8xl' } `}>
+            {counter===0 ? 'Nuevamente' : counter}
+          </span>
+        </button>
+      </div>
+      {/* <br /> */}
+      {/* <button onClick={foto}>Hacer captura</button> */}
+      {/* <hr /> */}
+      
     </div>
   );
 }
