@@ -5,7 +5,6 @@
 import Image from "next/image";
 // import A from "/lesson/vocals/letra_A.jpg";
 // import { FooterLesson } from "@/components/progress/FooterLesson";
-import { Progressbar } from "@/components/progress/Progressbar";
 import { useState } from "react";
 
 // const vocales = ["A", "E", "I", "O", "U"];
@@ -30,7 +29,7 @@ export default function LessonNumeros() {
   return (
     <>
       <div className="flex flex-row flex-wrap justify-center w-full">
-        <Progressbar porcentaje={progres.porcentaje} />
+        {/* <Progressbar porcentaje={progres.porcentaje} /> */}
         <button onClick={cambio}>CLICK</button>
         <div className="flex w-4/5 justify-between">
           <div className="w-2/5 m-2">

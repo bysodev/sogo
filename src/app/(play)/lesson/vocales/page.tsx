@@ -8,13 +8,14 @@ import CompleteLesson from "@/components/progress/CompleteLesson";
 import { FooterLesson } from "@/components/progress/FooterLesson";
 import { Progressbar } from "@/components/progress/Progressbar";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import Snackbar from '@mui/material/Snackbar';
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 const defaultImage = "/lesson/vocals/letra_A.jpg";
 // const vocales = ["A", "E", "I", "O", "U"];
-const vocales = ["A", "E"];
+const vocales = ["A"];
 
 interface WebVideoElementWithScreenshot extends HTMLVideoElement {
   getScreenshot(): Promise<string>;
@@ -57,15 +58,22 @@ export default function LessonVocales() {
   const [submit, setSubmit] = useState(true);
   const [imagen, setImagen] = useState<any>("");
   const [currentImage, setCurrentImage] = useState(defaultImage);
-  let [isOpen, setIsOpen] = useState(true);
   const [drawer, setDrawer ] = useState( false );
   const [toggleTime, setToogleTime] = useState("3");
   const [counter, setCounter] = useState(3);
-
+  const [open, setOpen] = useState(false);
+  
   const handleToogleTime = ( event: React.MouseEvent<HTMLElement>, newTime: string) => {
     setToogleTime(newTime)
   }
 
+  const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
   const [progres, setprogress] = useState({
     preguntas: vocales.length,
     porcentaje: 0,
@@ -116,6 +124,7 @@ export default function LessonVocales() {
           if (!response.ok) {
             // Si la respuesta no es exitosa, lanza una excepción
             // console.log(await response.json());
+            setOpen(true)
             setFoto()
             return;
           }
@@ -131,9 +140,9 @@ export default function LessonVocales() {
               continue: true,
             }));
           }else{
+            setOpen(true)
             setFoto()
           }
-            
         });
       }
     }
@@ -146,7 +155,6 @@ export default function LessonVocales() {
     }));
     setFoto()
   };
-
 
   return (
     <>
@@ -202,7 +210,6 @@ export default function LessonVocales() {
                   />
                 </div>
               </div>
-              
             </div>  
           </div>
           <div className="flex-auto sm:pb-10">
@@ -214,10 +221,16 @@ export default function LessonVocales() {
               changeContinue={changeContinue}
             /> 
           </div>
+          <div>
+            <Snackbar
+              open={open}
+              autoHideDuration={2000}
+              onClose={handleClose}
+              message="Vuelve a intentarlo"
+            />
+          </div>
       </div>
       )}
-
-     
     </>
   );
 }

@@ -2,6 +2,9 @@
 import Image from "next/image";
 import Webcam from "react-webcam";
 
+// height={640}
+// width={480}
+
 export default function Camara({ webcamRef, imagen, counter, setFoto }) {
 
   return (
@@ -10,8 +13,7 @@ export default function Camara({ webcamRef, imagen, counter, setFoto }) {
         <Webcam
           audio={false}
           ref={webcamRef}
-          height={640}
-          width={480}
+          
           screenshotFormat="image/jpeg"
         />
       </div>
