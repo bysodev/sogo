@@ -1,10 +1,11 @@
 "use client"
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 const MouseTracker = ({ offset = { x: -15, y: -15 } }: any) => {
     const element = useRef<HTMLDivElement>(null);
     const timeoutIdRef = useRef<any | null>(null);
+    const [shouldRenderPortal, setShouldRenderPortal] = useState(false);
 
     const delayedHandler = useMemo(() => {
 
@@ -48,7 +49,8 @@ const MouseTracker = ({ offset = { x: -15, y: -15 } }: any) => {
         }
 
         // Check if document is available before attaching event listeners
-        if (typeof window !== "undefined" && document) {
+        if (typeof window !== "undefined") {
+            setShouldRenderPortal(true); // Habilitar el renderizado del portal en el lado del cliente
             document.addEventListener("mousemove", handleWithDelay);
             document.addEventListener("touchmove", handleWithDelay);
 
@@ -60,11 +62,12 @@ const MouseTracker = ({ offset = { x: -15, y: -15 } }: any) => {
         }
     }, [delayedHandler]);
 
-    return createPortal(
-        <div className='mouse-tracker border-2 border-gray-950 dark:border-white contrast-50' ref={element}>
-        </div>,
-        document.body
-    );
+    return shouldRenderPortal ? (
+        createPortal(
+            <div className='mouse-tracker border-2 border-gray-950 dark:border-white contrast-50' ref={element}></div>,
+            document.body
+        )
+    ) : null;
 };
 
 export default MouseTracker;
