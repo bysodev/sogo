@@ -1,4 +1,4 @@
-import IconLogo from "@/components/icons/IconLogo";
+import IconLogo from "@/components/icons/logo";
 
 export default function Loading() {
   return (

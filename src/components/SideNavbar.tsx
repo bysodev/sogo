@@ -5,7 +5,7 @@ import { BiSolidLogOut } from "react-icons/bi";
 import { FaBookBookmark, FaGraduationCap, FaUser } from "react-icons/fa6";
 import { HiXCircle } from "react-icons/hi";
 import { MdSpaceDashboard } from "react-icons/md";
-import IconLogo from "./icons/IconLogo";
+import IconLogo from "./icons/logo";
 
 const SideNavbar: React.FC<{ isOpen: boolean; onToggle: () => void }> = ({ isOpen, onToggle }) => {
     const menus = [
