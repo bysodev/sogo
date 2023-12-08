@@ -48,7 +48,7 @@ const MouseTracker = ({ offset = { x: -15, y: -15 } }: any) => {
         }
 
         // Check if document is available before attaching event listeners
-        if (typeof window !== "undefined") {
+        if (typeof window !== "undefined" && document) {
             document.addEventListener("mousemove", handleWithDelay);
             document.addEventListener("touchmove", handleWithDelay);
 
