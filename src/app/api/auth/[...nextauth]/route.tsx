@@ -60,7 +60,7 @@ const authOptions = {
             }
             return session
         },
-        signIn: async ({ user, account, profile, isNewUser }: any) => {
+        signIn: async ({ user, account }: any) => {
             if (account.provider === 'google' || account.provider === 'github') {
                 const { name, email, id } = user;
                 const response = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/user/`, {
