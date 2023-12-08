@@ -15,7 +15,20 @@ import { useEffect, useRef, useState } from "react";
 
 const defaultImage = "/lesson/vocals/letra_A.jpg";
 // const vocales = ["A", "E", "I", "O", "U"];
-const vocales = ["A"];
+const vocales = ["A", "E"];
+
+const considerar: {[key: string]: number} = {
+  A: 0, 
+  E: 0, 
+  I: 0, 
+  O: 0, 
+  U: 0
+};
+
+type Times = {
+  inicio: Date ,
+  final: Date
+}
 
 interface WebVideoElementWithScreenshot extends HTMLVideoElement {
   getScreenshot(): Promise<string>;
@@ -34,8 +47,6 @@ async function Verification(img64: string, vocal: string, token: string) {
     tipo: "byte64",
     vocal: vocal,
   });
-
-  console.log(raw)
 
   try {
     const res = await fetch(`http://127.0.0.1:8000/user/lesson/vocales`, {
@@ -62,7 +73,9 @@ export default function LessonVocales() {
   const [toggleTime, setToogleTime] = useState("3");
   const [counter, setCounter] = useState(3);
   const [open, setOpen] = useState(false);
-  
+  const [startime, setTime] = useState<Times>({inicio: new Date(), final: new Date()});
+  const [errors, setErrors] = useState(considerar)
+
   const handleToogleTime = ( event: React.MouseEvent<HTMLElement>, newTime: string) => {
     setToogleTime(newTime)
   }
@@ -71,10 +84,19 @@ export default function LessonVocales() {
     if (reason === 'clickaway') {
       return;
     }
-
     setOpen(false);
   };
-  const [progres, setprogress] = useState({
+
+  type progress = {
+    preguntas: number,
+    porcentaje: number,
+    asiertos: number,
+    tipo: string,
+    continue: boolean,
+    vocal: string,
+  };
+
+  const [progres, setprogress] = useState<progress>({
     preguntas: vocales.length,
     porcentaje: 0,
     asiertos: 0,
@@ -122,8 +144,11 @@ export default function LessonVocales() {
       if (typeof imagen === "string") {
         Verification(imagen, progres.vocal, session?.accessToken || "").then(async (response) => {
           if (!response.ok) {
-            // Si la respuesta no es exitosa, lanza una excepción
-            // console.log(await response.json());
+            console.log('Ni siquiera la reconocio')
+            setErrors( (obj) => ({
+              ...obj,
+              [progres.vocal]: obj[progres.vocal] + 1
+            }))
             setOpen(true)
             setFoto()
             return;
@@ -132,6 +157,14 @@ export default function LessonVocales() {
           const data = await (response as Response).json();
           console.log(data);
           if (data.result === progres.vocal){
+            if( (((progres.asiertos + 1) / progres.preguntas) * 100) == 100 ){
+              setTime( (tim) => ({
+                ...tim,
+                final: new Date()
+              }))
+              console.log(startime)
+              console.log(errors)
+            }
             setprogress((pro) => ({
               ...pro,
               asiertos: pro.asiertos + 1,
@@ -140,10 +173,22 @@ export default function LessonVocales() {
               continue: true,
             }));
           }else{
+            console.log('No es la vocal indicada')
+            setErrors( (obj) => ({
+              ...obj,
+              [progres.vocal]: obj[progres.vocal] + 1
+            }))
             setOpen(true)
             setFoto()
           }
+        }).catch(() => {
+          console.log('Error en el verificar')
+          setErrors( (obj) => ({
+            ...obj,
+            [progres.vocal]: obj[progres.vocal] + 1
+          }))
         });
+       
       }
     }
     setSubmit(true);
@@ -159,7 +204,7 @@ export default function LessonVocales() {
   return (
     <>
       {progres.porcentaje === 100 ? (
-        <CompleteLesson />
+        <CompleteLesson startime={startime} errors={errors}/>
         // <CompleteLesson isOpen={isOpen} setIsOpen={setIsOpen} />
       ) : (
         <div className="flex flex-col min-h-screen">

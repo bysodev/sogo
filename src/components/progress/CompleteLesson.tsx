@@ -1,6 +1,24 @@
-import Image from "next/image";
+'use client'
 
-export default function CompleteLesson(){
+import Image from "next/image";
+import { useEffect, useState } from "react";
+
+type Times = {
+    inicio: Date, 
+    final: Date
+}
+
+export default function CompleteLesson( {startime, errors}: {startime: Times, errors: {[key: string]: number}} ){
+    const [tiempo, setTiempo] = useState({hora: 0, minuto: 0, segundo: 0});
+
+    useEffect(() => {
+        const milisegundos = (startime.final.getTime() - startime.inicio.getTime());
+        let horas = Math.floor( milisegundos / 3600000 );
+        let minutos = Math.floor( (milisegundos % 3600000) / 60000 );
+        let segundos = Math.floor( (milisegundos % 60000) / 1000 );
+        console.log( {horas, minutos, segundos} )
+        setTiempo({hora: horas, minuto: minutos, segundo: segundos});
+    }, [startime])
 
     return (
         <div className="flex w-full flex-col min-h-screen pb-24">
@@ -24,6 +42,7 @@ export default function CompleteLesson(){
             </div>
             <div className="flex justify-center gap-4">
                 <div className="border p-6 rounded-lg flex flex-col place-content-center text-center">
+                    <pre>{JSON.stringify( tiempo ) }</pre>
                     <span>08:20 m/s</span>
                     <span>Tiempo</span>
                 </div>
@@ -33,6 +52,7 @@ export default function CompleteLesson(){
                 </div>
                 <div className="border p-6 rounded-lg flex flex-col place-content-center text-center">
                     <span>90%</span>
+                    <pre>{JSON.stringify( errors ) }</pre>
                     <span>General</span>
                 </div>
             </div>
