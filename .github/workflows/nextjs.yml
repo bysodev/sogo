@@ -52,11 +52,14 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: 6.32.9
-      - uses: actions/setup-node@v4
+      - uses: actions/cache@v3
         with:
-          node-version: '14'
-          cache: 'pnpm'
-      - run: pnpm install
+          path: |
+            ~/.pnpm
+            ${{ github.workspace }}/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
