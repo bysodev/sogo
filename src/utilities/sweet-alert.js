@@ -4,7 +4,8 @@ export const showErrorMessage = (text) => {
     Swal.fire({
         icon: 'error',
         title: 'Error',
-        text
+        text,
+        confirmButtonText: "Aceptar",
     })
 }
 
@@ -12,6 +13,7 @@ export const showSuccessMessage = (text) => {
     Swal.fire({
         icon: 'success',
         title: 'Success',
-        text
+        text,
+        confirmButtonText: "Aceptar",
     })
 }

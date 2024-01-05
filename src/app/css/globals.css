@@ -89,7 +89,6 @@ body.dark #illustration-02 stop:nth-child(3) {
     height 0.3s;
   height: 25px;
   box-sizing: content-box;
-  z-index: 20;
 }
 
 .spot-lesson {
