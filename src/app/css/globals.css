@@ -19,6 +19,14 @@
   }
 }
 
+.lg\:ms-52 {
+  margin-inline-start: 13rem /* 208px */;
+}
+
+.lg\:ms-16 {
+  margin-inline-start: 4rem /* 64px */;
+}
+
 .css-1elwnq4-MuiPaper-root-MuiAccordion-root.Mui-expanded {
   margin: 0 !important;
 }
