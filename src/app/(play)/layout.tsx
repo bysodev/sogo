@@ -3,7 +3,7 @@ import BottomNavbar from "@/components/BottomNavbar";
 import SideNavbar from "@/components/SideNavbar";
 import { useState } from "react";
 
-export default function RootLayout({
+export default function PlayLayout({
   children,
 }: {
   children: React.ReactNode;

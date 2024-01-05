@@ -7,12 +7,16 @@ import Camara from '@/components/camara/Camara';
 import CompleteLesson from "@/components/progress/CompleteLesson";
 import { FooterLesson } from "@/components/progress/FooterLesson";
 import { Progressbar } from "@/components/progress/Progressbar";
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Verification } from "@/lib/actions/lessons";
+import { Progress, Times, TransitionProps, WebVideoElementWithScreenshot } from '@/lib/types/lessons';
+import { Alert, Slide, Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import Snackbar from '@mui/material/Snackbar';
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-
+function TransitionDown(props: TransitionProps) {
+  return <Slide {...props} direction="down" />;
+}
 const defaultImage = "/lesson/vocals/letra_A.jpg";
 // const vocales = ["A", "E", "I", "O", "U"];
 const vocales = ["A", "E"];
@@ -24,44 +28,6 @@ const considerar: {[key: string]: number} = {
   O: 0, 
   U: 0
 };
-
-type Times = {
-  inicio: Date ,
-  final: Date
-}
-
-interface WebVideoElementWithScreenshot extends HTMLVideoElement {
-  getScreenshot(): Promise<string>;
-}
-
-async function Verification(img64: string, vocal: string, token: string) {
-  var myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  // myHeaders.append("Authorization", `Bearer ${user?.user?.accessToken}`);
-  myHeaders.append("Authorization", `Bearer ${token}`);
-
-  var raw = JSON.stringify({
-    learn: "vocales",
-    imagen: img64,
-    extension: "jpeg",
-    tipo: "byte64",
-    vocal: vocal,
-  });
-
-  try {
-    const res = await fetch(`http://127.0.0.1:8000/user/lesson/vocales`, {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      credentials: "include",
-      redirect: "follow",
-    });
-    return res;
-  } catch (error) {
-    console.log(error)
-    return { ok: false };
-  }
-}
 
 export default function LessonVocales() {
   const { data: session } = useSession();
@@ -75,6 +41,14 @@ export default function LessonVocales() {
   const [open, setOpen] = useState(false);
   const [startime, setTime] = useState<Times>({inicio: new Date(), final: new Date()});
   const [errors, setErrors] = useState(considerar)
+  const [progres, setprogress] = useState<Progress>({
+    preguntas: vocales.length,
+    porcentaje: 0,
+    asiertos: 0,
+    tipo: "vocales",
+    continue: false,
+    vocal: vocales[0],
+  });
 
   const handleToogleTime = ( event: React.MouseEvent<HTMLElement>, newTime: string) => {
     setToogleTime(newTime)
@@ -87,24 +61,6 @@ export default function LessonVocales() {
     setOpen(false);
   };
 
-  type progress = {
-    preguntas: number,
-    porcentaje: number,
-    asiertos: number,
-    tipo: string,
-    continue: boolean,
-    vocal: string,
-  };
-
-  const [progres, setprogress] = useState<progress>({
-    preguntas: vocales.length,
-    porcentaje: 0,
-    asiertos: 0,
-    tipo: "vocales",
-    continue: false,
-    vocal: vocales[0],
-  });
-
   useEffect(() => {
     if( counter <= 0 ){
       foto()
@@ -116,16 +72,6 @@ export default function LessonVocales() {
 
     return () => clearTimeout(timeout)
   }, [counter])
-
-  const foto = () => {
-    var captura = webcamRef?.current?.getScreenshot();
-    setImagen(captura);
-  };
-
-  const setFoto = () => {
-    setImagen("")
-    setCounter( parseInt(toggleTime) )
-  }
   
   useEffect(() => {
     const updateImage = () => {
@@ -138,7 +84,17 @@ export default function LessonVocales() {
     updateImage();
   }, [progres.vocal]); // Actualiza la imagen cuando progres.vocal cambia
 
-  const cambio = async () => {
+  const foto = () => {
+    var captura = webcamRef?.current?.getScreenshot();
+    setImagen(captura);
+  };
+
+  const setFoto = () => {
+    setImagen("")
+    setCounter( parseInt(toggleTime) )
+  }
+
+  const handleVerification = async () => {    
     setSubmit(false);
     if (progres.porcentaje != 100) {
       if (typeof imagen === "string") {
@@ -207,21 +163,9 @@ export default function LessonVocales() {
         <CompleteLesson startime={startime} errors={errors}/>
         // <CompleteLesson isOpen={isOpen} setIsOpen={setIsOpen} />
       ) : (
-        <div className="flex flex-col min-h-screen">
-          <div className="flex-auto flex items-center">
+        <div className="flex flex-col min-h-screen">  
+          <div className="flex-auto flex items-center"> 
             <Progressbar porcentaje={progres.porcentaje} setDrawer={setDrawer} />
-            {/* <button
-              onClick={() => {
-                setprogress((pro) => ({
-                  ...pro,
-                  asiertos: pro.asiertos + 1,
-                  porcentaje: ((pro.asiertos + 1) / pro.preguntas) * 100,
-                  continue: true,
-                }));
-              }}
-            >
-              CLICK
-            </button> */}
           </div>
           <div className="flex-auto flex place-content-center">
             <div className="flex w-4/5 justify-center items-center">
@@ -234,19 +178,24 @@ export default function LessonVocales() {
                   alt="Letra A"
                 /> 
               </div>
-              <div className="w-2/5 h-full content-center mx-auto">
-                <ToggleButtonGroup
-                  color="primary"
-                  value={toggleTime}
-                  exclusive
-                  onChange={handleToogleTime}
-                  aria-label="Platform"
-                >
-                  <ToggleButton value="3">3 Sec</ToggleButton>
-                  <ToggleButton value="5">5 Sec</ToggleButton>
-                  <ToggleButton value="7">7 Sec</ToggleButton>
-                </ToggleButtonGroup>
-                <div className="">
+              <div className="w-2/5 h-full mx-auto grid place-content-center">
+                <Stack spacing={2} alignItems="center">
+                  <ToggleButtonGroup
+                  // orientation="vertical"
+                    size="small"
+                    color="primary"
+                    value={toggleTime}
+                    exclusive
+                    onChange={handleToogleTime}
+                    aria-label="Platform"
+                  >
+                    <ToggleButton color="secondary" value="3">3 Sec</ToggleButton>
+                    <ToggleButton color="secondary" value="5">5 Sec</ToggleButton>
+                    <ToggleButton color="secondary" value="7">7 Sec</ToggleButton>
+                  </ToggleButtonGroup>
+                  </Stack>
+                
+                <div className="mt-3 shadow-md shadow-indigo-700 rounded-xl">
                   <Camara
                     webcamRef={webcamRef}
                     imagen={imagen}
@@ -261,18 +210,22 @@ export default function LessonVocales() {
             <DrawerBotton drawer={drawer} setDrawer={setDrawer} />
             <FooterLesson
               submit={submit}
-              comprobation={cambio}
+              comprobation={handleVerification}
               continuar={progres.continue}
               changeContinue={changeContinue}
             /> 
           </div>
           <div>
-            <Snackbar
+          <Snackbar
               open={open}
               autoHideDuration={2000}
               onClose={handleClose}
-              message="Vuelve a intentarlo"
-            />
+              anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
+              // message="Vuelve a intentarlo"
+              TransitionComponent={TransitionDown}
+            >
+              <Alert severity="error">Vuelve a intentarlo!!</Alert>
+            </Snackbar>
           </div>
       </div>
       )}

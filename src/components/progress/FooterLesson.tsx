@@ -1,5 +1,8 @@
 'use client'
 
+import { Button } from "@mui/material";
+
+
 export const FooterLesson = ({comprobation, continuar, changeContinue, submit}: {comprobation: Function, continuar: Boolean, changeContinue: Function, submit: Boolean}) => {
 
 
@@ -38,14 +41,16 @@ export const FooterLesson = ({comprobation, continuar, changeContinue, submit}: 
                         </div>
                     </div>
                     <div>
-                        <button
+                        <Button
+                            color="secondary"
+                            variant="outlined"
                             onClick={() => {
                                 changeContinue();
                             }}
-                            type="button"
-                            className="px-6 pb-2 pt-2.5 inline-block bg-green-600 shadow-sm rounded-full bg-primary text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out">
+                        >
                             CONTINUAR
-                        </button>
+                        </Button>
+
                     </div>
                 </div>
                 <div className='w-full'>
@@ -61,27 +66,30 @@ const FotterLessonPrincipal = ({comprobation, submit}: {comprobation: Function, 
     return (
         <div className='flex justify-between p-4 w-3/5'>
             <div>   
-                <button
+                <Button
+                    variant="outlined" 
+                    color="error"
                     onClick={() => {
-                    console.log('Nos regresamos')
+                        console.log('Nos regresamos')
                     }}
-                    type="button"
-                    className="px-6 pb-2 pt-2.5 inline-block bg-slate-500 shadow-sm rounded-full bg-primary text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out">
+                >
                     SALIR
-                </button>
+
+                </Button>
+                
             </div>
         
             <div>
-                <button
+                <Button
+                    color="secondary"
+                    variant="outlined"
                     onClick={() => {
                         comprobation();
                     }}
-                    type="button"
-                    className="px-6 pb-2 pt-2.5 inline-block bg-green-600 shadow-sm rounded-full bg-primary text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out"
                     disabled={!submit}
                 >
                     COMPROBAR
-                </button>
+                </Button>
             </div>
         </div>
     )
