@@ -4,7 +4,7 @@ import AuthProvider from "@/components/nextAuthProvider";
 import NavBar from "@/components/ui/header";
 import { Inter } from 'next/font/google';
 import { useEffect, useState } from "react";
-import "/css/globals.css";
+import "./../css/globals.css";
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
