@@ -13,7 +13,7 @@ export async function Verification(img64: string, vocal: string, token: string) 
     });
   
     try {
-      const res = await fetch(`http://127.0.0.1:8000/user/lesson/vocales`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BACKEND}/user/lesson/vocales`, {
         method: "POST",
         headers: myHeaders,
         body: raw,
