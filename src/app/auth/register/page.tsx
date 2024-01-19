@@ -113,7 +113,7 @@ export default function Home() {
         >
           <div className="grid gap-4">
             <div
-              className={`flex flex-wrap text-sm border btn p-3 ps-6 ${errors.username
+              className={`relative flex flex-wrap text-sm border btn p-3 ps-6 ${errors.username
                 ? "text-red-600 border-red-400"
                 : "text-gray-600 border-gray-400 dark:text-gray-400"
                 } container-fluid`}
@@ -137,7 +137,7 @@ export default function Home() {
             </div>
 
             <div
-              className={`flex flex-wrap text-sm border btn p-3 ps-6 ${errors.email
+              className={`relative flex flex-wrap text-sm border btn p-3 ps-6 ${errors.email
                 ? "text-red-600 border-red-400"
                 : "text-gray-600 border-gray-400 dark:text-gray-400"
                 } container-fluid`}
@@ -162,7 +162,7 @@ export default function Home() {
 
             <section className="grid gap-4 2xl:grid-cols-2">
               <div
-                className={`flex flex-wrap text-sm border btn p-3 ps-6 ${errors.password
+                className={`relative flex flex-wrap text-sm border btn p-3 ps-6 ${errors.password
                   ? "text-red-600 border-red-400"
                   : "text-gray-600 border-gray-400 dark:text-gray-400"
                   } container-fluid`}

@@ -4,7 +4,7 @@ import AuthProvider from "@/components/nextAuthProvider";
 import NavBar from "@/components/ui/header";
 import { Inter } from 'next/font/google';
 import { useEffect, useState } from "react";
-import "./css/globals.css";
+import "/css/globals.css";
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -43,6 +43,7 @@ export default function RootLayout({
     window.localStorage.setItem('theme', newTheme);
     setTheme(newTheme);
   };
+
   return (
     <html lang="en">
       <body className={`${inter.variable} ${theme} font-inter antialiased tracking-tight relative`}>

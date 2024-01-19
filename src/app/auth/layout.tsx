@@ -1,6 +1,51 @@
 import BgImage from "@/../public/images/hand.gif";
 import Image from "next/image";
 
+export const metadata = {
+    description: "Plataforma de aprendizaje de Lengua de Señas Ecuatoriana",
+    generator: "Next.js",
+    applicationName: "Sogo Sign",
+    referrer: "origin-when-cross-origin",
+    keywords: [
+        "plataforma",
+        "aprendizaje",
+        "lengua de señas",
+        "lengua de ecuatoriana",
+        "LSE",
+    ],
+    authors: [
+        { name: "Anthony", url: "https://github.com/Anthonymgd" },
+        { name: "Bryan", url: "https://github.com/bysodev" },
+    ],
+    icons: [
+        {
+            rel: 'icon',
+            type: 'image/x-icon',
+            url: '/src/favicon.svg',
+            media: '(prefers-color-scheme: light)',
+        },
+        {
+            rel: 'icon',
+            type: 'image/png',
+            url: '/src/favicon-dark.svg',
+            media: '(prefers-color-scheme: dark)',
+        },
+    ],
+    robots: {
+        index: false,
+        follow: true,
+        nocache: true,
+        googleBot: {
+            index: true,
+            follow: false,
+            noimageindex: true,
+            "max-video-preview": -1,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+        },
+    },
+};
+
 export default function AuthLayout({
     children
 }: {

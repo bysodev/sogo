@@ -12,7 +12,7 @@ export const showErrorMessage = (text) => {
 export const showSuccessMessage = (text) => {
     Swal.fire({
         icon: 'success',
-        title: 'Success',
+        title: 'Éxito',
         text,
         confirmButtonText: "Aceptar",
     })
