@@ -34,9 +34,6 @@ const Tooltip = ({ text, children }: { text: any; children: any }) => {
   );
 };
 
-// className="-mt-16 right-0 sm:right-auto absolute px-4 py-2 border border-blue-gray-50 bg-white z-10 hadow-sm shadow-black/10 rounded-full"
-
-
 export default function TooltipMessage({ message }: { message: string }) {
   return (
     <Tooltip text={message}>

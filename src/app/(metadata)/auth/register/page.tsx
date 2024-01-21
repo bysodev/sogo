@@ -116,7 +116,7 @@ export default function Home() {
             <div
               className={`relative flex flex-wrap text-sm border btn p-3 ps-6 ${errors.username
                 ? "text-red-600 border-red-400"
-                : "text-gray-600 border-gray-400"
+                : "text-gray-600 border-gray-400 dark:text-gray-400"
                 } container-fluid`}
             >
               <input
@@ -140,7 +140,7 @@ export default function Home() {
             <div
               className={`relative flex flex-wrap text-sm border btn p-3 ps-6 ${errors.email
                 ? "text-red-600 border-red-400"
-                : "text-gray-600 border-gray-400"
+                : "text-gray-600 border-gray-400 dark:text-gray-400"
                 } container-fluid`}
             >
               <input
@@ -165,7 +165,7 @@ export default function Home() {
               <div
                 className={`relative flex flex-wrap text-sm border btn p-3 ps-6 ${errors.password
                   ? "text-red-600 border-red-400"
-                  : "text-gray-600 border-gray-400"
+                  : "text-gray-600 border-gray-400 dark:text-gray-400"
                   } container-fluid`}
               >
                 <input
@@ -190,7 +190,7 @@ export default function Home() {
               <div
                 className={`relative flex flex-wrap text-sm border btn p-3 ps-6 ${errors.repass
                   ? "text-red-600 border-red-400"
-                  : "text-gray-600 border-gray-400"
+                  : "text-gray-600 border-gray-400 dark:text-gray-400"
                   } container-fluid`}
               >
                 <input

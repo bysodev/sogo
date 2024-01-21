@@ -44,6 +44,7 @@ export default function RootLayout({
     window.localStorage.setItem('theme', newTheme);
     setTheme(newTheme);
   };
+
   return (
     <html lang="en">
       <body className={`${inter.variable} ${theme} font-inter antialiased tracking-tight relative`}>
