@@ -21,7 +21,7 @@ const SideNavbar: React.FC<{ isOpen: boolean; onToggle: () => void }> = ({ isOpe
 
     return (
         <section
-            className={`hidden lg:flex fixed flex-col gap-6 bg-gray-900 min-h-screen duration-300 text-gray-100 p-4 ${isOpen ? "w-52" : "w-16"}`}
+            className={`hidden lg:flex fixed flex-col gap-6 bg-gray-900 min-h-screen duration-300 text-gray-100 p-4 overflow-hidden ${isOpen ? "w-52" : "w-16"}`}
         >
             <div className="py-6 gap-8 flex justify-center items-center">
                 <div className={`flex items-center gap-2 duration-100 ${!isOpen && "opacity-0 translate-x-28 overflow-hidden"}`}>
@@ -39,7 +39,7 @@ const SideNavbar: React.FC<{ isOpen: boolean; onToggle: () => void }> = ({ isOpe
                     <Link
                         href={menu?.link}
                         key={i}
-                        className={`${menu?.icon && "gap-3.5"} ${menu?.logout && "lg:mt-[calc(100vh-28rem)]"} flex items-center text-sm font-medium p-2 hover:bg-gray-800 rounded-md`}
+                        className={`${!isOpen && "w-fit"} ${menu?.icon && "gap-3.5"} ${menu?.logout && "lg:mt-[calc(100vh-28rem)]"}  flex items-center text-sm font-medium p-2 hover:bg-gray-800 rounded-md`}
                         {...(menu?.logout && {
                             onClick: () => {
                                 signOut()
@@ -50,17 +50,9 @@ const SideNavbar: React.FC<{ isOpen: boolean; onToggle: () => void }> = ({ isOpe
                         <h2
                             style={{
                                 transitionDelay: `${menu?.logout ? 0 : (100 + i * 50)}ms`,
-
-                                // transitionDelay: `${300 + i * 50}ms`,
                             }}
                             className={`whitespace-pre duration-300 ${!isOpen && "opacity-0 translate-x-28 overflow-hidden"
                                 }`}
-                        >
-                            {menu?.name}
-                        </h2>
-                        <h2
-                            className={`${isOpen && "hidden"
-                                } absolute left-20 bg-white font-semibold whitespace-pre text-gray-900 rounded-md drop-shadow-lg px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit  `}
                         >
                             {menu?.name}
                         </h2>

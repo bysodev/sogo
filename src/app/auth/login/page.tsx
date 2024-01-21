@@ -34,7 +34,7 @@ export default function LoginPage() {
       showErrorMessage(response?.error)
 
     if (response?.status === 200) {
-      showSuccessMessage('Login Completo')
+      showSuccessMessage('Inicio de sesión completado')
       reset();
       push("/learn");
     }
@@ -57,9 +57,9 @@ export default function LoginPage() {
         >
           <div className="grid gap-4">
             <div
-              className={`flex flex-wrap text-sm border btn p-3 ps-6 ${errors.username
+              className={`relative flex flex-wrap text-sm border btn p-3 ps-6 ${errors.username
                 ? "text-red-600 border-red-400"
-                : "text-gray-600 border-gray-400"
+                : "text-gray-600 border-gray-400 dark:text-gray-400"
                 } container-fluid`}
             >
               <input
@@ -81,9 +81,9 @@ export default function LoginPage() {
             </div>
 
             <div
-              className={`flex flex-wrap text-sm border btn p-3 ps-6 ${errors.password
+              className={`relative  flex flex-wrap text-sm border btn p-3 ps-6 ${errors.password
                 ? "text-red-600 border-red-400"
-                : "text-gray-600 border-gray-400"
+                : "text-gray-600 border-gray-400 dark:text-gray-400"
                 } container-fluid`}
             >
               <input

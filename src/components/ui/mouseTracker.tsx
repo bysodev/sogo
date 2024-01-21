@@ -64,7 +64,7 @@ const MouseTracker = ({ offset = { x: -15, y: -15 } }: any) => {
 
     return shouldRenderPortal ? (
         createPortal(
-            <div className='mouse-tracker border-2 border-gray-950 dark:border-white contrast-50' ref={element}></div>,
+            <div className='z-30 mouse-tracker border-2 border-gray-950 dark:border-white contrast-50' ref={element}></div>,
             document.body
         )
     ) : null;

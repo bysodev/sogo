@@ -3,15 +3,10 @@
 @tailwind utilities;
 
 /* Additional styles */
-@import 'additional-styles/utility-patterns.css';
-@import 'additional-styles/range-slider.css';
-@import 'additional-styles/toggle-switch.css';
-@import 'additional-styles/theme.css';
-/* @layer components {
-  input {
-    @apply text-sm text-gray-600 border rounded-md p-3 border-gray-400;
-  }
-} */
+@import './additional-styles/utility-patterns.css';
+@import './additional-styles/range-slider.css';
+@import './additional-styles/toggle-switch.css';
+@import './additional-styles/theme.css';
 
 @layer utilities {
   .rtl {
@@ -19,11 +14,24 @@
   }
 }
 
-.css-1elwnq4-MuiPaper-root-MuiAccordion-root.Mui-expanded {
-  margin: 0 !important;
+@media (min-width: 1024px) {
+  .lg\:ms-52 {
+    margin-inline-start: 13rem /* 208px */;
+  }
+
+  .lg\:ms-16 {
+    margin-inline-start: 4rem /* 64px */;
+  }
 }
 
-.css-1elwnq4-MuiPaper-root-MuiAccordion-root:before {
+.MuiPaper-root:is(:where(.dark) .dark\:bg-gray-800) {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
+  --tw-bg-opacity: 1;
+  background-color: rgb(31 41 55 / var(--tw-bg-opacity)) !important;
+}
+
+.MuiPaper-roott:before {
   content: none !important;
 }
 
@@ -89,7 +97,6 @@ body.dark #illustration-02 stop:nth-child(3) {
     height 0.3s;
   height: 25px;
   box-sizing: content-box;
-  z-index: 20;
 }
 
 .spot-lesson {
@@ -129,4 +136,8 @@ body.dark #illustration-02 stop:nth-child(3) {
   font-weight: 600;
   transform: translateY(-10%);
   transition: all 0.15s ease 0s;
+}
+
+.disabled {
+  pointer-events: none;
 }
