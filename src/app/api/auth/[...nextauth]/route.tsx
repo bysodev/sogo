@@ -20,20 +20,24 @@ const authOptions = {
                 password: { label: 'Password', type: 'password' }
             },
             async authorize(credentials) {
-                const response = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/user?username=${credentials?.username}&password=${credentials?.password}`, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        "Content-Type": "application/json",
-                    },
-                })
+                try {
+                    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/user?username=${credentials?.username}&password=${credentials?.password}`, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            "Content-Type": "application/json",
+                        },
+                    });
 
-                const user = await response.json();
-
-                if (user) {
-                    return user;
-                } else {
-                    return null;
+                    if (response.status === 200) {
+                        const user = await response.json();
+                        return user;
+                    } else {
+                        const error = await response.json();
+                        throw new Error(error.message);
+                    }
+                } catch (error) {
+                    throw new Error('Credenciales incorrectas');
                 }
             }
         })

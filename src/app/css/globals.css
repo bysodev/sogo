@@ -18,15 +18,33 @@
     direction: rtl;
   }
 }
-
-.css-1elwnq4-MuiPaper-root-MuiAccordion-root.Mui-expanded {
-  margin: 0 !important;
+a {
+  color: inherit;
+  text-decoration: none;
+  transition:
+    color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out;
 }
 
-.css-1elwnq4-MuiPaper-root-MuiAccordion-root:before {
+@media (min-width: 1024px) {
+  .lg\:ms-52 {
+    margin-inline-start: 13rem /* 208px */;
+  }
+
+  .lg\:ms-16 {
+    margin-inline-start: 4rem /* 64px */;
+  }
+}
+.MuiPaper-root:is(:where(.dark) .dark\:bg-gray-800) {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
+  --tw-bg-opacity: 1;
+  background-color: rgb(31 41 55 / var(--tw-bg-opacity)) !important;
+}
+
+.MuiPaper-roott:before {
   content: none !important;
 }
-
 .wave {
   animation-name: wave-animation; /* Refers to the name of your @keyframes element below */
   animation-duration: 2.5s; /* Change to speed up or slow down */

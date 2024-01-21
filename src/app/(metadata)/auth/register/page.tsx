@@ -6,6 +6,7 @@ import { rgxEmail } from "@/validators/auth-validators";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+
 const url_app = process.env.NEXT_PUBLIC_ROUTE_APP
 const myHeaders = new Headers({
   'Accept': 'application/json',
@@ -97,8 +98,8 @@ export default function Home() {
   }
 
   return (
-    <div className="w-full sm:w-auto p-4 lg:p-0">
-      <div className="p-2 sm:p-8 sm:py-2 xl:px-6">
+    <div className="w-full lg:w-auto xl:w-[50%]">
+      <div className="px-20 py-10 sm:py-8 xl:px-6">
         <Link title="Ir a la página de inicio" href={"/"}>
           <IconLogo height={80} width={80} className="mx-auto mb-6" />
         </Link>
@@ -113,7 +114,7 @@ export default function Home() {
         >
           <div className="grid gap-4">
             <div
-              className={`flex flex-wrap text-sm border btn p-3 ps-6 ${errors.username
+              className={`relative flex flex-wrap text-sm border btn p-3 ps-6 ${errors.username
                 ? "text-red-600 border-red-400"
                 : "text-gray-600 border-gray-400"
                 } container-fluid`}
@@ -137,7 +138,7 @@ export default function Home() {
             </div>
 
             <div
-              className={`flex flex-wrap text-sm border btn p-3 ps-6 ${errors.email
+              className={`relative flex flex-wrap text-sm border btn p-3 ps-6 ${errors.email
                 ? "text-red-600 border-red-400"
                 : "text-gray-600 border-gray-400"
                 } container-fluid`}
@@ -160,9 +161,9 @@ export default function Home() {
               )}
             </div>
 
-            <section className="grid gap-4 2xl:grid-cols-2">
+            <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2">
               <div
-                className={`flex flex-wrap text-sm border btn p-3 ps-6 ${errors.password
+                className={`relative flex flex-wrap text-sm border btn p-3 ps-6 ${errors.password
                   ? "text-red-600 border-red-400"
                   : "text-gray-600 border-gray-400"
                   } container-fluid`}

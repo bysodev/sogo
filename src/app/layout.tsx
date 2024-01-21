@@ -1,10 +1,10 @@
 'use client'
 
+import "@/app/css/globals.css";
 import AuthProvider from "@/components/nextAuthProvider";
 import NavBar from "@/components/ui/header";
 import { Inter } from 'next/font/google';
 import { useEffect, useState } from "react";
-import "./css/globals.css";
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -24,12 +24,13 @@ export default function RootLayout({
 }) {
   useEffect(() => {
     AOS.init({
+      duration: 1000,
       once: true,
-      disable: 'phone',
-      duration: 700,
-      easing: 'ease-out-cubic',
-    })
-  })
+      easing: 'ease-in-out',
+      offset: 100,
+      mirror: false,
+    });
+  }, []);
 
   const [theme, setTheme] = useState('');
 

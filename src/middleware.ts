@@ -7,6 +7,7 @@ export default withAuth({
   },
 });
 
+// Const to excluide path that don't match with /:*path
 export const config = {
-  matcher: ['/learn/:path*', '/lesson/:path*'],
+  matcher: ['/learn/:path*', '/lesson/:path*', '/profile/:path*'],
 };

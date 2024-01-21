@@ -43,24 +43,24 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
                 }`}
             >
 
-              <ul className="text-gray-800 hover:text-gray-950 dark:text-white items-center justify-center space-y-4 md:flex md:space-x-6 md:space-y-0 font-medium">
+              <ul className="text-gray-800 dark:text-white items-center justify-center space-y-4 md:flex md:space-x-6 md:space-y-0 font-medium">
                 <li>
-                  <a onClick={() => setNavbar(false)} href="#features">
+                  <a className="hover:text-gray-950 dark:hover:text-purple-300" onClick={() => setNavbar(false)} href="#features">
                     Características
                   </a>
                 </li>
                 <li>
-                  <a onClick={() => setNavbar(false)} href="#about">
+                  <a className="hover:text-gray-950 dark:hover:text-purple-300" onClick={() => setNavbar(false)} href="#about">
                     Acerca de
                   </a>
                 </li>
                 <li>
-                  <a onClick={() => setNavbar(false)} href="#contact">
+                  <a className="hover:text-gray-950 dark:hover:text-purple-300" onClick={() => setNavbar(false)} href="#contact">
                     Contacto
                   </a>
                 </li>
                 <li>
-                  <a onClick={() => setNavbar(false)} href="#faq">
+                  <a className="hover:text-gray-950 dark:hover:text-purple-300" onClick={() => setNavbar(false)} href="#faq">
                     FAQ
                   </a>
                 </li>
@@ -71,7 +71,7 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
                   className="cursor-pointer hidden sm:block md:hidden flex-none"
                 />
                 <Link
-                  className="text-gray-800 border-2 border-gray-950 hover:text-gray-950 dark:text-white dark:border-white rounded-full p-2 sm:flex-1 w-full sm:w-1/2"
+                  className="text-gray-800 border-2 border-gray-950 hover:text-gray-950 dark:text-white dark:border-white dark:hover:text-purple-300 rounded-full p-2 sm:flex-1 w-full sm:w-1/2"
                   href={`auth/login`}
                   rel="preload"
                 >
@@ -79,7 +79,7 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
                 </Link>
                 <a
                   href="#"
-                  className="btn-sm text-white bg-gray-900 hover:bg-gray-950 dark:bg-white dark:text-gray-900"
+                  className="btn-sm text-white bg-gray-900 hover:bg-gray-950 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
                   aria-current="page"
                 >
                   Unirse
@@ -87,11 +87,11 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
               </div>
             </div>
             <div className="font-medium hidden gap-4 dark:text-white md:flex items-center">
-              <Link href={`auth/login`} rel="preload">
+              <Link className="text-gray-800 hover:text-gray-950 dark:text-white dark:hover:text-purple-300" href={`auth/login`} rel="preload">
                 Iniciar Sesión
               </Link>
               <Link
-                className="btn-sm text-white bg-gray-900 hover:bg-gray-950 dark:bg-white dark:text-gray-900"
+                className="btn-sm text-white bg-gray-900 hover:bg-gray-950 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
                 href={`auth/register`}
                 rel="preload"
               >
