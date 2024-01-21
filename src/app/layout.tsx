@@ -3,6 +3,7 @@
 import AuthProvider from "@/components/nextAuthProvider";
 import NavBar from "@/components/ui/header";
 import "@/css/globals.css";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Inter } from 'next/font/google';
 import { useEffect, useState } from "react";
 
@@ -56,6 +57,7 @@ export default function RootLayout({
             </main>
           </div>
         </AuthProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
