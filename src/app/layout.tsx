@@ -1,8 +1,8 @@
 'use client'
 
-import "@/app/css/globals.css";
 import AuthProvider from "@/components/nextAuthProvider";
 import NavBar from "@/components/ui/header";
+import "@/css/globals.css";
 import { Inter } from 'next/font/google';
 import { useEffect, useState } from "react";
 
