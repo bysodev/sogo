@@ -107,6 +107,7 @@ export default function Home() {
           Crea una cuenta
         </p>
         <form
+          autoComplete="off"
           onSubmit={(e) => {
             e.preventDefault();
             handleSubmit(onSubmit)(e);
@@ -121,7 +122,7 @@ export default function Home() {
             >
               <input
                 autoComplete="username"
-                className="flex-1 focus:outline-none  bg-transparent focus:bg-transparent"
+                className="flex-1 focus:outline-none  bg-transparent focus:bg-transparent dark:text-gray-200"
                 type="text"
                 placeholder="Nombre de usuario"
                 {...register("username", {
@@ -145,7 +146,7 @@ export default function Home() {
             >
               <input
                 autoComplete="email"
-                className="flex-1 focus:outline-none  bg-transparent focus:bg-transparent"
+                className="flex-1 focus:outline-none  bg-transparent focus:bg-transparent dark:text-gray-200"
                 type="text"
                 placeholder="Correo electrónico"
                 {...register("email", {
@@ -169,7 +170,7 @@ export default function Home() {
                   } container-fluid`}
               >
                 <input
-                  className="flex-1 focus:outline-none bg-transparent focus:bg-transparent"
+                  className="flex-1 focus:outline-none bg-transparent focus:bg-transparent dark:text-gray-200"
                   type="password"
                   placeholder="Contraseña"
                   {...register("password", {
@@ -194,7 +195,7 @@ export default function Home() {
                   } container-fluid`}
               >
                 <input
-                  className="flex-1 focus:outline-none bg-transparent focus:bg-transparent"
+                  className="flex-1 focus:outline-none bg-transparent focus:bg-transparent dark:text-gray-200"
                   type="password"
                   placeholder="Confirmar contraseña"
                   {...register("repass", {

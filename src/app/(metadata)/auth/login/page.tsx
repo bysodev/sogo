@@ -50,6 +50,7 @@ export default function LoginPage() {
           Bienvenido
         </p>
         <form
+          autoComplete="off"
           onSubmit={(e) => {
             e.preventDefault();
             handleSubmit(onSubmit)(e);
@@ -64,7 +65,7 @@ export default function LoginPage() {
             >
               <input
                 autoComplete="username"
-                className="flex-1 focus:outline-none bg-transparent focus:bg-transparent"
+                className="flex-1 focus:outline-none bg-transparent focus:bg-transparent dark:text-gray-200"
                 type="text"
                 placeholder="Nombre de usuario"
                 {...register("username", {
@@ -88,7 +89,7 @@ export default function LoginPage() {
             >
               <input
                 autoComplete="password"
-                className="flex-1 focus:outline-none bg-transparent focus:bg-transparent"
+                className="flex-1 focus:outline-none bg-transparent focus:bg-transparent dark:text-gray-200"
                 type="password"
                 placeholder="Contraseña"
                 {...register("password", {
