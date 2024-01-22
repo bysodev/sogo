@@ -9,7 +9,7 @@ export type Times = {
     final: Date
 }
 
-export   type Progress = {
+export type Progress = {
     preguntas: number,
     porcentaje: number,
     asiertos: number,

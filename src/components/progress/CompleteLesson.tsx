@@ -43,7 +43,7 @@ export default function CompleteLesson( {startime, errors}: {startime: Times, er
             <div className="flex justify-center gap-4">
                 <div className="border p-6 rounded-lg flex flex-col place-content-center text-center">
                     <pre>{JSON.stringify( tiempo ) }</pre>
-                    <span>08:20 m/s</span>
+                    <span>05:24 m/s</span>
                     <span>Tiempo</span>
                 </div>
                 <div className="border p-6 rounded-lg flex flex-col place-content-center text-center">

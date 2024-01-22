@@ -6,11 +6,10 @@ import { useEffect, useState } from "react";
 const url = process.env.NEXT_PUBLIC_API_BACKEND
 const defaultImage = "/lesson/vocals/letra_A.jpg";
 
-var myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/json");
-
 async function getDataProfile(token: string){
   // myHeaders.append("Authorization", `Bearer ${user?.user?.accessToken}`);
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Authorization", `Bearer ${token}`);
 
   try {
