@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 export interface ChallengeCategoryByUser{
     id: number
     number: number
@@ -35,7 +37,7 @@ export enum EnumDifficulty {
     DIFICIL = 'DIFICIL'
 }
 
-export interface detailsChallengeApi{
+export interface DetailsChallengeApi{
     "dificultad": EnumDifficulty,
     "total": number,
     "progreso": number,
@@ -43,6 +45,6 @@ export interface detailsChallengeApi{
 }
 
 export interface CardChallengesCategoryProps {
-    [EnumCategory.PALABRAS]: Array<detailsChallengeApi>,
-    [EnumCategory.NUMEROS]: Array<detailsChallengeApi>
+    [EnumCategory.PALABRAS]: Array<DetailsChallengeApi>,
+    [EnumCategory.NUMEROS]: Array<DetailsChallengeApi>
 }

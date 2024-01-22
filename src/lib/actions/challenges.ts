@@ -25,13 +25,13 @@ export async function startChallengesRandom( category: EnumCategory, difficulty:
 }
   
 
-export async function getChallengesByCategory( token: string): Promise<CardChallengesCategoryProps[] | []> {
+export async function getChallengesByCategory( token: string): Promise<CardChallengesCategoryProps | null> {
 
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Authorization", `Bearer ${token}`);
 
-  const response = await fetch(`${url}/challenge/search/category/me`, {
+  const response = await fetch(`${url}/challenge/search/me?category=PALABRAS`, {
     method: "GET",
     headers: myHeaders,
     credentials: "include",
@@ -43,7 +43,7 @@ export async function getChallengesByCategory( token: string): Promise<CardChall
     console.log(challenge)
     return challenge
   }else{
-    return []
+    return null
   }
 }
   
