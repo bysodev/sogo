@@ -95,11 +95,6 @@ const config: Config = {
       },
     },
   },
-  // purge: {
-  //   options: {
-  //     safelist: ['lg:ms-52', 'lg:ms-16'],
-  //   },
-  // },
   plugins: [],
 };
 export default config;

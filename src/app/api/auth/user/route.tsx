@@ -6,8 +6,9 @@ export async function GET(request: Request) {
   const password = searchParams.get('password');
 
   if (!username || !password) {
-    return new Response('No se logro la petición', {
+    return new Response(JSON.stringify({ message: 'Error al verificar los parámetros requeridos' }), {
       status: 401,
+      headers: { 'Content-Type': 'application/json' },
     })
   }
   const myHeaders = new Headers({
@@ -31,12 +32,14 @@ export async function GET(request: Request) {
     if (response.status === 200) {
       return new Response(JSON.stringify(user), {
         status: 200,
+        headers: { 'Content-Type': 'application/json' },
       })
     }
-    return new Response(user.detail, { status: response.status })
+    return new Response(JSON.stringify({ detail: user.detail }), { status: response.status, headers: { 'Content-Type': 'application/json' } })
   } catch (error) {
-    return new Response('No se logro la petición', {
+    return new Response(JSON.stringify({ message: 'No se logro la petición' }), {
       status: 501,
+      headers: { 'Content-Type': 'application/json' },
     })
   }
 }

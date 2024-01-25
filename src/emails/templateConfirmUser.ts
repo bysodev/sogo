@@ -1,5 +1,5 @@
-export const templateConfirmUser = ( signin_url: string, username: string ) => {
-    return `
+export const templateConfirmUser = (signin_url: string, username: string) => {
+  return `
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html xmlns="http://www.w3.org/1999/xhtml">
       <head>
@@ -21,7 +21,7 @@ export const templateConfirmUser = ( signin_url: string, username: string ) => {
           }
     
           a {
-            color: #f43f5e;
+            color: #9333ea
           }
     
           a img {
@@ -108,11 +108,11 @@ export const templateConfirmUser = ( signin_url: string, username: string ) => {
           /* Buttons ------------------------------ */
     
           .button {
-            background-color: #f43f5e;
-            border-top: 10px solid #f43f5e;
-            border-right: 18px solid #f43f5e;
-            border-bottom: 10px solid #f43f5e;
-            border-left: 18px solid #f43f5e;
+            background-color: #9333ea
+            border-top: 10px solid #9333ea
+            border-right: 18px solid #9333ea
+            border-bottom: 10px solid #9333ea
+            border-left: 18px solid #9333ea
             display: inline-block;
             color: #fff !important;
             text-decoration: none;
@@ -258,6 +258,7 @@ export const templateConfirmUser = ( signin_url: string, username: string ) => {
           }
     
           .body-action {
+            text-align: center;
             width: 100%;
             margin: 30px auto;
             padding: 0;
@@ -349,7 +350,7 @@ export const templateConfirmUser = ( signin_url: string, username: string ) => {
                 <tr>
                   <td class="email-masthead">
                     <a href="{{base_url}}" class="f-fallback email-masthead_name">
-                      Next Auth Prisma Supabase
+                      Plataforma de Lennguaje de Señas Ecuatoriano - SoGo Sign
                     </a>
                   </td>
                 </tr>
@@ -374,8 +375,7 @@ export const templateConfirmUser = ( signin_url: string, username: string ) => {
                         <td class="content-cell">
                           <div class="f-fallback">
                             <p>
-                              Click the button below to log in to AuthEmail.<br />
-                              This button will expire in 10 minutes.
+                            Has click en el botón para iniciar sesión en SoGo Sign.<br />
                             </p>
                             <!-- Action -->
                             <table
@@ -403,7 +403,7 @@ export const templateConfirmUser = ( signin_url: string, username: string ) => {
                                           href="${signin_url}"
                                           class="f-fallback button"
                                           target="_blank"
-                                          >Login to SoGo Sign</a
+                                          >Verificar cuenta</a
                                         >
                                       </td>
                                     </tr>
@@ -412,17 +412,15 @@ export const templateConfirmUser = ( signin_url: string, username: string ) => {
                               </tr>
                             </table>
                             <p>
-                              Confirming this request will securely log you in using
-                              ${username}.
+                              Al completar esta solicitud, podrá iniciar sesión de forma segura con usando el usuario: ${username}.
                             </p>
                             <!-- Sub copy -->
                             <table class="body-sub" role="presentation">
                               <tr>
                                 <td>
                                   <p class="f-fallback sub">
-                                    If you’re having trouble with the button above,
-                                    copy and paste the URL below into your web
-                                    browser.
+                                    Si tienes problemas con el botón de arriba,
+                                    copia y pega la siguiente URL en tu navegador.
                                   </p>
                                   <p class="f-fallback sub">${signin_url}</p>
                                 </td>
@@ -447,7 +445,7 @@ export const templateConfirmUser = ( signin_url: string, username: string ) => {
                       <tr>
                         <td class="content-cell" align="center">
                           <p class="f-fallback sub align-center">
-                            &copy; 2023 Athentication. All rights reserved.
+                            &copy; 2023- 2024 SogoSign.
                           </p>
                         </td>
                       </tr>
@@ -460,5 +458,5 @@ export const templateConfirmUser = ( signin_url: string, username: string ) => {
         </table>
       </body>
     </html>
-    `
-}
+    `;
+};

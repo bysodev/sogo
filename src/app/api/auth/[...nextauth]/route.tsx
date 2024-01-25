@@ -3,7 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import GitHubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
 
-const authOptions = {
+export const authOptions = {
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID || '',
@@ -26,15 +26,15 @@ const authOptions = {
                         'Accept': 'application/json',
                         "Content-Type": "application/json",
                     },
-                })
-
-                const user = await response.json();
-
-                if (user) {
-                    return user;
-                } else {
-                    return null;
+                });
+                if (response.status === 501) {
+                    throw new Error('Error al procesar la solicitud');
                 }
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.detail);
+                }
+                return data;
             }
         })
     ],
@@ -45,6 +45,7 @@ const authOptions = {
     secret: process.env.SECRET_KEY,
     session: {
         maxAge: 30 * 60, // 30 minutos,
+        rollingSession: false,
     },
     callbacks: {
         jwt: async ({ token, user }: any) => {
