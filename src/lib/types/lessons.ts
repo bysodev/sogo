@@ -12,11 +12,12 @@ export type Times = {
 
 export   type Progress = {
     preguntas: number,
+    etapa: number;
     porcentaje: number,
     asiertos: number,
     tipo: string,
     continue: boolean,
-    vocal: string,
+    char: string,
 };
 
 export type Lesson = {
