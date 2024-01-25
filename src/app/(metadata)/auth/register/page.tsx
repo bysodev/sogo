@@ -1,7 +1,7 @@
 "use client";
 import TooltipMessage from "@/components/TooltipMessage";
 import IconLogo from "@/components/icons/logo";
-import { showErrorMessage, showSuccessMessage } from "@/utilities";
+import { showErrorMessage, showSuccessMessage } from "@/utilities/sweet-alert";
 import { rgxEmail } from "@/validators/auth-validators";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
