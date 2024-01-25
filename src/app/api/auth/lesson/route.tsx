@@ -40,7 +40,7 @@ interface LessonRequestBody {
     points_reached: number;
     state_id: number;
     fails: number;
-    detail_fails: string[];
+    detail_fails: number[];
 }
 
 
@@ -49,7 +49,6 @@ export async function POST(request: Request) {
         Accept: 'application/json',
         'Content-Type': 'application/json',
     })
-
     try {
         // Accede a los campos del cuerpo de la solicitud
         const requestBody: LessonRequestBody = await request.json();
@@ -82,45 +81,30 @@ export async function POST(request: Request) {
     }
 }
 
+export async function PUT(request: Request) {
+    const myHeaders = new Headers({
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+    })
+    try {
+        // Accede a los campos del cuerpo de la solicitud
+        const requestBody: LessonRequestBody = await request.json();
+        const { token, ...dataWithoutToken } = requestBody;
 
-// export async function POST(request: Request) {
-//     console.log(request)
-//     const { searchParams } = new URL(request.url)
-//     const category = searchParams.get('category');
-//     const image = searchParams.get('image');
-//     const char = searchParams.get('char');
-//     const token = searchParams.get('token');
-
-//     if (!category || !image || !char || !token) {
-//         return new Response('Error en los atributos requeridos', {
-//             status: 401,
-//         })
-//     }
-//     // export async function POST(category: string, img64: string, char: string, token: string) {
-//     var myHeaders = new Headers();
-//     myHeaders.append("Content-Type", "application/json");
-//     // myHeaders.append("Authorization", `Bearer ${user?.user?.accessToken}`);
-//     myHeaders.append("Authorization", `Bearer ${token}`);
-
-//     var raw = JSON.stringify({
-//         category: category,
-//         image: image,
-//         extension: "jpeg",
-//         type: "byte64",
-//         char: char,
-//     });
-
-//     try {
-//         const response = await fetch(`${url}/user/lesson/predict`, {
-//             method: "POST",
-//             headers: myHeaders,
-//             body: raw,
-//             credentials: "include",
-//             redirect: "follow",
-//         });
-//         return response;
-//     } catch (error) {
-//         console.log(error)
-//         return { ok: false };
-//     }
-// }
+        myHeaders.append('Authorization', `Bearer ${token}`);
+        const response = await fetch(`${url}/user/update/user_lesson`, {
+            method: 'PUT',
+            headers: myHeaders,
+            credentials: 'include',
+            redirect: 'follow',
+            body: JSON.stringify(
+                dataWithoutToken
+            ),
+        })
+        return response
+    } catch (error) {
+        return new Response('Error al procesar la solicitud', {
+            status: 500,
+        });
+    }
+}

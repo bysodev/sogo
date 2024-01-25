@@ -4,7 +4,7 @@ import FeatDefault from '@/../../public/images/feature-default.jpg'
 
 export default function Zigzag() {
   return (
-    <section id='features' className='bg-gray-100 dark:bg-gray-900 relative'>
+    <section id='features' className='bg-gray-50 dark:bg-gray-900 relative'>
       <div className="absolute left-1/2 transform -translate-x-1/2 bottom-0 pointer-events-none " aria-hidden="true">
         <svg width="1360" height="578" viewBox="0 0 1360 578" xmlns="http://www.w3.org/2000/svg">
           <defs>

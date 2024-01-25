@@ -50,9 +50,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${theme} font-inter antialiased tracking-tight relative`}>
         <AuthProvider session={Session}>
-          <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white">
+          <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip bg-white dark:bg-gray-950 text-gray-900 dark:text-white">
             <NavBar toggleDarkMode={switchTheme} theme={theme} />
-            <main className="grow">
+            <main className="grid grow">
               {children}
             </main>
           </div>

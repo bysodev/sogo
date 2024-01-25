@@ -3,7 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import GitHubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
 
-const authOptions = {
+export const authOptions = {
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID || '',
@@ -20,25 +20,21 @@ const authOptions = {
                 password: { label: 'Password', type: 'password' }
             },
             async authorize(credentials) {
-                try {
-                    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/user?username=${credentials?.username}&password=${credentials?.password}`, {
-                        method: 'GET',
-                        headers: {
-                            'Accept': 'application/json',
-                            "Content-Type": "application/json",
-                        },
-                    });
-
-                    if (response.status === 200) {
-                        const user = await response.json();
-                        return user;
-                    } else {
-                        const error = await response.json();
-                        throw new Error(error.message);
-                    }
-                } catch (error) {
-                    throw new Error('Credenciales incorrectas');
+                const response = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/user?username=${credentials?.username}&password=${credentials?.password}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        "Content-Type": "application/json",
+                    },
+                });
+                if (response.status === 501) {
+                    throw new Error('Error al procesar la solicitud');
                 }
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.detail);
+                }
+                return data;
             }
         })
     ],
@@ -49,6 +45,7 @@ const authOptions = {
     secret: process.env.SECRET_KEY,
     session: {
         maxAge: 30 * 60, // 30 minutos,
+        rollingSession: false,
     },
     callbacks: {
         jwt: async ({ token, user }: any) => {

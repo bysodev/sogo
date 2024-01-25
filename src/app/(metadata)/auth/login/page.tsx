@@ -2,7 +2,7 @@
 
 import TooltipMessage from "@/components/TooltipMessage";
 import IconLogo from "@/components/icons/logo";
-import { showErrorToast, showSuccessToast } from "@/utilities";
+import { showErrorToast, showSuccessToast } from "@/utilities/sweet-alert";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -112,7 +112,7 @@ export default function LoginPage() {
             <Link
               href={"*"}
               className="font-medium text-sm text-gray-500 dark:text-gray-200 align-baseline
-										hover:text-gray-700"
+										hover:text-gray-700 dark:hover:text-gray-300"
             >
               ¿Olvidaste tu contraseña?
             </Link>

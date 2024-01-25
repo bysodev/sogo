@@ -11,6 +11,7 @@ export type Times = {
 
 export type Progress = {
   preguntas: number;
+  etapa: number;
   porcentaje: number;
   asiertos: number;
   tipo: string;
@@ -29,5 +30,7 @@ export type Lesson = {
   random: boolean;
   max_time: number;
 };
+
+export const Fetcher = (url: any) => fetch(url).then((res) => res.json());
 
 export type TransitionProps = Omit<SlideProps, 'direction'>;

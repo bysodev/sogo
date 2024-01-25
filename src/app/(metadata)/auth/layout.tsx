@@ -9,12 +9,12 @@ export default function AuthLayout({
     children: React.ReactNode;
 }) {
     const path = usePathname();
-    console.log(path);
     return (
         <div className="h-screen w-full max-h-screen flex">
             {path !== "/auth/verify" && (
-                <div className="w-2/5 lg xl:w-2/5 hidden lg:block">
+                <div className="w-2/5 lg xl:w-2/5 hidden lg:block bg-gray-50 dark:bg-gray-800">
                     <Image
+                        priority={true}
                         className="h-full w-full object-cover opacity-80"
                         src={BgImage}
                         alt="Logo de Google"
