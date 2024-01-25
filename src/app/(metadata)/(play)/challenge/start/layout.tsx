@@ -1,13 +1,7 @@
 export default function ChallengeStartLayout({
   children,
-  especiales,
-  numeros, 
-  palabras
 }: {
-  children: React.ReactNode;
-  especiales: React.ReactNode;
-  numeros: React.ReactNode;
-  palabras: React.ReactNode;
+  children: React.ReactNode
 }) {
 
   return (
