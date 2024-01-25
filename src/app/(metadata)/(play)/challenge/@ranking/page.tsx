@@ -70,8 +70,11 @@ export default function RankingChallengePage() {
     return <>NO SE ENCEUNTRAN CARGADOS LOS DATOS</>
   }
 
-  return <div className="w-2/5 flex justify-center flex-wrap tems-center space-x-4">
-    <div className="w-full">
+  return (
+    <section className="relative w-full dark:bg-gray-900 h-full duration-300 border-l-4 dark:text-gray-100 p-6">
+            <div className="fixed w-full">
+                <h1>Ranking</h1>
+                <div className="w-[30%]">
       <NavRanking value={palabras} setValue={setPalabras} key='PALABRAS'/>
       <TabPanel value={palabras} index={EnumDifficulty.FACIL} key={1}>
         {
@@ -90,7 +93,7 @@ export default function RankingChallengePage() {
       </TabPanel>
     </div>
 
-    <div className="w-full">
+    <div className="w-[30%]">
       <NavRanking value={numeros} setValue={setNumeros} key='NUMEROS'/>
       <TabPanel value={numeros} index={EnumDifficulty.FACIL} key={4}>
         {
@@ -108,8 +111,9 @@ export default function RankingChallengePage() {
         }
       </TabPanel>
     </div>
-    
-  </div>
+            </div>
+        </section>
+  )
 }
 
 export const ListRankings = ( {ranks}: {ranks: DetailsRankingApi[]}) => {
