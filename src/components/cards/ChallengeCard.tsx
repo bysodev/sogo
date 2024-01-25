@@ -1,16 +1,16 @@
 'use client'
 
-import { DetailsChallengeApi, EnumDifficulty } from '@/lib/types/challenge';
+import { DetailsChallengeApi, EnumCategory, EnumDifficulty } from '@/lib/types/challenge';
 import { FormControl, FormHelperText, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import { Striped } from '../progress/Striped';
+import ModalDetalles from './ModalDetalles';
 
-
-
-export function ChallengeCard( {details, title}: {details:  Array<DetailsChallengeApi>, title: string}){
+export function ChallengeCard( {details, title, category}: {details:  Array<DetailsChallengeApi>, title: string, category: EnumCategory}){
     // const router = useRouter();
     const [select, setSelect] = useState<EnumDifficulty>(EnumDifficulty.FACIL);
     const [detalle, setDetalle] = useState<DetailsChallengeApi>();
+    const [modal, setModal] = useState(false);
 
     // const assignChallenge = zustandStore((state) => state.assignChallenge);
 
@@ -24,7 +24,7 @@ export function ChallengeCard( {details, title}: {details:  Array<DetailsChallen
         return 0;
     }, [detalle]);
 
-    useEffect(() => {        
+    useEffect(() => { 
         let temporal = handleDetalis( select );
         if( temporal )
             setDetalle( temporal )
@@ -34,23 +34,50 @@ export function ChallengeCard( {details, title}: {details:  Array<DetailsChallen
         setSelect( event.target.value as EnumDifficulty )
     }
 
-    
+    const handleModal = (): void => {
+        setModal( false )
+    }
 
-    return <div className='h-60 h w-96'>
-        <div className='flex flex-row justify-between h-full w-full rounded-2xl bg-teal-500 transition-all duration-700 ease-out p-2'>
-            <div className='grid place-content-center'>
-                <h5>{title}</h5>
-                <h5>Total: {detalle?.puntos} puntos </h5>
-                <Striped progreso={ obtenerProgreso() } puntos={detalle?.progreso} total={detalle?.total} />
+    return <div className='h-72 w-2/3'>
+        <div className='flex flex-row justify-between h-full w-full rounded-2xl bg-sky-700 transition-all duration-700 ease-out p-4'>
+            <div className='w-2/3 grid items-center'>
+                <div className='w-full space-y-4'>
+                    <p className='text-xl font-bold text-white'>{title}</p>
+                    <Striped progreso={ obtenerProgreso() } puntos={detalle?.progreso} total={detalle?.total} />
+                </div>
+                <div className="flex justify-around">
+                    <button
+                        className='p-2 bg-white text-sky-700 font-bold rounded-md hover:bg-inherit hover:text-white'
+                        color='inherit'
+                        onClick={() => {
+                            console.log('COMENZAR')
+                        }}
+                     
+                    >
+                        COMENZAR
+                    </button>
+                    <button
+                        className='p-2 bg-white text-sky-700 font-bold rounded-md hover:bg-inherit hover:text-white'
+                        onClick={() => {
+                            console.log('DETALLES')
+                            setModal(true)
+                        }}
+                    >
+                        DETALLES
+                    </button>
+                    <ModalDetalles key={category} open={modal} handleClose={handleModal} category={category} />
+                </div>
             </div>
 
-            <div className=''>
+            <div className='w-1/3 flex flex-col justify-between'>
                 <FormControl sx={{ minWidth: 120 }} size="small">
+                {/* <FormControl className="bg-transparent" size="small"> */}
                     <Select
-                    value={select}
-                    onChange={handleChange}
-                    displayEmpty
-                    inputProps={{ 'aria-label': 'Without label' }}
+                        className='bg-white'
+                        value={select}
+                        onChange={handleChange}
+                        displayEmpty
+                        inputProps={{ 'aria-label': 'Without label' }}
                     >
                     <MenuItem value={EnumDifficulty.FACIL}>Facil</MenuItem>
                     <MenuItem value={EnumDifficulty.MEDIO}>Medio</MenuItem>
@@ -58,6 +85,12 @@ export function ChallengeCard( {details, title}: {details:  Array<DetailsChallen
                     </Select>
                     <FormHelperText>Dificultad</FormHelperText>
                 </FormControl>
+
+                <div className='flex justify-end'>
+                    <div className='flex bg-white bg-opacity-20 p-2 rounded-md'>
+                        <span className='font-bold text-xl text-white'>{detalle?.puntos} EXP</span>
+                    </div>
+                </div>
             </div>
        
         </div>

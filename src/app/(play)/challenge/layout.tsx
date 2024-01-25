@@ -20,7 +20,7 @@ export default function ChallengeLayout({
     <>
     {
       permitRender.includes(currentPath) &&
-      <div className="w-full flex flex-wrap justify-around">
+      <div className="w-full p-16 flex flex-wrap justify-around">
         {challenges}
         {ranking}
       </div>

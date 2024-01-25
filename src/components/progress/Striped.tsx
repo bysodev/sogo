@@ -1,6 +1,13 @@
+'use client'
+// import { GoTrophy } from "react-icons/go";
+
 export const Striped = ({progreso, puntos, total}: {progreso: number, puntos: any, total: any}) => {
   console.log('Este es el progreso' + progreso)
     return <div className="flex w-full justify-between">
+      <div className="mr-2">
+        {/* <GoTrophy size={24} color='white' /> */}
+        <span className="text-xl">🏆</span>
+      </div>
       <div className="w-4/5 m-auto">
         <span
           className="block rounded-full bg-gray-200"
@@ -12,8 +19,8 @@ export const Striped = ({progreso, puntos, total}: {progreso: number, puntos: an
           ></span>
         </span>
       </div>
-      <div className="w-1/5 items-center">
-        <span>{puntos} / {total}</span>
+      <div className="w-1/5 m-auto ml-1">
+        <span className="text-lg font-bold text-white">{puntos} / {total}</span>
       </div>
   </div>
 }
