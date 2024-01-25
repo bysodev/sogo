@@ -26,7 +26,7 @@ const SideNavbar: React.FC<{ isOpen: boolean; onToggle: () => void }> = ({ isOpe
     const menus: Menu[] = [
         { name: "Aprendizaje", link: "/learn", icon: FaGraduationCap },
         { name: "Lecciones", link: "/lesson", icon: FaBookBookmark },
-        { name: "Retos", link: "#", icon: MdSpaceDashboard },
+        { name: "Retos", link: "/challenge", icon: MdSpaceDashboard },
         { name: "Perfil", link: "/profile", icon: FaUser },
         { name: "Cerrar Sesión", link: "/", icon: BiSolidLogOut, logout: true },
     ];
