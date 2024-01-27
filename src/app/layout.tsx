@@ -5,7 +5,7 @@ import NavBar from "@/components/ui/header";
 import "@/css/globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Inter } from 'next/font/google';
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -16,12 +16,16 @@ const inter = Inter({
   display: 'swap'
 })
 
-interface RootLayoutProps {
-  children: ReactNode;
-  Session: any;
+type LayoutProps = {
+  children?: React.ReactNode
 }
 
-const RootLayout: React.FC<RootLayoutProps> = ({ children, Session }) => {
+type LayoutPropsExtended = {
+  children?: React.ReactNode
+  session?: any
+}
+
+export default function RootLayout(props: LayoutProps | LayoutPropsExtended) {
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -31,6 +35,11 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children, Session }) => {
       mirror: false,
     });
   }, []);
+
+  const { children, session } = {
+    ...props,
+    session: undefined
+  }
 
   const [theme, setTheme] = useState('');
 
@@ -48,7 +57,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children, Session }) => {
   return (
     <html lang="en">
       <body className={`${inter.variable} ${theme} font-inter antialiased tracking-tight relative`}>
-        <AuthProvider session={Session}>
+        <AuthProvider session={session}>
           <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip bg-white dark:bg-gray-950 text-gray-900 dark:text-white">
             <NavBar toggleDarkMode={switchTheme} theme={theme} />
             <main className="grid grow">
@@ -61,5 +70,3 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children, Session }) => {
     </html>
   );
 }
-
-export default RootLayout;
