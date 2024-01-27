@@ -5,23 +5,14 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-const URL_BACKPYTHON = process.env.NEXT_PUBLIC_API_BACKEND;
+const URL = process.env.NEXT_PUBLIC_ROUTE_APP;
 
 async function getVerified(token: string) {
   try {
-    const myHeaders = new Headers({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    });
+    const response = await fetch(`${URL}/api/auth/user/verify?token=${token}`, {
 
-    const response = await fetch(`${URL_BACKPYTHON}/user/verified?token=${token}`, {
-      credentials: 'include',
-      method: 'GET',
-      headers: myHeaders,
-      redirect: 'follow',
     }); // Include credentials in the request
     const data = await response.json();
-    console.log(data)
     return { ok: response.status, message: data.detail };
   } catch (e) {
     return { ok: 400, message: "Algo falló con el sistema" };

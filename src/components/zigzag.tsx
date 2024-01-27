@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import FeatDefault from '@/../../public/images/feature-default.jpg'
+const FeatDefault = '/images/feature-default.jpg'
 
 export default function Zigzag() {
   return (

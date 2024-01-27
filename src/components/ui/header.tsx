@@ -45,33 +45,33 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
 
               <ul className="text-gray-800 dark:text-white items-center justify-center space-y-4 md:flex md:space-x-6 md:space-y-0 font-medium">
                 <li>
-                  <a className="hover:text-gray-950 dark:hover:text-purple-300" onClick={() => setNavbar(false)} href="#features">
+                  <a className="hover:text-purple-600 dark:hover:text-purple-400" onClick={() => setNavbar(false)} href="#features">
                     Características
                   </a>
                 </li>
                 <li>
-                  <a className="hover:text-gray-950 dark:hover:text-purple-300" onClick={() => setNavbar(false)} href="#about">
+                  <a className="hover:text-purple-600 dark:hover:text-purple-400" onClick={() => setNavbar(false)} href="#about">
                     Acerca de
                   </a>
                 </li>
                 <li>
-                  <a className="hover:text-gray-950 dark:hover:text-purple-300" onClick={() => setNavbar(false)} href="#contact">
+                  <a className="hover:text-purple-600 dark:hover:text-purple-400" onClick={() => setNavbar(false)} href="#contact">
                     Contacto
                   </a>
                 </li>
                 <li>
-                  <a className="hover:text-gray-950 dark:hover:text-purple-300" onClick={() => setNavbar(false)} href="#faq">
+                  <a className="hover:text-purple-600 dark:hover:text-purple-400" onClick={() => setNavbar(false)} href="#faq">
                     FAQ
                   </a>
                 </li>
               </ul>
-              <div className="text-gray-800 hover:text-gray-950 dark:text-white font-medium w-full mt-3 grid sm:flex gap-2 sm:gap-4 items-center md:hidden p-4 rounded text-center">
+              <div className="text-gray-800 hover:text-purple-600 dark:text-white font-medium w-full mt-3 grid sm:flex gap-2 sm:gap-4 items-center md:hidden p-4 rounded text-center">
                 <BsFillMoonStarsFill
                   onClick={toggleDarkMode}
                   className="cursor-pointer hidden sm:block md:hidden flex-none"
                 />
                 <Link
-                  className="text-gray-800 border-2 border-gray-950 hover:text-gray-950 dark:text-white dark:border-white dark:hover:text-purple-300 rounded-full p-2 sm:flex-1 w-full sm:w-1/2"
+                  className="text-gray-800 border-2 border-gray-950 hover:text-purple-600 dark:text-white dark:border-white dark:hover:text-purple-400 rounded-full p-2 sm:flex-1 w-full sm:w-1/2"
                   href={`auth/login`}
                   rel="preload"
                 >
@@ -87,7 +87,7 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
               </div>
             </div>
             <div className="font-medium hidden gap-4 dark:text-white md:flex items-center">
-              <Link className="text-gray-800 hover:text-gray-950 dark:text-white dark:hover:text-purple-300" href={`auth/login`} rel="preload">
+              <Link className="text-gray-800 hover:text-purple-600 dark:text-white dark:hover:text-purple-400" href={`auth/login`} rel="preload">
                 Iniciar Sesión
               </Link>
               <Link

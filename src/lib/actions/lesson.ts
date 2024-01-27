@@ -1,5 +1,4 @@
-
-const url = process.env.NEXT_PUBLIC_API_BACKEND
+const url = process.env.NEXT_PUBLIC_API_BACKEND;
 export async function PredictSign(
   category: string,
   image: string,
@@ -21,6 +20,7 @@ export async function PredictSign(
 
   try {
     const res = await fetch(`${url}/user/lesson/predict`, {
+      credentials: 'include',
       method: 'POST',
       headers: myHeaders,
       body: raw,

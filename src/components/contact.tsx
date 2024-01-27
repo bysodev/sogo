@@ -1,14 +1,12 @@
 import { FaArrowRight } from "react-icons/fa";
 
-import Hand3d from '@/../../public/images/hand-3d-bg.png';
-
 import Image from "next/image";
 export default function Contact() {
   return (
     <section id='contact' className="bg-gray-900 text-white overflow-hidden">
       {/* Illustration behind hero content */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
-        <Image className="absolute end-0 opacity-25" src={Hand3d} width={540} height={405} alt="Features 03" />
+        <Image className="absolute end-0 opacity-25" src={"/images/hand-3d-bg.png"} width={540} height={405} alt="Features 03" />
         <div className="py-12 md:py-20 z-10">
           {/* Section header */}
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
