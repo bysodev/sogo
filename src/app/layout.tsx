@@ -16,7 +16,7 @@ const inter = Inter({
   display: 'swap'
 })
 
-export default function RootLayout({
+function RootLayout({
   children,
   Session
 }: {
@@ -62,3 +62,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+export default RootLayout;
