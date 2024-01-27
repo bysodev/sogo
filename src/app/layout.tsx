@@ -21,10 +21,7 @@ interface RootLayoutProps {
   Session: any;
 }
 
-function RootLayout({
-  children,
-  Session
-}: RootLayoutProps) {
+const RootLayout: React.FC<RootLayoutProps> = ({ children, Session }) => {
   useEffect(() => {
     AOS.init({
       duration: 1000,
