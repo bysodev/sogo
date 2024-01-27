@@ -1,7 +1,7 @@
 "use client";
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from "react";
-
+import ChallengesPage from "./challenge/@ranking/page";
 export default function PlayLayout({
   children,
 }: {
@@ -42,7 +42,7 @@ export default function PlayLayout({
         <section className='h-full flex flex-col gap-10'>{children}</section>
         {render && (
           <>
-            {RankUser && <RankUser />}
+            {RankUser && <ChallengesPage />}
           </>
         )}
       </div>

@@ -19,13 +19,12 @@ export default function ChallengeLayout({
   return (
     <>
     {
-      permitRender.includes(currentPath) &&
-      <div className="w-full p-16 flex flex-wrap justify-around">
-        {challenges}
-        {ranking}
-      </div>
+      permitRender.includes(currentPath) && challenges
+      // <div className="w-full p-16 flex flex-wrap justify-around">
+      // </div>        
     }
     {children}
     </>
   );
 }
+ 
