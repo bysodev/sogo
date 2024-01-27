@@ -48,8 +48,8 @@ export default function Verify() {
           setVerified(true);
           showSuccessMessage({ text: response.message });
         } else if (response.ok === 401) {
-          setVerified(false);
-          setTokenError(true);
+          setVerified(true);
+          setTokenError(false);
           showErrorMessage(response.message);
         } else {
           setVerified(false);
