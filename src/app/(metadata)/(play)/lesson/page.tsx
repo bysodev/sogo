@@ -107,13 +107,13 @@ const LevelStage = () => {
                 : "No disponible"
               }
             </p>
-            <div className='grid lg:grid-cols-2'>
+            <div className='grid grid-cols-2'>
               <p className='flex gap-6 items-center'>Aleatorio: {currentMessage?.random === "Si" ? <FaCircleCheck size={22} /> : <FaCircleXmark size={22} />}</p>
               <div>
                 <p className='flex gap-6 items-center'>Estado: <span
                   className={`whitespace-nowrap rounded-full ${currentMessage?.blocked ? "bg-gray-100" : "bg-purple-100"} px-2.5 py-0.5 text-${sectionColor(currentMessage?.section_id - 1)}`}
                 >
-                  {currentMessage?.id == 1 ? "Bloqueado" : currentMessage?.id == 2 ? "Disponible" : currentMessage?.id == 3 ? "Recuperar" : currentMessage?.id == 4 ? "Completado" : "No disponible"}
+                  {currentMessage?.stateId == 1 ? "Bloqueado" : currentMessage?.stateId == 2 ? "Disponible" : currentMessage?.stateId == 3 ? "Recuperar" : currentMessage?.stateId == 4 ? "Completado" : "No disponible"}
                 </span></p>
 
               </div>

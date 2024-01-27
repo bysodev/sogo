@@ -3,8 +3,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   const { username, email, token } = await request.json();
-  const link = `${process.env.NEXT_PUBLIC_URL}}/auth/verify?token=${token}`;
-
+  const link = `${process.env.NEXT_PUBLIC_ROUTE_APP}/auth/verify?token=${token}`;
   try {
     await sendEmail(
       'validate-email',

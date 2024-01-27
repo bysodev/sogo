@@ -9,8 +9,19 @@ const URL_BACKPYTHON = process.env.NEXT_PUBLIC_API_BACKEND;
 
 async function getVerified(token: string) {
   try {
-    const response = await fetch(`${URL_BACKPYTHON}/user/verified?token=${token}`);
+    const myHeaders = new Headers({
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    });
+
+    const response = await fetch(`${URL_BACKPYTHON}/user/verified?token=${token}`, {
+      credentials: 'include',
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow',
+    }); // Include credentials in the request
     const data = await response.json();
+    console.log(data)
     return { ok: response.status, message: data.detail };
   } catch (e) {
     return { ok: 400, message: "Algo falló con el sistema" };
@@ -35,7 +46,7 @@ export default function Verify() {
       .then((response) => {
         if (response.ok === 200) {
           setVerified(true);
-          showSuccessMessage(response.message);
+          showSuccessMessage({ text: response.message });
         } else if (response.ok === 401) {
           setVerified(false);
           setTokenError(true);
@@ -74,7 +85,7 @@ export default function Verify() {
               <>
                 <p className="text-gray-700 dark:text-gray-200 text-balance text-sm md:text-base">
                   {verified
-                    ? "Gracias por registrarte! Estamos confirmando tu cuenta, para que puedas iniciar sesión. Esto puede tardar unos minutos."
+                    ? "¡Gracias por registrarte! Ya puedes iniciar sesión con tus datos y empezar a aprender."
                     : "Por favor, comienza el proceso de verificación accionando sobre el siguiente botón."}
                 </p>
                 {!verified && (

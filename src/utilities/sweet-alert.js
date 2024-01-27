@@ -1,4 +1,5 @@
 import Swal from 'sweetalert2';
+let swalInstance = null;
 
 const Toast = Swal.mixin({
     toast: true,
@@ -22,14 +23,24 @@ export const showErrorMessage = (text) => {
     })
 }
 
-export const showSuccessMessage = (text) => {
-    Swal.fire({
+export const showSuccessMessage = (content) => {
+    swalInstance = Swal.fire({
         icon: 'success',
-        title: '¡Asombroso!',
-        text,
-        timer: 2000,
-        showConfirmButton: false
+        title: '¡Genial!',
+        showConfirmButton: false,
+        ...content
     })
+}
+export const updateSuccessMessage = (content) => {
+    if (swalInstance) {
+        swalInstance.update({
+            icon: 'success',
+            title: '¡Genial!',
+            ...content,
+            showConfirmButton: true,
+            confirmButtonText: 'Continuar'
+        });
+    }
 }
 
 export const showSuccessToast = (text) => {

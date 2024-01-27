@@ -1,12 +1,11 @@
 "use client";
 import TooltipMessage from "@/components/TooltipMessage";
 import IconLogo from "@/components/icons/logo";
-import { showErrorMessage, showSuccessMessage } from "@/utilities/sweet-alert";
+import { showErrorMessage, showSuccessMessage, updateSuccessMessage } from "@/utilities/sweet-alert";
 import { rgxEmail } from "@/validators/auth-validators";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-
 const url_app = process.env.NEXT_PUBLIC_ROUTE_APP
 const myHeaders = new Headers({
   'Accept': 'application/json',
@@ -31,12 +30,33 @@ async function fetchRegister(username: string, password: string, email: string) 
       redirect: 'follow'
     });
     if (response.status === 201) {
-      showSuccessMessage(
-        'Su cuenta fue creada exitosamente, ahora espere la verificación'
-      );
-      const data = await response.json();
-      fetchVerification(data['username'], email, data['token']);
-      return true;
+      showSuccessMessage({
+        html: `<p>Su cuenta fue creada exitosamente</p>
+      <p class='flex justify-center gap-2 overflow-hidden mt-4'>
+        <svg class="animate-spin text-purple-600 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span>Enviando verificación</span>
+      </p>
+      `});
+      const user = await response.json();
+      const verified = await fetchVerification(username, email, user.data.token);
+      if (verified.ok) {
+        updateSuccessMessage({
+          html: `<p>Verificación enviada</p>
+        <p class='flex justify-center gap-2 overflow-hidden mt-4'>
+        <svg class="text-purple-600 h-5 w-5" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L369 209z"></path></svg>
+          <span>Revisa tu correo electrónico para activar tu cuenta</span>
+        </p>
+        `});
+        return true;
+      } else {
+        updateSuccessMessage(
+          { html: 'El correo de verificación no pudo ser enviado. Comuniquese con la administración' }
+        );
+        return false;
+      }
     } else {
       const error = await response.text();
       showErrorMessage(error);
@@ -59,15 +79,12 @@ async function fetchVerification(username: string, email: string, token: string)
       headers: myHeaders,
       redirect: 'follow',
     });
-    if (response.ok) {
-      showSuccessMessage(
-        'El correo de verificación fue enviado exitosamente'
-      );
+    if (!response.ok) {
+      throw new Error('Error en la verificación');
     }
+    return response;
   } catch (e) {
-    showErrorMessage(
-      'El correo de verificación no pudo ser enviado!! Comuniquese con la administración'
-    );
+    throw new Error('Error al procesar la solicitud');
   }
 }
 

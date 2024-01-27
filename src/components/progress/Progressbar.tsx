@@ -20,7 +20,7 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 export const Progressbar = ({ porcentaje, setDrawer, totalTry }: { porcentaje: number, setDrawer: Dispatch<SetStateAction<boolean>>, totalTry: number }) => {
     const { push } = useRouter();
     return (
-        <div className='w-full flex gap-5 items-center p-10 px-16 pb-0'>
+        <div className='w-full flex gap-5 items-center py-8 px-4 lg:px-16'>
             <button
                 title='Cerrar'
                 type='button'

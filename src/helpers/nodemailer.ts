@@ -36,9 +36,7 @@ export const sendEmail = async (
   // verify connection configuration
   transport.verify(function (error) {
     if (error) {
-      console.log(error);
-    } else {
-      console.log('Server is ready to take our messages');
+      console.error(error);
     }
   });
   const html = () => {

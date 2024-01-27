@@ -21,7 +21,7 @@ export const templateConfirmUser = (signin_url: string, username: string) => {
           }
     
           a {
-            color: #9333ea
+            color: #9333ea;
           }
     
           a img {
@@ -108,11 +108,11 @@ export const templateConfirmUser = (signin_url: string, username: string) => {
           /* Buttons ------------------------------ */
     
           .button {
-            background-color: #9333ea
-            border-top: 10px solid #9333ea
-            border-right: 18px solid #9333ea
-            border-bottom: 10px solid #9333ea
-            border-left: 18px solid #9333ea
+            background-color: #9333ea;
+            border-top: 10px solid #9333ea;
+            border-right: 18px solid #9333ea;
+            border-bottom: 10px solid #9333ea;
+            border-left: 18px solid #9333ea;
             display: inline-block;
             color: #fff !important;
             text-decoration: none;
@@ -120,6 +120,7 @@ export const templateConfirmUser = (signin_url: string, username: string) => {
             box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16);
             -webkit-text-size-adjust: none;
             box-sizing: border-box;
+            margin: 0 auto;
           }
     
           @media only screen and (max-width: 500px) {
@@ -398,7 +399,7 @@ export const templateConfirmUser = (signin_url: string, username: string) => {
                                     role="presentation"
                                   >
                                     <tr>
-                                      <td>
+                                      <td style="display: grid;">
                                         <a
                                           href="${signin_url}"
                                           class="f-fallback button"

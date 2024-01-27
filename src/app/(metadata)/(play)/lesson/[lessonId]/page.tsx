@@ -8,6 +8,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { SignImageData } from "@/components/DiccionaryLesson";
 import DrawerBotton from "@/components/DrawerBotton";
 import Camara from '@/components/camara/Camara';
+import useScreenshot from "@/components/camara/useScreenshot";
 import CompleteLesson from "@/components/progress/CompleteLesson";
 import { FooterLesson } from "@/components/progress/FooterLesson";
 import { Progressbar } from "@/components/progress/Progressbar";
@@ -15,7 +16,6 @@ import { PredictSign } from "@/lib/actions/lesson";
 import { Fetcher, Progress, Times, WebVideoElementWithScreenshot } from '@/lib/types/lessons';
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
-
 
 const handlePostLesson = async (token: string, id_lesson: number, points_reached: number, state_id: number, fails: number, detail_fails: number[]) => {
   try {
@@ -103,7 +103,7 @@ export default function LessonVocales() {
   const searchParams = useSearchParams()
   const lesson_id = useMemo(() => searchParams.get('id'), [searchParams]);
   const { data: lesson, isLoading, error: isError } = useSWR(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/lesson?lesson_id=${lesson_id}`, Fetcher);
-  const webcamRef = useRef<WebVideoElementWithScreenshot>(null);
+  const webcamRef = useRef<WebVideoElementWithScreenshot | null>(null);
   const [submit, setSubmit] = useState(true);
   const [imagen, setImagen] = useState<any>("");
   const [currentImage, setCurrentImage] = useState(defaultImage);
@@ -118,7 +118,6 @@ export default function LessonVocales() {
   const [totalTry, setTotalTry] = useState(3)
   const [messageLesson, setMessageLesson] = useState("")
   const [score, setScore] = useState(0)
-
   const [progres, setprogress] = useState<Progress>({
     preguntas: 0,
     porcentaje: 0,
@@ -128,6 +127,13 @@ export default function LessonVocales() {
     continue: false,
     char: '',
   });
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const hiddenCanvasRef = useRef<HTMLCanvasElement | null>(null); // Nuevo canvas oculto
+  const { screenshotUrl, captureScreenshot, drawRectangle } = useScreenshot(webcamRef, canvasRef, hiddenCanvasRef);
+
+  useEffect(() => {
+    drawRectangle()
+  }, [])
 
   useEffect(() => {
     if (!lesson_id) {
@@ -188,12 +194,9 @@ export default function LessonVocales() {
     updateImage();
   }, [progres.char]); // Actualiza la imagen cuando progres.char cambia
 
-  useEffect(() => {
-    console.log(calculateScore(50, 10, 15, 10, 30))
-  }, [])
-
   const foto = () => {
     var captura = webcamRef?.current?.getScreenshot();
+    captureScreenshot();
     setImagen(captura);
   };
 
@@ -213,7 +216,7 @@ export default function LessonVocales() {
         return sum + value;
       }, 0);
       const totalTime = (startime.final.getTime() - startime.inicio.getTime());
-      const { score, status } = calculateScore(lesson?.data.points, totalFails, 3, totalTime, lesson.data.max_time);
+      const { score, status } = calculateScore(lesson?.data.points, totalFails, 15, totalTime, lesson.data.max_time);
       setScore(score)
       // Llama a la función handlePostLesson con el lessonIdInt
       fetchStatusLesson(session?.accessToken || "", lessonIdInt).then((response) => {
@@ -250,7 +253,7 @@ export default function LessonVocales() {
   }, [progres.porcentaje])
 
   useEffect(() => {
-    if (totalTry === 1) {
+    if (totalTry === 0) {
       setTime((tim) => ({
         ...tim,
         final: new Date()
@@ -277,8 +280,8 @@ export default function LessonVocales() {
   const handleVerification = async () => {
     setSubmit(false);
     if (progres.porcentaje != 100) {
-      if (typeof imagen === "string") {
-        PredictSign(lesson?.data.category_name, imagen, progres.char, session?.accessToken || "").then(async (response) => {
+      if (typeof screenshotUrl === "string") {
+        PredictSign(lesson?.data.category_name, screenshotUrl, progres.char, session?.accessToken || "").then(async (response) => {
           if (!response.ok) {
             return
           } else {
@@ -289,22 +292,16 @@ export default function LessonVocales() {
               setprogress((pro) => ({
                 ...pro,
                 asiertos: pro.asiertos + 1,
-                etapa: pro.etapa + 1,
-                porcentaje: ((pro.etapa) / pro.preguntas) * 100,
-                char: lesson?.data.content[pro.etapa],
                 continue: true,
               }));
             } else {
               //logical to  handdle error predic with setErrrosArrow equals 3
+              setCheck(false);
               setErrosArrow(errosArrow - 1)
               if (errosArrow === 1) {
                 setTotalTry(totalTry - 1)
-                setErrosArrow(3)
                 setprogress((pro) => ({
                   ...pro,
-                  etapa: pro.etapa + 1,
-                  porcentaje: ((pro.etapa) / pro.preguntas) * 100,
-                  char: lesson?.data.content[pro.etapa],
                   continue: true,
                 }));
               }
@@ -312,8 +309,9 @@ export default function LessonVocales() {
                 ...obj,
                 [progres.char]: obj[progres.char] + 1
               }))
-              setCheck(false);
-              setFoto();
+              if (errosArrow !== 1) {
+                setFoto();
+              }
             }
           }
         }).catch(() => {
@@ -324,11 +322,16 @@ export default function LessonVocales() {
     }
     setSubmit(true);
   };
+
   const changeContinue = () => {
     setprogress((pro) => ({
       ...pro,
-      continue: false,
+      etapa: pro.etapa + 1,
+      porcentaje: ((pro.etapa) / pro.preguntas) * 100,
+      char: lesson?.data.content[pro.etapa],
+      continue: pro.etapa === 5,
     }));
+    setErrosArrow(3)
     setCheck(null)
     setFoto()
   };
@@ -340,31 +343,29 @@ export default function LessonVocales() {
   return (
     <>
       <div className="2xl:container mx-auto w-full h-full">
-
         {progres.porcentaje === 100 || totalTry === 0 ? (
           <CompleteLesson messageLesson={messageLesson} startime={startime} errors={errors} score={score} />
           // <CompleteLesson isOpen={isOpen} setIsOpen={setIsOpen} />
         ) : (
           <div className="flex flex-col gap-4 h-full">
             <Progressbar porcentaje={progres.porcentaje} setDrawer={setDrawer} totalTry={totalTry} />
-            <div className="grid lg:grid-cols-2 justify-center items-center text-center h-full">
+            <div className="grid md:grid-cols-2 justify-center items-center text-center h-full max-lg:gap-10">
               {
                 isLoading ? (
                   <div>Loading...</div>
                 ) : (
                   <Image
-                    className="shadow-lg border rounded-xl m-auto aspect-video object-contain"
+                    className="shadow-lg border rounded-xl m-auto aspect-[12/9] object-contain"
                     src={currentImage}
-                    height={480}
-                    width={480}
+                    height={500}
+                    width={500}
                     alt="Letra A"
                   />
                 )
               }
               <div className="relative mx-auto grid place-content-center">
-                <Stack className="bg-white/70 w-full absolute z-10" spacing={2} alignItems="center">
+                <Stack className="bg-white/90 w-full absolute z-30" spacing={2} alignItems="start">
                   <ToggleButtonGroup
-                    className="self-start"
                     // orientation="vertical"
                     size="medium"
                     color="primary"
@@ -373,12 +374,14 @@ export default function LessonVocales() {
                     onChange={handleToogleTime}
                     aria-label="Platform"
                   >
-                    <ToggleButton selected className="border-none text-bold px-4" color="secondary" value="3">3 Sec</ToggleButton>
+                    <ToggleButton className="border-none text-bold px-4" color="secondary" value="3">3 Sec</ToggleButton>
                     <ToggleButton className="border-none text-bold px-4" color="secondary" value="5">5 Sec</ToggleButton>
                     <ToggleButton className="border-none text-bold px-4" color="secondary" value="7">7 Sec</ToggleButton>
                   </ToggleButtonGroup>
                 </Stack>
                 <Camara
+                  canvasRef={canvasRef}
+                  hiddenCanvasRef={hiddenCanvasRef}
                   webcamRef={webcamRef}
                   imagen={imagen}
                   counter={counter}
