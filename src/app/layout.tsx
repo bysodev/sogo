@@ -5,7 +5,7 @@ import NavBar from "@/components/ui/header";
 import "@/css/globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Inter } from 'next/font/google';
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -16,13 +16,15 @@ const inter = Inter({
   display: 'swap'
 })
 
+interface RootLayoutProps {
+  children: ReactNode;
+  Session: any;
+}
+
 function RootLayout({
   children,
   Session
-}: {
-  children: React.ReactNode;
-  Session: any
-}) {
+}: RootLayoutProps) {
   useEffect(() => {
     AOS.init({
       duration: 1000,
