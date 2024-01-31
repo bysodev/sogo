@@ -78,7 +78,7 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
                 </li>
               </ul>
               <div className="text-gray-800 dark:text-white font-medium w-full mt-3 flex flex-col justify-center gap-2 sm:gap-4 md:hidden p-4 rounded text-center">
-                <div className="absolute bottom-10 left-10 border-gray-950 border-2 p-2 rounded-md block md:hidden">
+                <div className="absolute bottom-10 left-10 border-gray-950 dark:border-white focus:text-dark dark:focus:text-white border-2 p-2 rounded-md block md:hidden">
                   <BsFillMoonStarsFill
                     onClick={toggleDarkMode}
                     className="hover:text-purple-600  cursor-pointer"
