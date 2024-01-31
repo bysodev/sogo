@@ -50,7 +50,7 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
             </div>
             <div
               className={`flex-1 justify-self-center md:block md:pb-0 md:mt-0 ${navbar
-                ? "absolute start-0 bg-white w-full -z-10 top-0 justify-around flex flex-col dark:bg-gray-800 md:bg-transparent dark:md:bg-transparent px-16 py-20 text-center h-screen"
+                ? "absolute start-0 bg-white w-full -z-10 top-0 justify-around flex flex-col dark:bg-gray-800 md:bg-transparent dark:md:bg-transparent px-16 py-20 text-center h-[100dvh]"
                 : "hidden"
                 }`}
             >
