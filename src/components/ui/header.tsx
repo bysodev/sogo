@@ -55,7 +55,7 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
                 }`}
             >
 
-              <ul className="text-gray-800 dark:text-white items-center justify-center space-y-4 md:flex md:space-x-6 md:space-y-0 font-medium text-xl lg:text-base">
+              <ul className="text-gray-800 dark:text-white items-center justify-center space-y-4 md:flex md:space-x-6 md:space-y-0 font-medium text-xl md:text-base">
                 <li>
                   <a className="hover:text-purple-600 dark:hover:text-purple-400" onClick={() => setNavbar(false)} href="#features">
                     Características
@@ -85,7 +85,7 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
                   />
                 </div>
                 <Link
-                  className="text-gray-800 border-2 border-gray-950 hover:text-purple-600 dark:text-white dark:border-white dark:hover:text-purple-400 rounded-full p-2 sm:flex-1 w-full sm:w-1/2"
+                  className="text-gray-800 border-2 border-gray-950 hover:text-purple-600 dark:text-white dark:border-white dark:hover:text-purple-400 rounded-full p-2 sm:flex-1 w-full"
                   href={`auth/login`}
                   rel="preload"
                 >

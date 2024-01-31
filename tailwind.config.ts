@@ -9,6 +9,15 @@ const config: Config = {
   darkMode: 'class',
   theme: {
     extend: {
+      maxHeight: {
+        screen: '100dvh',
+      },
+      minHeight: {
+        screen: '100dvh',
+      },
+      height: {
+        screen: '100dvh',
+      },
       boxShadow: {
         xs: '0 0 0 1px rgba(0, 0, 0, 0.16)',
         sm: '0 1px 2px 0 rgba(0, 0, 0, 0.16)',
