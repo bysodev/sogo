@@ -51,7 +51,7 @@ export const FooterLesson: React.FC<FooterLessonProps> = ({
                     {!continuar ? (
                         <button
                             type="button"
-                            className={`w-full p-2 px-8 h-12 ${check === null ? "bg-green-500 font-bold shadow-[0_6px_0px_#147839]" : check ? "bg-green-500 font-bold shadow-[0_6px_0px_#147839]" : "bg-red-500 font-bold shadow-[0_6px_0px_#a22e2e]"} text-white border-none rounded-md text-lg hover:shadow-transparent hover:translate-y-1`}
+                            className={`w-full lg:w-auto p-2 px-8 h-12 ${check === null ? "bg-green-500 font-bold shadow-[0_6px_0px_#147839]" : check ? "bg-green-500 font-bold shadow-[0_6px_0px_#147839]" : "bg-red-500 font-bold shadow-[0_6px_0px_#a22e2e]"} text-white border-none rounded-md text-lg hover:shadow-transparent hover:translate-y-1`}
                             onClick={() => {
                                 comprobation();
                             }}
@@ -62,7 +62,7 @@ export const FooterLesson: React.FC<FooterLessonProps> = ({
                     ) : (
                         <button
                             type="button"
-                            className={`w-full p-2 px-8 h-12 ${check === null ? "bg-green-500 font-bold shadow-[0_6px_0px_#147839]" : check ? "bg-green-500 font-bold shadow-[0_6px_0px_#147839]" : "bg-red-500 font-bold shadow-[0_6px_0px_#a22e2e]"} text-white border-none rounded-md text-lg hover:shadow-transparent hover:translate-y-1`}
+                            className={`w-full lg:w-auto p-2 px-8 h-12 ${check === null ? "bg-green-500 font-bold shadow-[0_6px_0px_#147839]" : check ? "bg-green-500 font-bold shadow-[0_6px_0px_#147839]" : "bg-red-500 font-bold shadow-[0_6px_0px_#a22e2e]"} text-white border-none rounded-md text-lg hover:shadow-transparent hover:translate-y-1`}
                             onClick={() => {
                                 endLesson ? push("/lesson") : changeContinue()
                             }}

@@ -1,10 +1,5 @@
 "use client";
 // import { Enunciados } from "@/components/cards/Enunciados";
-import { Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
-import Image from "next/image";
-import { useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useRef, useState } from "react";
-
 import { SignImageData } from "@/components/DiccionaryLesson";
 import DrawerBotton from "@/components/DrawerBotton";
 import Camara from '@/components/camara/Camara';
@@ -14,7 +9,11 @@ import { FooterLesson } from "@/components/progress/FooterLesson";
 import { Progressbar } from "@/components/progress/Progressbar";
 import { PredictSign } from "@/lib/actions/lesson";
 import { Fetcher, Progress, Times, WebVideoElementWithScreenshot } from '@/lib/types/lessons';
+import { Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useMemo, useRef, useState } from "react";
 import useSWR from "swr";
 
 const handlePostLesson = async (token: string, id_lesson: number, points_reached: number, state_id: number, fails: number, detail_fails: number[]) => {
@@ -102,14 +101,13 @@ export default function LessonVocales() {
   const { data: session } = useSession();
   const searchParams = useSearchParams()
   const lesson_id = useMemo(() => searchParams.get('id'), [searchParams]);
-  const { data: lesson, isLoading, error: isError } = useSWR(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/lesson?lesson_id=${lesson_id}`, Fetcher);
+  const { data: lesson, isLoading, error: isError } = useSWR(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/lesson?lesson_id=${lesson_id}`, Fetcher, { revalidateOnFocus: false });
   const webcamRef = useRef<WebVideoElementWithScreenshot | null>(null);
   const [submit, setSubmit] = useState(true);
   const [imagen, setImagen] = useState<any>("");
   const [currentImage, setCurrentImage] = useState(defaultImage);
   const [drawer, setDrawer] = useState(false);
   const [toggleTime, setToogleTime] = useState("3");
-  const [counter, setCounter] = useState(0);
   const [startime, setTime] = useState<Times>({ inicio: new Date(), final: new Date() });
   const [charResults, setCharResults] = useState<{ [key: string]: number }>({});
   const [errors, setErrors] = useState(charResults)
@@ -118,6 +116,21 @@ export default function LessonVocales() {
   const [totalTry, setTotalTry] = useState(3)
   const [messageLesson, setMessageLesson] = useState("")
   const [score, setScore] = useState(0)
+  const [counter, setCounter] = useState(0);
+
+  useEffect(() => {
+    if (counter <= 0) {
+      foto();
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setCounter(count => count - 1);
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, [counter]);
+
   const [progres, setprogress] = useState<Progress>({
     preguntas: 0,
     porcentaje: 0,
@@ -127,13 +140,8 @@ export default function LessonVocales() {
     continue: false,
     char: '',
   });
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const hiddenCanvasRef = useRef<HTMLCanvasElement | null>(null); // Nuevo canvas oculto
-  const { screenshotUrl, captureScreenshot, drawRectangle } = useScreenshot(webcamRef, canvasRef, hiddenCanvasRef);
-
-  useEffect(() => {
-    drawRectangle()
-  }, [])
+  const { screenshotUrl, captureScreenshot } = useScreenshot(webcamRef, hiddenCanvasRef);
 
   useEffect(() => {
     if (!lesson_id) {
@@ -172,18 +180,6 @@ export default function LessonVocales() {
   }
 
   useEffect(() => {
-    if (counter <= 0) {
-      foto()
-      return;
-    }
-    const timeout = setTimeout(() => {
-      setCounter(count => count - 1)
-    }, 1000);
-
-    return () => clearTimeout(timeout)
-  }, [counter])
-
-  useEffect(() => {
     const updateImage = () => {
       const letter = progres.char;
       const imagen = SignImageData.find((imagen) => imagen.name === letter);
@@ -219,15 +215,15 @@ export default function LessonVocales() {
       const { score, status } = calculateScore(lesson?.data.points, totalFails, 15, totalTime, lesson.data.max_time);
       setScore(score)
       // Llama a la función handlePostLesson con el lessonIdInt
-      fetchStatusLesson(session?.accessToken || "", lessonIdInt).then((response) => {
+      fetchStatusLesson(session?.user?.accessToken || "", lessonIdInt).then((response) => {
         // get data of response from reposne.data
         const status_id = response.data;
         if (status_id === 2) {
-          handlePostLesson(session?.accessToken || "", lessonIdInt, score, status, totalFails, Object.values(errors)).catch((error: any) => {
+          handlePostLesson(session?.user.accessToken || "", lessonIdInt, score, status, totalFails, Object.values(errors)).catch((error: any) => {
             console.error('Error al guardar la lección', error);
           });
         } else if (status_id === 3) {
-          handlePutLesson(session?.accessToken || "", lessonIdInt, score, status, totalFails, Object.values(errors)).then((response) => {
+          handlePutLesson(session?.user.accessToken || "", lessonIdInt, score, status, totalFails, Object.values(errors)).then((response) => {
             if (response) {
               if (!response.ok) {
                 setMessageLesson("El puntaje alcanzado es menor al almacenado");
@@ -281,7 +277,7 @@ export default function LessonVocales() {
     setSubmit(false);
     if (progres.porcentaje != 100) {
       if (typeof screenshotUrl === "string") {
-        PredictSign(lesson?.data.category_name, screenshotUrl, progres.char, session?.accessToken || "").then(async (response) => {
+        PredictSign(lesson?.data.category_name, screenshotUrl, progres.char, session?.user.accessToken || "").then(async (response) => {
           if (!response.ok) {
             return
           } else {
@@ -349,7 +345,7 @@ export default function LessonVocales() {
         ) : (
           <div className="flex flex-col gap-4 h-full">
             <Progressbar porcentaje={progres.porcentaje} setDrawer={setDrawer} totalTry={totalTry} />
-            <div className="grid md:grid-cols-2 justify-center items-center text-center h-full max-lg:gap-10">
+            <div className="grid lg:grid-cols-2 justify-center items-center text-center h-full max-xl:gap-10 px-4">
               {
                 isLoading ? (
                   <div>Loading...</div>
@@ -380,12 +376,11 @@ export default function LessonVocales() {
                   </ToggleButtonGroup>
                 </Stack>
                 <Camara
-                  canvasRef={canvasRef}
-                  hiddenCanvasRef={hiddenCanvasRef}
                   webcamRef={webcamRef}
                   imagen={imagen}
                   counter={counter}
                   setFoto={setFoto}
+                  hiddenCanvasRef={hiddenCanvasRef}
                 />
               </div>
             </div>

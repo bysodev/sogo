@@ -1,11 +1,14 @@
 "use client";
 import TooltipMessage from "@/components/TooltipMessage";
+import IconLoading from "@/components/icons/IconLoading";
 import IconLogo from "@/components/icons/logo";
 import { showErrorMessage, showSuccessMessage, updateSuccessMessage } from "@/utilities/sweet-alert";
 import { rgxEmail } from "@/validators/auth-validators";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { IoArrowBackOutline } from "react-icons/io5";
 const url_app = process.env.NEXT_PUBLIC_ROUTE_APP
 const myHeaders = new Headers({
   'Accept': 'application/json',
@@ -89,6 +92,8 @@ async function fetchVerification(username: string, email: string, token: string)
 }
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(false);
+
   interface UseFormInputs {
     username: string;
     email: string;
@@ -107,7 +112,9 @@ export default function Home() {
   const { push } = useRouter();
 
   async function onSubmit(data: UseFormInputs) {
+    setIsLoading(true);
     const val = await fetchRegister(data.username, data.password, data.email)
+    setIsLoading(false);
     if (val) {
       reset();
       push("/auth/login");
@@ -115,11 +122,16 @@ export default function Home() {
   }
 
   return (
-    <div className="w-full lg:w-auto xl:w-[50%]">
-      <div className="px-20 py-10 sm:py-8 xl:px-6">
-        <Link title="Ir a la página de inicio" href={"/"}>
-          <IconLogo height={80} width={80} className="mx-auto mb-6" />
-        </Link>
+    <div className="w-full lg:w-auto xl:w-[50%] p-4 lg:p-0">
+      <div className="p-2 sm:p-8 sm:py-2 xl:px-6">
+        <div className="flex">
+          <Link href={"/"} className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white duration-300 flex gap-2 items-center font-semibold"><IoArrowBackOutline /><span>Inicio</span></Link>
+        </div>
+        <div className="flex justify-center">
+          <Link href={"/"}>
+            <IconLogo height={80} width={80} className="mx-auto mb-6" />
+          </Link>
+        </div>
         <p className="mb-8 whitespace-normal text-3xl text-center font-bold text-gray-950 dark:text-white">
           Crea una cuenta
         </p>
@@ -132,14 +144,15 @@ export default function Home() {
         >
           <div className="grid gap-4">
             <div
-              className={`relative flex flex-wrap text-sm border btn p-3 ps-6 ${errors.username
+              className={`relative flex flex-wrap text-sm ${errors.username
                 ? "text-red-600 border-red-400"
                 : "text-gray-600 border-gray-400 dark:text-gray-400"
                 } container-fluid`}
             >
               <input
+                disabled={isLoading}
                 autoComplete="username"
-                className="flex-1 focus:outline-none  bg-transparent focus:bg-transparent dark:text-gray-200"
+                className="flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
                 type="text"
                 placeholder="Nombre de usuario"
                 {...register("username", {
@@ -156,14 +169,15 @@ export default function Home() {
             </div>
 
             <div
-              className={`relative flex flex-wrap text-sm border btn p-3 ps-6 ${errors.email
+              className={`relative flex flex-wrap text-sm ${errors.email
                 ? "text-red-600 border-red-400"
                 : "text-gray-600 border-gray-400 dark:text-gray-400"
                 } container-fluid`}
             >
               <input
+                disabled={isLoading}
                 autoComplete="email"
-                className="flex-1 focus:outline-none  bg-transparent focus:bg-transparent dark:text-gray-200"
+                className="flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
                 type="text"
                 placeholder="Correo electrónico"
                 {...register("email", {
@@ -181,13 +195,14 @@ export default function Home() {
 
             <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2">
               <div
-                className={`relative flex flex-wrap text-sm border btn p-3 ps-6 ${errors.password
+                className={`relative flex flex-wrap text-sm ${errors.password
                   ? "text-red-600 border-red-400"
                   : "text-gray-600 border-gray-400 dark:text-gray-400"
                   } container-fluid`}
               >
                 <input
-                  className="flex-1 focus:outline-none bg-transparent focus:bg-transparent dark:text-gray-200"
+                  disabled={isLoading}
+                  className="flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
                   type="password"
                   placeholder="Contraseña"
                   {...register("password", {
@@ -206,13 +221,14 @@ export default function Home() {
                 )}
               </div>
               <div
-                className={`relative flex flex-wrap text-sm border btn p-3 ps-6 ${errors.repass
+                className={`relative flex flex-wrap text-sm ${errors.repass
                   ? "text-red-600 border-red-400"
                   : "text-gray-600 border-gray-400 dark:text-gray-400"
                   } container-fluid`}
               >
                 <input
-                  className="flex-1 focus:outline-none bg-transparent focus:bg-transparent dark:text-gray-200"
+                  disabled={isLoading}
+                  className="flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
                   type="password"
                   placeholder="Confirmar contraseña"
                   {...register("repass", {
@@ -237,13 +253,14 @@ export default function Home() {
             </section>
           </div>
           <button
+            disabled={isLoading}
             className="mt-4 py-3 px-4 w-full font-bold text-white bg-gray-900 btn hover:bg-gray-950 dark:bg-purple-500 dark:hover:purple-600"
             type="submit"
           >
-            Registrar cuenta
+            {isLoading ? <IconLoading height={20} className="text-white" /> : 'Registrar cuenta'}
           </button>
           <div className="text-center mt-4 text-sm font-semibold text-gray-400 align-baseline dark:text-gray-300">
-            <p>¿Ya tienes una cuenta?</p>
+            <p>¿Tienes una cuenta?</p>
             <Link
               title="Ir a la página para iniciar sesión"
               href={"/auth/login"}

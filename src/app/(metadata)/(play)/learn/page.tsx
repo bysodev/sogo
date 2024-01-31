@@ -11,8 +11,8 @@ export default function Learn() {
   const router = useRouter();
 
   return (
-    <div className="grid place-content-center place-items-center">
-      <div className=" w-9/12 bg-sky-600 grid grid-flow-col rounded-lg bg-opacity-90 mt-10">
+    <div className="grid lg:p-10">
+      <div className=" w-full bg-sky-600 grid grid-flow-col rounded-lg bg-opacity-90">
         <div className="p-2">
           <div className="w-fit m-2 p-1 bg-white text-sky-600 text-center rounded-md  ">
             <h5>VOCABULARIO</h5>
@@ -32,12 +32,12 @@ export default function Learn() {
           </button>
         </div>
       </div>
-      <div className=" w-9/12 m-4 flex flex-wrap justify-center ">
+      <div className=" w-full m-4 flex flex-wrap justify-center ">
         {vocales.map((value) => (
           <GeneralCard key={value} />
         ))}
       </div>
-      <div className=" w-9/12 bg-sky-600 grid grid-flow-col rounded-lg bg-opacity-90">
+      <div className=" w-full bg-sky-600 grid grid-flow-col rounded-lg bg-opacity-90">
         <div className="p-2">
           <div className="w-fit m-2 p-1 bg-white text-sky-600 text-center rounded-md  ">
             <h5>NUMEROS</h5>
@@ -58,7 +58,7 @@ export default function Learn() {
         </div>
       </div>
 
-      <div className=" w-9/12 m-4 flex flex-wrap justify-center ">
+      <div className=" w-full m-4 flex flex-wrap justify-center ">
         {numeros.map((value) => (
           <GeneralCard key={value} />
         ))}

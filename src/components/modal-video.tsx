@@ -14,16 +14,17 @@ interface ModalVideoProps {
   thumbHeight: number
   thumbAlt: string
   video: string
-  videoWidth: number
-  videoHeight: number
 }
 
 const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  boxShadow: 24,
+  position: 'absolute',
+  top: { xs: 0, sm: '50%' },
+  left: { xs: 0, sm: '50%' },
+  transform: { sm: 'translate(-50%, -50%)' },
+  width: { xs: '80%', md: '60%' },
+  height: { xs: '80%', md: '60%' },
+  overflow: 'auto',
+  background: 'white',
 };
 
 export default function ModalVideo({
@@ -32,8 +33,6 @@ export default function ModalVideo({
   thumbHeight,
   thumbAlt,
   video,
-  videoWidth,
-  videoHeight,
 }: ModalVideoProps) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -77,7 +76,7 @@ export default function ModalVideo({
       >
         <Fade in={open}>
           <Box sx={style}>
-            <video ref={videoRef} width={videoWidth} height={videoHeight} loop controls autoPlay>
+            <video ref={videoRef} className='h-full w-full object-cover' loop controls autoPlay>
               <source src={video} type="video/mp4" />
               Your browser does not support the video tag.
             </video>

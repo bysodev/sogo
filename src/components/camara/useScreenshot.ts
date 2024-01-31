@@ -1,31 +1,8 @@
 import { useState } from 'react';
 
-const useScreenshot = (
-  webcamRef: any,
-  canvasRef: any,
-  hiddenCanvasRef: any
-) => {
+const useScreenshot = (webcamRef: any, hiddenCanvasRef: any) => {
   const [screenshotUrl, setScreenshotUrl] = useState<string | null>(null);
-  const drawRectangle = () => {
-    const canvas = canvasRef.current;
-    const context = canvas?.getContext('2d');
-    if (context && canvas) {
-      // Calcula las dimensiones del cuadrado
-      const squareSize = Math.min(canvas.width, canvas.height) / 4;
-      const x = (canvas.width - squareSize) / 8;
-      const y = (canvas.height - squareSize) / 2;
-      // Dibuja el cuadrado
-      context.strokeStyle = 'purple'; // Establece el color del borde a verde
-      context.lineWidth = 5; // Establece el ancho del borde
-      context.clearRect(0, 0, canvas.width, canvas.height); // Limpia cualquier dibujo anterior en todo el canvas
-      // Aplica el efecto de neón
-      context.shadowColor = 'white';
-      context.shadowBlur = 10;
-      context.shadowOffsetX = 0;
-      context.shadowOffsetY = 0;
-      context.strokeRect(x, y, squareSize, squareSize); // Dibuja el borde del cuadrado
-    }
-  };
+
   const captureScreenshot = () => {
     if (webcamRef.current && hiddenCanvasRef.current) {
       const screenshotDataUrl = webcamRef.current.getScreenshot();
@@ -35,8 +12,8 @@ const useScreenshot = (
         const context = canvas?.getContext('2d');
         if (canvas && context) {
           // Calcula las dimensiones del cuadrado
-          const squareSize = Math.min(canvas.width, canvas.height) / 4;
-          const x = (canvas.width - squareSize) / 8;
+          const squareSize = Math.min(canvas.width, canvas.height) / 3;
+          const x = (canvas.width - squareSize) / 2;
           const y = (canvas.height - squareSize) / 2;
           // Calcula las dimensiones para mantener la relación de aspecto original de la imagen
           const aspectRatio = image.width / image.height;
@@ -55,7 +32,6 @@ const useScreenshot = (
           const squareCanvas = document.createElement('canvas');
           squareCanvas.width = squareSize;
           squareCanvas.height = squareSize;
-          console.log(squareSize);
           const squareContext = squareCanvas.getContext('2d');
           // Obtiene los datos de la imagen del cuadrado en el canvas original
           const imageData = context.getImageData(x, y, squareSize, squareSize);
@@ -71,6 +47,6 @@ const useScreenshot = (
       image.src = screenshotDataUrl;
     }
   };
-  return { screenshotUrl, captureScreenshot, drawRectangle };
+  return { screenshotUrl, captureScreenshot };
 };
 export default useScreenshot;

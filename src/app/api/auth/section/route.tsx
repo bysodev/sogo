@@ -11,7 +11,7 @@ export async function GET() {
         Accept: 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded'
     })
-    myHeaders.append('Authorization', `Bearer ${session?.accessToken}`)
+    myHeaders.append('Authorization', `Bearer ${session?.user.accessToken}`)
     try {
         const response = await fetch(`${url}/section/get/levelstage`, {
             method: 'GET',

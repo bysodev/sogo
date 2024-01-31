@@ -12,18 +12,18 @@ export default function ChallengesPage() {
 
 
   useEffect(() => {
-    if (session?.accessToken !== undefined) {
+    if (session?.user.accessToken !== undefined) {
       (
         async () => {
-          // console.log(`Este es el token: ${session?.accessToken}`)
-          const respuesta: CardChallengesCategoryProps | null = await getChallengesByCategory(session?.accessToken)
+          // console.log(`Este es el token: ${session?.user.accessToken}`)
+          const respuesta: CardChallengesCategoryProps | null = await getChallengesByCategory(session?.user.accessToken)
           if (respuesta)
             setChallenge(respuesta)
         }
       )()
     }
 
-  }, [session?.accessToken])
+  }, [session?.user.accessToken])
   return <>
     <div className="flex flex-wrap gap-10 tems-center justify-center h-screen">
       {challenge && <ChallengeCard key={EnumCategory.PALABRAS} category={EnumCategory.PALABRAS} details={challenge[EnumCategory.PALABRAS]} title={'PALABRAS'} />}

@@ -8,10 +8,46 @@
 @import './additional-styles/toggle-switch.css';
 @import './additional-styles/theme.css';
 
+@layer components {
+  /* Add your custom styles for disabled inputs and buttons here */
+  input:disabled {
+    @apply bg-gray-50 cursor-not-allowed;
+  }
+  .dark input:disabled {
+    @apply bg-gray-800;
+  }
+}
+
 @layer utilities {
   .rtl {
     direction: rtl;
   }
+}
+
+.frame::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(7px);
+  /* Replace '50px' with your actual canvasSize value */
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(50% - 50px),
+    calc(50% + 50px) calc(50% - 50px),
+    calc(50% + 50px) calc(50% + 50px),
+    100% calc(50% + 50px),
+    100% 100%,
+    0 100%,
+    0 calc(50% + 50px),
+    calc(50% - 50px) calc(50% + 50px),
+    calc(50% - 50px) calc(50% - 50px),
+    0 calc(50% - 50px)
+  );
 }
 
 body {

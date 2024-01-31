@@ -1,132 +1,114 @@
 'use client'
-
 import { DetailsChallengeApi, EnumCategory, EnumDifficulty } from '@/lib/types/challenge';
 import { FormControl, FormHelperText, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
 import { useCallback, useEffect, useState } from 'react';
+import { FaQuestion } from "react-icons/fa";
 import { Striped } from '../progress/Striped';
 import ModalDetalles from './ModalDetalles';
 
-export function ChallengeCard( {details, title, category}: {details:  Array<DetailsChallengeApi>, title: string, category: EnumCategory}){
-    // const router = useRouter();
+export function ChallengeCard({ details, title, category }: { details: Array<DetailsChallengeApi>, title: string, category: EnumCategory }) {
     const [select, setSelect] = useState<EnumDifficulty>(EnumDifficulty.FACIL);
     const [detalle, setDetalle] = useState<DetailsChallengeApi>();
     const [modal, setModal] = useState(false);
 
-    // const assignChallenge = zustandStore((state) => state.assignChallenge);
+    const StyledMenuItem = styled(MenuItem)(() => ({
+        '&.Mui-selected': { // This targets the selected menu item
+            backgroundColor: 'light', // Change this to your preferred color
+            '&:hover': {
+                backgroundColor: '#dde5ff', // Change this to your preferred color
+            },
+        },
+        padding: '0.5rem 1rem',
+    }));
+
+    const theme = createTheme({
+        components: {
+            MuiMenu: {
+                styleOverrides: {
+                    list: { // This targets the ul element
+                        backgroundColor: '#fff', // Change this to your preferred color
+                        margin: '0',
+                        border: '1px solid #e5e7eb',
+                    },
+                },
+            },
+        },
+    });
 
     const handleDetalis = useCallback((dificultad: EnumDifficulty): DetailsChallengeApi | undefined => {
-        return details.find( (detail:DetailsChallengeApi) => detail.dificultad == dificultad );
+        return details.find((detail: DetailsChallengeApi) => detail.dificultad == dificultad);
     }, [details]);
 
     const obtenerProgreso = useCallback((): number => {
         if (detalle?.progreso)
-            return ( detalle?.progreso / detalle?.total ) * 100 
+            return (detalle?.progreso / detalle?.total) * 100
         return 0;
     }, [detalle]);
 
-    useEffect(() => { 
-        let temporal = handleDetalis( select );
-        if( temporal )
-            setDetalle( temporal )
+    useEffect(() => {
+        let temporal = handleDetalis(select);
+        if (temporal)
+            setDetalle(temporal)
     }, [select, handleDetalis])
 
-    const handleChange = (event: SelectChangeEvent) => {
-        setSelect( event.target.value as EnumDifficulty )
-    }
+    const handleChange = useCallback((event: SelectChangeEvent) => {
+        setSelect(event.target.value as EnumDifficulty)
+    }, []);
 
-    const handleModal = (): void => {
-        setModal( false )
-    }
+    const handleModal = useCallback((): void => {
+        setModal(false)
+    }, []);
 
-    return <div className='h-72 w-2/3'>
-        <div className='flex flex-row justify-between h-full w-full rounded-2xl bg-sky-700 transition-all duration-700 ease-out p-4'>
-            <div className='w-2/3 grid items-center'>
-                <div className='w-full space-y-4'>
-                    <p className='text-xl font-bold text-white'>{title}</p>
-                    <Striped progreso={ obtenerProgreso() } puntos={detalle?.progreso} total={detalle?.total} />
+    return (
+        <div className={`${category === "PALABRAS" ? "bg-purple-500" : "bg-indigo-500"} gap-4 flex flex-row justify-between h-full w-full rounded-2xl transition-all duration-700 ease-out p-8 px-6`}>
+            <div className='w-full grid items-center gap-4'>
+                <div className='block'>
+                    <p className='text-2xl font-bold text-white'>Categoría: {title.charAt(0).toUpperCase() + title.slice(1).toLowerCase()}</p>
+                    <Striped gradientColor1={category === "PALABRAS" ? '#e6b4ff' : '#bbbcf1'} gradientColor2={category === "PALABRAS" ? '#caa6ea' : '#8a8cf1'} progreso={obtenerProgreso()} puntos={detalle?.progreso} total={detalle?.total} />
                 </div>
-                <div className="flex justify-around">
-                    <button
-                        className='p-2 bg-white text-sky-700 font-bold rounded-md hover:bg-inherit hover:text-white'
-                        color='inherit'
-                        onClick={() => {
-                            console.log('COMENZAR')
-                        }}
-                     
-                    >
+                <div className='flex justify-between'>
+                    <button type='button' title='Comenzar reto' className={`${category === "PALABRAS" ? "text-purple-500" : "text-indigo-500"} p-2 px-4 bg-white font-bold rounded-xl hover:bg-opacity-80 leading-none`}>
                         COMENZAR
                     </button>
-                    <button
-                        className='p-2 bg-white text-sky-700 font-bold rounded-md hover:bg-inherit hover:text-white'
-                        onClick={() => {
-                            console.log('DETALLES')
-                            setModal(true)
-                        }}
-                    >
-                        DETALLES
-                    </button>
-                    <ModalDetalles key={category} open={modal} handleClose={handleModal} category={category} />
-                </div>
-            </div>
-
-            <div className='w-1/3 flex flex-col justify-between'>
-                <FormControl sx={{ minWidth: 120 }} size="small">
-                {/* <FormControl className="bg-transparent" size="small"> */}
-                    <Select
-                        className='bg-white'
-                        value={select}
-                        onChange={handleChange}
-                        displayEmpty
-                        inputProps={{ 'aria-label': 'Without label' }}
-                    >
-                    <MenuItem value={EnumDifficulty.FACIL}>Facil</MenuItem>
-                    <MenuItem value={EnumDifficulty.MEDIO}>Medio</MenuItem>
-                    <MenuItem value={EnumDifficulty.DIFICIL}>Dificil</MenuItem>
-                    </Select>
-                    <FormHelperText>Dificultad</FormHelperText>
-                </FormControl>
-
-                <div className='flex justify-end'>
-                    <div className='flex bg-white bg-opacity-20 p-2 rounded-md'>
-                        <span className='font-bold text-xl text-white'>{detalle?.puntos} EXP</span>
+                    <div className='flex justify-end'>
+                        <div className='flex bg-white bg-opacity-20 p-2 rounded-md'>
+                            <span className='font-bold text-lg text-white'>{detalle?.puntos} EXP</span>
+                        </div>
                     </div>
                 </div>
             </div>
-       
-        </div>
-  </div>
-}
-
-  {/* <div> 
-                <header className="text-center text-xl font-extrabold text-gray-600">{fecha_creation}</header>
-
-                <div>
-                    <p className="text-center text-3xl font-extrabold text-gray-900">#{props.number} {props.name}</p>
-                    <p className="text-center text-1xl font-extrabold text-gray-400">Max. Tiempo: {`${props.minutes_max}:${props.seconds_max} m/s`}</p>
-                    <p className="text-center text-1xl font-extrabold text-gray-400">Max. Fallas: {props.fails_max}</p>
-                    <p className="text-center text-1xl font-extrabold text-gray-400">{props.points} points</p>
-                </div>
-                <div>
-                    <Striped progreso={75} />
-                </div>
-
-                <footer className="mb-10 flex justify-center">
-                    <button 
-                        className={`flex items-baseline gap-2 rounded-lg ${  (props.difficulty_id == 2) ? 'bg-purple-600' : 'bg-emerald-600' }  px-4 py-2.5 text-xl font-bold text-white hover:bg-[#FF7308]`}
+            <div className='w-1/3 flex flex-col justify-between'>
+                <div className="flex justify-end">
+                    <button
+                        className={`p-2 bg-white ${category === "PALABRAS" ? "text-purple-500" : "text-indigo-500"} font-bold rounded-md hover:bg-opacity-80`}
                         onClick={() => {
-                            assignChallenge(props)
-                            router.push('/challenge/start')
+                            setModal(true)
                         }}
                     >
-                        <span>Start</span>
-                        <i className="fas fa-hand-peace text-xl"></i>
+                        <FaQuestion />
                     </button>
-                </footer>
+                    <ModalDetalles key={category} open={modal} handleClose={handleModal} category={category} />
+                </div>
+                <ThemeProvider theme={theme}>
+
+                    <FormControl sx={{ minWidth: 50 }} size="small">
+                        <FormHelperText className="!text-white !font-semibold !m-0 !text-end !text-sm !font-inter">Dificultad:</FormHelperText>
+                        <Select
+                            className={`${category === "PALABRAS" ? "!text-purple-500" : "!text-indigo-500"} !font-semibold bg-white text !rounded-xl`}
+                            value={select}
+                            onChange={handleChange}
+                            displayEmpty
+                            inputProps={{ 'aria-label': 'Without label' }}
+                        >
+                            <StyledMenuItem value={EnumDifficulty.FACIL}>Facil</StyledMenuItem>
+                            <StyledMenuItem value={EnumDifficulty.MEDIO}>Medio</StyledMenuItem>
+                            <StyledMenuItem value={EnumDifficulty.DIFICIL}>Dificil</StyledMenuItem>
+                        </Select>
+                    </FormControl>
+                </ThemeProvider>
             </div>
-            <div>
-                <div className={`inline-flex text-sm font-semibold py-1 px-3 m-2  ${ ( props.difficulty_id == 2) ? 'text-purple-600 bg-purple-200' : 'text-emerald-600 bg-emerald-200' }  rounded-full mb-4`}>{props.difficulty_name}</div>
-                { 
-                    props.end_points != null && <p className={`text-center text-1xl font-extrabold  ${  (props.difficulty_id == 2) ? 'text-purple-600' : 'text-emerald-600' }`}>{props.end_points} points</p>
-                }
-                
-            </div> */}
+        </div>
+    )
+
+}

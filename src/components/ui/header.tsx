@@ -18,6 +18,18 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
   }
 
   useEffect(() => {
+    if (navbar) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [navbar]);
+
+  useEffect(() => {
+    setNavbar(false);
+  }, [pathname]);
+
+  useEffect(() => {
     scrollHandler()
     window.addEventListener('scroll', scrollHandler)
     return () => window.removeEventListener('scroll', scrollHandler)
@@ -65,10 +77,10 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
                   </a>
                 </li>
               </ul>
-              <div className="text-gray-800 hover:text-purple-600 dark:text-white font-medium w-full mt-3 grid sm:flex gap-2 sm:gap-4 items-center md:hidden p-4 rounded text-center">
+              <div className="text-gray-800 dark:text-white font-medium w-full mt-3 grid sm:flex gap-2 sm:gap-4 items-center md:hidden p-4 rounded text-center">
                 <BsFillMoonStarsFill
                   onClick={toggleDarkMode}
-                  className="cursor-pointer hidden sm:block md:hidden flex-none"
+                  className="hover:text-purple-600  cursor-pointer hidden sm:block md:hidden flex-none"
                 />
                 <Link
                   className="text-gray-800 border-2 border-gray-950 hover:text-purple-600 dark:text-white dark:border-white dark:hover:text-purple-400 rounded-full p-2 sm:flex-1 w-full sm:w-1/2"

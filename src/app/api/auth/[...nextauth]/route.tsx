@@ -51,30 +51,43 @@ const authOptions = {
     rollingSession: false,
   },
   callbacks: {
-    jwt: async ({ token, user }: any) => {
+    jwt: async ({ token, user, trigger, session }: any) => {
+      if (trigger === "update") {
+        // Aquí puedes actualizar el nombre y el token
+        token.name = session.user.name;
+        token.image = session.user.image;
+        token.accessToken = session.user.accessToken;
+        return token;
+      }
       if (user) {
         token.name = user.username;
+        token.image = user.image;
         token.accessToken = user.accessToken;
       }
       return token;
     },
     session: async ({ session, token }: any) => {
       if (token) {
-        session.accessToken = token.accessToken;
+        // Aquí puedes actualizar el nombre y el token
+        session.user.name = token.name;
+        session.user.image = token.image;
+        session.user.accessToken = token.accessToken;
       }
       return session;
     },
     signIn: async ({ user, account }: any) => {
       if (account.provider === 'google' || account.provider === 'github') {
-        const { name, email, id } = user;
+        const { name, email, id, image } = user;
         const response = await fetch(
-          `${process.env.NEXTAUTH_URL}/api/auth/user/`,
+          `${process.env.NEXTAUTH_URL}/api/auth/user/provider`,
           {
-            method: 'PUT',
+            method: 'POST',
             body: JSON.stringify({
               username: name,
               password: id,
               email: email,
+              image: image,
+              provider: account.provider,
             }),
             headers: {
               Accept: 'application/json',
@@ -82,11 +95,13 @@ const authOptions = {
             },
           }
         );
-
         const userData = await response.json();
-        console.log(userData);
+        if (response.status === 201) {
+          user.accessToken = userData.accessToken;
+          return true;
+        }
       }
-      return true;
+      return false;
     },
   },
 };
