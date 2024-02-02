@@ -59,7 +59,8 @@ const LevelStage = () => {
   };
   let buttonIndex = 0;
   return (
-    <div className='lg:py-10 px-6'>
+    <div className='lg:py-4 px-4'>
+      <h1 className="rounded-xl border-2 p-1 font-bold text-2xl text-center text-gray-500 mb-4">Lecciones</h1>
       <h1 className='text-gray-500 font-bold text-xl border-b-2 p-5 lg:p-0'>Las lecciones se basan en señas estáticas</h1>
       {isLoading ? (
         <p>Cargando...</p>

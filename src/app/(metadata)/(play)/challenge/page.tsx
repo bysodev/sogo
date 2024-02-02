@@ -13,7 +13,8 @@ export default function ChallengesPage() {
   if (error) return <div>Failed to load</div>
 
   return (
-    <div className="grid gap-10 w-full lg:py-10 px-6">
+    <div className="grid gap-4 w-full lg:py-4 px-4">
+      <h1 className="rounded-xl border-2 p-1 font-bold text-2xl text-center text-gray-500">Retos</h1>
       {Object.entries(challenge).map(([category, details]) => (
         <ChallengeCard key={category} category={category as EnumCategory} details={details} title={category.toUpperCase()} />
       ))}

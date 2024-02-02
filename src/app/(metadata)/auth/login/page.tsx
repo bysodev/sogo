@@ -37,7 +37,6 @@ export default function LoginPage() {
     });
     if (!response?.ok)
       showErrorToast(response?.error)
-
     if (response?.status === 200) {
       showSuccessToast('Iniciaste sesión correctamente')
       reset();

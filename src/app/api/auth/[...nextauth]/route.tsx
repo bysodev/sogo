@@ -100,6 +100,10 @@ const authOptions = {
           user.accessToken = userData.accessToken;
           return true;
         }
+      } else if (account.provider === 'credentials') {
+        if (user) {
+          return true;
+        }
       }
       return false;
     },
