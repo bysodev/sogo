@@ -14,23 +14,23 @@ const Tooltip = ({ text, children }: { text: any; children: any }) => {
   };
 
   return (
-    <section className="absolute end-0 me-2">
-      <div
-        className="text-red-500 relative grid place-items-center"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        {children}
-        {isTooltipVisible && (
+    <div
+      className="absolute end-4 grid bottom-1/2 translate-y-1/2 z-10"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {children}
+      {isTooltipVisible && (
+        <div className="text-red-500 relative grid place-items-center">
           <div
             ref={tooltipRef}
-            className="-mt-16 right-0 sm:right-auto absolute px-4 py-2 border border-blue-gray-50 bg-white z-10 hadow-sm shadow-black/10 rounded-full"
+            className="right-0 mr-6 -mt-5 lg:-mt-20 lg:right-auto absolute px-4 py-2 border border-blue-gray-50 bg-white shadow-sm shadow-black/10 rounded-full"
           >
             <p className="font-semibold text-sm whitespace-nowrap">{text}</p>
           </div>
-        )}
-      </div>
-    </section>
+        </div>
+      )}
+    </div>
   );
 };
 

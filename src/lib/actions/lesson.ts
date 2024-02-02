@@ -1,3 +1,4 @@
+const url = process.env.NEXT_PUBLIC_API_BACKEND;
 export async function PredictSign(
   category: string,
   image: string,
@@ -18,11 +19,11 @@ export async function PredictSign(
   });
 
   try {
-    const res = await fetch(`http://127.0.0.1:8000/user/lesson/predict`, {
+    const res = await fetch(`${url}/user/lesson/predict`, {
+      credentials: 'include',
       method: 'POST',
       headers: myHeaders,
       body: raw,
-      credentials: 'include',
       redirect: 'follow',
     });
     return res;

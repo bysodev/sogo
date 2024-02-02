@@ -9,6 +9,15 @@ const config: Config = {
   darkMode: 'class',
   theme: {
     extend: {
+      maxHeight: {
+        screen: '100dvh',
+      },
+      minHeight: {
+        screen: '100dvh',
+      },
+      height: {
+        screen: '100dvh',
+      },
       boxShadow: {
         xs: '0 0 0 1px rgba(0, 0, 0, 0.16)',
         sm: '0 1px 2px 0 rgba(0, 0, 0, 0.16)',
@@ -95,11 +104,6 @@ const config: Config = {
       },
     },
   },
-  // purge: {
-  //   options: {
-  //     safelist: ['lg:ms-52', 'lg:ms-16'],
-  //   },
-  // },
   plugins: [],
 };
 export default config;

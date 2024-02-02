@@ -1,36 +1,46 @@
 import { default as LinearProgress, linearProgressClasses } from '@mui/material/LinearProgress';
 import { styled } from '@mui/material/styles';
+import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
-
+import { HiHeart, HiX } from 'react-icons/hi';
+// Styled component for customizing the LinearProgress component
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
-    height: 10,
-    borderRadius: 5,
+    height: 20,
+    borderRadius: 10,
     [`&.${linearProgressClasses.colorPrimary}`]: {
-      backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
+        backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
     },
     [`& .${linearProgressClasses.bar}`]: {
-      borderRadius: 5,
-      backgroundColor: theme.palette.mode === 'light' ? '#756AB6' : '#308fe8',
+        borderRadius: 10,
+        backgroundImage: theme.palette.mode === 'light' ? 'repeating-linear-gradient(45deg, #caa6ea  0, #caa6ea  20px, #9333ea 20px, #9333ea 40px)' : '#308fe8',
     },
-  }));
+}));
 
-export const Progressbar = ({porcentaje, setDrawer}: {porcentaje: number, setDrawer: Dispatch<SetStateAction<boolean>>}) => {
-    // let wid = `h-5 bg-slate-600 w-${porcentaje}`
+// Progressbar component
+export const Progressbar = ({ porcentaje, setDrawer, totalTry }: { porcentaje: number, setDrawer: Dispatch<SetStateAction<boolean>>, totalTry: number }) => {
+    const { push } = useRouter();
     return (
-    <div className='w-full flex place-content-center items-center'>
-        <div className='flex items-center gap-4 w-4/5'>
-            <button 
-                onClick={() =>{
-                    setDrawer(true)
-                }}
-                className=""
-            >
-                <span>X</span>
-            </button>
+        <div className='w-full flex gap-5 items-center py-8 px-4 lg:px-16'>
+            <div className='flex gap-2 items-center'>
+                <HiHeart color="#9333ea" size={30} />
+                <span className='text-purple-600 font-bold leading-none'>{totalTry}</span>
+            </div>
             <div className='w-full'>
                 <BorderLinearProgress variant="determinate" value={porcentaje} />
             </div>
+            <button
+                title='Cerrar'
+                type='button'
+                onClick={() => {
+                    porcentaje === 0 ? push('/lesson') : setDrawer(true);
+                }}
+            >
+                <HiX
+                    color="#afafaf"
+                    size={26}
+                />
+            </button>
+
         </div>
-    </div>
     );
 }

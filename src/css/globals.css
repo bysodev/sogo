@@ -8,19 +8,75 @@
 @import './additional-styles/toggle-switch.css';
 @import './additional-styles/theme.css';
 
+@layer components {
+  /* Add your custom styles for disabled inputs and buttons here */
+  input:disabled {
+    @apply bg-gray-50 cursor-not-allowed;
+  }
+  .dark input:disabled {
+    @apply bg-gray-800;
+  }
+}
+
 @layer utilities {
   .rtl {
     direction: rtl;
   }
 }
 
+.frame::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(7px);
+  /* Replace '50px' with your actual canvasSize value */
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(50% - 50px),
+    calc(50% + 50px) calc(50% - 50px),
+    calc(50% + 50px) calc(50% + 50px),
+    100% calc(50% + 50px),
+    100% 100%,
+    0 100%,
+    0 calc(50% + 50px),
+    calc(50% - 50px) calc(50% + 50px),
+    calc(50% - 50px) calc(50% - 50px),
+    0 calc(50% - 50px)
+  );
+}
+
+body {
+  height: 100dvh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  transition: all 0.3s ease 0s;
+}
+
+.nav-link .active {
+  border: 2px solid #9333ea !important;
+  background-color: rgba(147, 51, 234, 0.1) !important;
+  color: #9333ea !important;
+}
 @media (min-width: 1024px) {
-  .lg\:ms-52 {
-    margin-inline-start: 13rem /* 208px */;
+  .lg\:ms-72 {
+    margin-inline-start: 18rem /* 208px */;
   }
 
-  .lg\:ms-16 {
-    margin-inline-start: 4rem /* 64px */;
+  .lg\:ms-24 {
+    margin-inline-start: 6rem /* 96px */;
   }
 }
 
@@ -29,6 +85,11 @@
   color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
   --tw-bg-opacity: 1;
   background-color: rgb(31 41 55 / var(--tw-bg-opacity)) !important;
+}
+
+.MuiPaper-root.MuiPaper-elevation.MuiPopover-paper {
+  background-color: transparent !important;
+  box-shadow: none !important;
 }
 
 .MuiPaper-roott:before {

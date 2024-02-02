@@ -1,65 +1,103 @@
+"use client"
+import Tooltip from '@mui/material/Tooltip';
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-import React from "react";
+import { usePathname } from 'next/navigation';
+import React, { useEffect, useState } from "react";
 import { BiSolidLogOut } from "react-icons/bi";
 import { FaBookBookmark, FaGraduationCap, FaUser } from "react-icons/fa6";
-import { HiXCircle } from "react-icons/hi";
 import { MdSpaceDashboard } from "react-icons/md";
 import IconLogo from "./icons/logo";
 
-const SideNavbar: React.FC<{ isOpen: boolean; onToggle: () => void }> = ({ isOpen, onToggle }) => {
-    const menus = [
-        { name: "Inicio", link: "/", icon: MdSpaceDashboard },
-        { name: "Cuenta", link: "/profile", icon: FaUser },
+interface Menu {
+    name: string;
+    link: string;
+    icon: React.ElementType;
+    logout?: boolean;
+}
+
+const SideNavbar: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
+    const pathname = usePathname()
+    const [currentPath, setCurrentPath] = useState<string>("");
+
+    useEffect(() => {
+        setCurrentPath(pathname);
+    }, [pathname]);
+
+    const menus: Menu[] = [
         { name: "Aprendizaje", link: "/learn", icon: FaGraduationCap },
         { name: "Lecciones", link: "/lesson", icon: FaBookBookmark },
+        { name: "Retos", link: "/challenge", icon: MdSpaceDashboard },
+        { name: "Perfil", link: "/profile", icon: FaUser },
         { name: "Cerrar Sesión", link: "/", icon: BiSolidLogOut, logout: true },
     ];
-    const handleToggle = () => {
-        onToggle(); // Llama a la función de devolución de llamada del componente padre
-    };
 
     return (
-        <section
-            className={`hidden lg:flex fixed flex-col gap-6 bg-gray-900 min-h-screen duration-300 text-gray-100 p-4 overflow-hidden ${isOpen ? "w-52" : "w-16"}`}
-        >
-            <div className="py-6 gap-8 flex justify-center items-center">
-                <div className={`flex items-center gap-2 duration-100 ${!isOpen && "opacity-0 translate-x-28 overflow-hidden"}`}>
-                    <IconLogo width={30} height={30} />
-                    <h1 className="whitespace-pre text-xl font-semibold">oGo Sign</h1>
-                </div>
-                <HiXCircle
-                    size={26}
-                    className={`cursor-pointer duration-300 ${!isOpen && "absolute rotate-[225deg]"}`}
-                    onClick={() => handleToggle()}
-                />
-            </div>
-            <div className="grid gap-4 lg:gap-8">
-                {menus?.map((menu, i) => (
-                    <Link
-                        href={menu?.link}
-                        key={i}
-                        className={`${!isOpen && "w-fit"} ${menu?.icon && "gap-3.5"} ${menu?.logout && "lg:mt-[calc(100vh-28rem)]"}  flex items-center text-sm font-medium p-2 hover:bg-gray-800 rounded-md`}
-                        {...(menu?.logout && {
-                            onClick: () => {
-                                signOut()
-                            }
-                        })}
-                    >
-                        <div>{React.createElement(menu?.icon, { size: "20" })}</div>
-                        <h2
-                            style={{
-                                transitionDelay: `${menu?.logout ? 0 : (100 + i * 50)}ms`,
-                            }}
-                            className={`whitespace-pre duration-300 ${!isOpen && "opacity-0 translate-x-28 overflow-hidden"
-                                }`}
-                        >
-                            {menu?.name}
-                        </h2>
+        <section className={`hidden lg:block overflow-hidden relative p-4 xl:p-6 dark:bg-gray-900 min-h-screen duration-100 border-r-4 dark:text-gray-100 ${isOpen ? "w-72" : "w-24"}`}>
+            <div className={`fixed flex flex-col gap-6`}>
+                <div className={`gap-4 flex border-b-2 pb-4 ${isOpen ? "justify-between" : "justify-center"} items-center`}>
+                    <Link href={"/"} className="flex items-center duration-100">
+                        <IconLogo width={30} height={30} />
+                        <h1 className={`${!isOpen && "hidden"} whitespace-pre text-3xl font-bold mt-2 tracking-wider`}>oGo Sign</h1>
                     </Link>
-                ))}
+                </div>
+                <div className="grid gap-4 nav-link">
+                    {menus?.map((menu, i) => (
+                        <div key={i}>
+                            {!isOpen ? (
+                                <Tooltip title={menu.name} placement="right">
+                                    <Link
+                                        href={menu?.link}
+                                        className={`${menu?.icon && "gap-3.5"
+                                            } ${menu?.logout && "lg:mt-[calc(100vh-26rem)]"
+                                            }  flex items-center text-sm font-semibold p-3 hover:bg-gray-200 rounded-xl ${currentPath === menu?.link ? "active" : ""
+                                            }`}
+                                        {...(menu?.logout && {
+                                            onClick: () => {
+                                                signOut();
+                                            },
+                                        })}
+                                    >
+                                        <div>{React.createElement(menu?.icon, { size: "25" })}</div>
+                                        <h2
+                                            style={{
+                                                display: !isOpen ? "none" : "block",
+                                            }}
+                                            className="text-lg whitespace-pre duration-100 leading-none"
+                                        >
+                                            {menu?.name}
+                                        </h2>
+                                    </Link>
+                                </Tooltip>
+                            ) : (
+                                <Link
+                                    href={menu?.link}
+                                    className={`${menu?.icon && "gap-3.5"
+                                        } ${menu?.logout && "lg:mt-[calc(100vh-29rem)]"
+                                        }  flex items-center text-sm font-semibold p-3 hover:bg-gray-200 rounded-xl ${currentPath === menu?.link ? "active" : ""
+                                        }`}
+                                    {...(menu?.logout && {
+                                        onClick: () => {
+                                            signOut();
+                                        },
+                                    })}
+                                >
+                                    <div>{React.createElement(menu?.icon, { size: "25" })}</div>
+                                    <h2
+                                        style={{
+                                            display: !isOpen ? "none" : "block",
+                                        }}
+                                        className="text-lg whitespace-pre duration-100 leading-none"
+                                    >
+                                        {menu?.name}
+                                    </h2>
+                                </Link>
+                            )}
+                        </div>
+                    ))}
+                </div>
             </div>
-        </section>
+        </section >
     );
 };
 

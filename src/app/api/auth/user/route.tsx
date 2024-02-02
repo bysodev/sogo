@@ -6,8 +6,9 @@ export async function GET(request: Request) {
   const password = searchParams.get('password');
 
   if (!username || !password) {
-    return new Response('No se logro la petición', {
+    return new Response(JSON.stringify({ message: 'Error al verificar los parámetros requeridos' }), {
       status: 401,
+      headers: { 'Content-Type': 'application/json' },
     })
   }
   const myHeaders = new Headers({
@@ -31,12 +32,14 @@ export async function GET(request: Request) {
     if (response.status === 200) {
       return new Response(JSON.stringify(user), {
         status: 200,
+        headers: { 'Content-Type': 'application/json' },
       })
     }
-    return new Response(user.detail, { status: response.status })
+    return new Response(JSON.stringify({ detail: user.detail }), { status: response.status, headers: { 'Content-Type': 'application/json' } })
   } catch (error) {
-    return new Response('No se logro la petición', {
+    return new Response(JSON.stringify({ message: 'No se logro la petición' }), {
       status: 501,
+      headers: { 'Content-Type': 'application/json' },
     })
   }
 }
@@ -59,7 +62,8 @@ export async function POST(request: Request) {
       body: JSON.stringify({
         username,
         password,
-        email
+        email,
+        image: username,
       }),
       credentials: 'include',
       headers: myHeaders,
@@ -74,50 +78,6 @@ export async function POST(request: Request) {
     return new Response(data.detail, { status: response.status })
   } catch (error) {
     return new Response('Problemas con el servidor', {
-      status: 501,
-    })
-  }
-}
-
-// LOGIN OR REGISTER PROVIDER
-export async function PUT(request: Request) {
-  const { username, password, email } = await request.json()
-
-  if (!username || !password || !email) {
-    return new Response('No se logro la petición, faltan campos', {
-      status: 401,
-    })
-  }
-  console.log(JSON.stringify({
-    username,
-    password,
-    email
-  }))
-  const myHeaders = new Headers({
-    Accept: 'application/json',
-    'Content-Type': 'application/x-www-form-urlencoded'
-  })
-  try {
-    const response = await fetch(`${url}/user/loginProvider`, {
-      method: 'POST',
-      body: JSON.stringify({
-        username,
-        password,
-        email
-      }),
-      headers: myHeaders,
-      credentials: 'include',
-      redirect: 'follow'
-    })
-    const userData = await response.json()
-    if (response.status === 200) {
-      return new Response(JSON.stringify(userData), {
-        status: 200,
-      })
-    }
-    return new Response(userData.detail, { status: response.status })
-  } catch (error) {
-    return new Response('Error al procesar la solicitud', {
       status: 501,
     })
   }

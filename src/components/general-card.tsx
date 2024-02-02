@@ -9,14 +9,14 @@ export const GeneralCard = () => {
         alt="Letra A"
         width={100}
         height={100}
-        className="m-2 shadow"
+        className="m-2 shadow w-auto"
       />
       <Image
         src={A}
         alt="Letra A"
         width={100}
         height={100}
-        className="m-2 shadow"
+        className="m-2 shadow w-auto"
       />
     </div>
   );

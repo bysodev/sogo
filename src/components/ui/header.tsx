@@ -18,6 +18,18 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
   }
 
   useEffect(() => {
+    if (navbar) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [navbar]);
+
+  useEffect(() => {
+    setNavbar(false);
+  }, [pathname]);
+
+  useEffect(() => {
     scrollHandler()
     window.addEventListener('scroll', scrollHandler)
     return () => window.removeEventListener('scroll', scrollHandler)
@@ -38,60 +50,62 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
             </div>
             <div
               className={`flex-1 justify-self-center md:block md:pb-0 md:mt-0 ${navbar
-                ? "absolute start-0 bg-white w-full -z-10 top-0 justify-between flex flex-col dark:bg-gray-800 md:bg-transparent dark:md:bg-transparent px-16 py-20 text-center h-screen"
+                ? "absolute start-0 bg-white w-full -z-10 top-0 justify-around flex flex-col dark:bg-gray-800 md:bg-transparent dark:md:bg-transparent px-16 py-20 text-center h-[100dvh]"
                 : "hidden"
                 }`}
             >
 
-              <ul className="text-gray-800 hover:text-gray-950 dark:text-white items-center justify-center space-y-4 md:flex md:space-x-6 md:space-y-0 font-medium">
+              <ul className="text-gray-800 dark:text-white items-center justify-center space-y-4 md:flex md:space-x-6 md:space-y-0 font-medium text-xl md:text-base">
                 <li>
-                  <a onClick={() => setNavbar(false)} href="#features">
+                  <a className="hover:text-purple-600 dark:hover:text-purple-400" onClick={() => setNavbar(false)} href="#features">
                     Características
                   </a>
                 </li>
                 <li>
-                  <a onClick={() => setNavbar(false)} href="#about">
+                  <a className="hover:text-purple-600 dark:hover:text-purple-400" onClick={() => setNavbar(false)} href="#about">
                     Acerca de
                   </a>
                 </li>
                 <li>
-                  <a onClick={() => setNavbar(false)} href="#contact">
+                  <a className="hover:text-purple-600 dark:hover:text-purple-400" onClick={() => setNavbar(false)} href="#contact">
                     Contacto
                   </a>
                 </li>
                 <li>
-                  <a onClick={() => setNavbar(false)} href="#faq">
+                  <a className="hover:text-purple-600 dark:hover:text-purple-400" onClick={() => setNavbar(false)} href="#faq">
                     FAQ
                   </a>
                 </li>
               </ul>
-              <div className="text-gray-800 hover:text-gray-950 dark:text-white font-medium w-full mt-3 grid sm:flex gap-2 sm:gap-4 items-center md:hidden p-4 rounded text-center">
-                <BsFillMoonStarsFill
-                  onClick={toggleDarkMode}
-                  className="cursor-pointer hidden sm:block md:hidden flex-none"
-                />
+              <div className="text-gray-800 dark:text-white font-medium w-full mt-3 flex flex-col justify-center gap-2 sm:gap-4 md:hidden p-4 rounded text-center">
+                <div className="absolute bottom-10 left-10 border-gray-950 dark:border-white focus:text-dark dark:focus:text-white border-2 p-2 rounded-md block md:hidden">
+                  <BsFillMoonStarsFill
+                    onClick={toggleDarkMode}
+                    className="hover:text-purple-600  cursor-pointer"
+                  />
+                </div>
                 <Link
-                  className="text-gray-800 border-2 border-gray-950 hover:text-gray-950 dark:text-white dark:border-white rounded-full p-2 sm:flex-1 w-full sm:w-1/2"
+                  className="text-gray-800 border-2 border-gray-950 hover:text-purple-600 dark:text-white dark:border-white dark:hover:text-purple-400 rounded-full p-2 sm:flex-1 w-full"
                   href={`auth/login`}
                   rel="preload"
                 >
                   Iniciar Sesión
                 </Link>
-                <a
-                  href="#"
-                  className="btn-sm text-white bg-gray-900 hover:bg-gray-950 dark:bg-white dark:text-gray-900"
+                <Link
+                  href={'auth/register'}
+                  className="btn-sm text-white bg-gray-900 hover:bg-gray-950 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
                   aria-current="page"
                 >
                   Unirse
-                </a>
+                </Link>
               </div>
             </div>
             <div className="font-medium hidden gap-4 dark:text-white md:flex items-center">
-              <Link href={`auth/login`} rel="preload">
+              <Link className="text-gray-800 hover:text-purple-600 dark:text-white dark:hover:text-purple-400" href={`auth/login`} rel="preload">
                 Iniciar Sesión
               </Link>
               <Link
-                className="btn-sm text-white bg-gray-900 hover:bg-gray-950 dark:bg-white dark:text-gray-900"
+                className="btn-sm text-white bg-gray-900 hover:bg-gray-950 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
                 href={`auth/register`}
                 rel="preload"
               >
