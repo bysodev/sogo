@@ -1,14 +1,9 @@
 import { sendEmail } from '@/helpers/nodemailer';
 import { NextResponse } from 'next/server';
 
-// export async function GET (request: Request) {
-//   return NextResponse.json({ message: 'Fue bien' })
-// }
-
 export async function POST(request: Request) {
   const { username, email, token } = await request.json();
-  const link = `http://localhost:3000/auth/verify?token=${token}`;
-
+  const link = `${process.env.NEXT_PUBLIC_ROUTE_APP}/auth/verify?token=${token}`;
   try {
     await sendEmail(
       'validate-email',
@@ -19,12 +14,13 @@ export async function POST(request: Request) {
     );
     return NextResponse.json({
       ok: true,
-      message: 'Confirme su correo electronico',
+      message:
+        'Confirma tu correo electronico para continuar con el proceso de verficación',
     });
   } catch (e) {
     return NextResponse.json({
       ok: false,
-      message: 'Por favor hable con el administrador',
+      message: 'Error al procesar la solicitud',
     });
   }
 }

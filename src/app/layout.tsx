@@ -1,10 +1,11 @@
 'use client'
 
-import AuthProvider from "@/components/nextAuthProvider";
 import NavBar from "@/components/ui/header";
+import "@/css/globals.css";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { SessionProvider } from "next-auth/react";
 import { Inter } from 'next/font/google';
 import { useEffect, useState } from "react";
-import "./css/globals.css";
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -15,21 +16,17 @@ const inter = Inter({
   display: 'swap'
 })
 
-export default function RootLayout({
-  children,
-  Session
-}: {
-  children: React.ReactNode;
-  Session: any
-}) {
+
+export default function RootLayout({ children, session }: any) {
   useEffect(() => {
     AOS.init({
+      duration: 1000,
       once: true,
-      disable: 'phone',
-      duration: 700,
-      easing: 'ease-out-cubic',
-    })
-  })
+      easing: 'ease-in-out',
+      offset: 100,
+      mirror: false,
+    });
+  }, []);
 
   const [theme, setTheme] = useState('');
 
@@ -43,17 +40,19 @@ export default function RootLayout({
     window.localStorage.setItem('theme', newTheme);
     setTheme(newTheme);
   };
+
   return (
     <html lang="en">
       <body className={`${inter.variable} ${theme} font-inter antialiased tracking-tight relative`}>
-        <AuthProvider session={Session}>
-          <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white">
+        <SessionProvider session={session}>
+          <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip bg-white dark:bg-gray-950 text-gray-900 dark:text-white">
             <NavBar toggleDarkMode={switchTheme} theme={theme} />
-            <main className="grow">
+            <main className="grid grow">
               {children}
             </main>
           </div>
-        </AuthProvider>
+        </SessionProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
