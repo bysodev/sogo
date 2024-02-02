@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { memo } from 'react';
 import Webcam from 'react-webcam';
 
 /**
@@ -10,7 +11,7 @@ import Webcam from 'react-webcam';
  * @param {function} props.setFoto - Función para establecer la foto.
  * @returns {JSX.Element} - Elemento JSX que representa la cámara.
  */
-export default function Camara({ webcamRef, imagen, counter, setFoto }) {
+function Camara({ webcamRef, imagen, counter, setFoto }) {
   /**
    * Maneja el evento de hacer clic en el botón.
    */
@@ -46,3 +47,5 @@ export default function Camara({ webcamRef, imagen, counter, setFoto }) {
     </div>
   );
 }
+
+export default memo(Camara)

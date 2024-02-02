@@ -2,6 +2,7 @@
 
 import { DetailsChallengeApi, EnumCategory, EnumDifficulty } from '@/lib/types/challenge';
 import { FormControl, FormHelperText, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { Striped } from '../progress/Striped';
 import ModalDetalles from './ModalDetalles';
@@ -11,6 +12,7 @@ export function ChallengeCard( {details, title, category}: {details:  Array<Deta
     const [select, setSelect] = useState<EnumDifficulty>(EnumDifficulty.FACIL);
     const [detalle, setDetalle] = useState<DetailsChallengeApi>();
     const [modal, setModal] = useState(false);
+    const router = useRouter();
 
     // const assignChallenge = zustandStore((state) => state.assignChallenge);
 
@@ -51,6 +53,7 @@ export function ChallengeCard( {details, title, category}: {details:  Array<Deta
                         color='inherit'
                         onClick={() => {
                             console.log('COMENZAR')
+                            router.push(`/challenge/${category}/${detalle?.dificultad}`)
                         }}
                      
                     >
