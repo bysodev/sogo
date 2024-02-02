@@ -18,13 +18,9 @@ export default function Camara({
   setFoto,
   hiddenCanvasRef,
 }) {
-  /**
-   * Maneja el evento de hacer clic en el botón.
-   */
   const handleClick = () => {
     setFoto();
   };
-
   return (
     <div className="w-full h-auto relative overflow-hidden rounded-xl">
       <div className="w-full min-h-full">
@@ -101,7 +97,6 @@ export default function Camara({
           }}
         />
       </div>
-
       <div className="w-full h-full absolute overflow-hidden top-0 left-0 z-20">
         <button
           type="button"
