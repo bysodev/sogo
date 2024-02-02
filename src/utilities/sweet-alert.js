@@ -1,10 +1,11 @@
 import Swal from 'sweetalert2';
+let swalInstance = null;
 
 const Toast = Swal.mixin({
     toast: true,
     position: 'top-end',
     showConfirmButton: false,
-    timer: 2000,
+    timer: 3000,
     timerProgressBar: true,
     didOpen: (toast) => {
         toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -17,19 +18,29 @@ export const showErrorMessage = (text) => {
         icon: 'error',
         title: 'Ups...',
         text,
-        timer: 2000,
+        timer: 3000,
         showConfirmButton: false
     })
 }
 
-export const showSuccessMessage = (text) => {
-    Swal.fire({
+export const showSuccessMessage = (content) => {
+    swalInstance = Swal.fire({
         icon: 'success',
-        title: '¡Asombroso!',
-        text,
-        timer: 2000,
-        showConfirmButton: false
+        title: '¡Genial!',
+        showConfirmButton: false,
+        ...content
     })
+}
+export const updateSuccessMessage = (content) => {
+    if (swalInstance) {
+        swalInstance.update({
+            icon: 'success',
+            title: '¡Genial!',
+            ...content,
+            showConfirmButton: true,
+            confirmButtonText: 'Continuar'
+        });
+    }
 }
 
 export const showSuccessToast = (text) => {

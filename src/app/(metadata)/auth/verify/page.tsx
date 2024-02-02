@@ -1,15 +1,17 @@
 "use client"
+import IconLoading from "@/components/icons/IconLoading";
 import IconLogo from "@/components/icons/logo";
-import { showErrorMessage, showSuccessMessage } from "@/utilities/sweet-alert";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-const URL_BACKPYTHON = process.env.NEXT_PUBLIC_API_BACKEND;
+const URL = process.env.NEXT_PUBLIC_ROUTE_APP;
 
 async function getVerified(token: string) {
   try {
-    const response = await fetch(`${URL_BACKPYTHON}/user/verified?token=${token}`);
+    const response = await fetch(`${URL}/api/auth/user/verify?token=${token}`, {
+
+    }); // Include credentials in the request
     const data = await response.json();
     return { ok: response.status, message: data.detail };
   } catch (e) {
@@ -35,15 +37,12 @@ export default function Verify() {
       .then((response) => {
         if (response.ok === 200) {
           setVerified(true);
-          showSuccessMessage(response.message);
         } else if (response.ok === 401) {
-          setVerified(false);
-          setTokenError(true);
-          showErrorMessage(response.message);
+          setVerified(true);
+          setTokenError(false);
         } else {
           setVerified(false);
           setTokenError(true);
-          showErrorMessage(response.message);
         }
       })
       .finally(() => {
@@ -74,7 +73,7 @@ export default function Verify() {
               <>
                 <p className="text-gray-700 dark:text-gray-200 text-balance text-sm md:text-base">
                   {verified
-                    ? "Gracias por registrarte! Estamos confirmando tu cuenta, para que puedas iniciar sesión. Esto puede tardar unos minutos."
+                    ? <>¡Gracias por registrarte!<br />Puedes cerrar esta ventana e iniciar sesión con tus datos para empezar a aprender.</>
                     : "Por favor, comienza el proceso de verificación accionando sobre el siguiente botón."}
                 </p>
                 {!verified && (
@@ -90,17 +89,25 @@ export default function Verify() {
             )}
             {verified && (
               <div className="flex justify-center items-center mb-4">
-                <Link
-                  href={"/auth/login"}
+                <button
                   className="mt-2 py-3 px-4 w-40 font-bold transition-all text-white bg-gray-900 rounded-full hover:bg-gray-950 dark:bg-white dark:text-black dark:hover:bg-gray-200"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const win = window.open('/auth/login', '_self');
+                    if (win) {
+                      win.close();
+                    }
+                  }}
                 >
                   Iniciar sesión
-                </Link>
+                </button>
               </div>
             )}
           </>
         ) : (
-          <p>Loading...</p>
+          <div className="h-40 grid place-content-center">
+            <IconLoading height={20} className="text-dark dark:text-white" />
+          </div>
         )}
       </div>
     </div>

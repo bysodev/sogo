@@ -15,7 +15,7 @@ const Tooltip = ({ text, children }: { text: any; children: any }) => {
 
   return (
     <div
-      className="absolute end-4 grid"
+      className="absolute end-4 grid bottom-1/2 translate-y-1/2"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

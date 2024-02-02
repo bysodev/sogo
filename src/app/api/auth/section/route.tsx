@@ -1,17 +1,17 @@
 
 
 import { getServerSession } from "next-auth/next"
-import { authOptions } from "./../[...nextauth]/route"
+import { config } from "./../[...nextauth]/route"
 
 const url = process.env.NEXT_PUBLIC_API_BACKEND
 
 export async function GET() {
-    const session = await getServerSession(authOptions)
+    const session = await getServerSession(config)
     const myHeaders = new Headers({
         Accept: 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded'
     })
-    myHeaders.append('Authorization', `Bearer ${session?.accessToken}`)
+    myHeaders.append('Authorization', `Bearer ${session?.user.accessToken}`)
     try {
         const response = await fetch(`${url}/section/get/levelstage`, {
             method: 'GET',

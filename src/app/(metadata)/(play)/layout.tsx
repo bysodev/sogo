@@ -1,7 +1,8 @@
 "use client";
+import useScreenSize from '@/utilities/useScreenSize';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from "react";
-import ChallengesPage from "./challenge/@ranking/page";
+
 export default function PlayLayout({
   children,
 }: {
@@ -18,35 +19,43 @@ export default function PlayLayout({
 
   useEffect(() => {
     localStorage.setItem('theme', 'light')
+    document.body.classList.remove("dark");
+    document.body.classList.add("light");
   }, []);
 
   const [isNavbarOpen, setIsNavbarOpen] = useState(true);
 
-  const handleNavbarToggle = () => {
-    setIsNavbarOpen(!isNavbarOpen);
-  };
+  const isXlScreen = useScreenSize('xl');
+
+  useEffect(() => {
+    if (isXlScreen) {
+      setIsNavbarOpen(true);
+    } else {
+      setIsNavbarOpen(false);
+    }
+  }, [isXlScreen]);
 
   const SideNavbar = render ? require("@/components/SideNavbar").default : null;
   const BottomNavbar = render ? require("@/components/BottomNavbar").default : null;
-  const RankUser = render ? require("@/components/RankUser").default : null;
+  const RankUser = render ? require("@/components/RankingUser").default : null;
 
   return (
-    <>
+    <div className='flex'>
       {render && (
         <>
-          {SideNavbar && <SideNavbar isOpen={isNavbarOpen} onToggle={handleNavbarToggle} />}
+          {SideNavbar && <SideNavbar isOpen={isNavbarOpen} />}
           {BottomNavbar && <BottomNavbar />}
         </>
       )}
-      <div className={`transition-all duration-300 lg:ms-${render && (isNavbarOpen ? '72' : '24') + " grid lg:grid-cols-2"}`}>
+      <div className={`w-full transition-all duration-300 grid ${render ? "max-w-screen-2xl lg:grid-cols-2" : "lg:grid-cols-1"} xl:mx-auto`}>
         <section className='h-full flex flex-col gap-10'>{children}</section>
         {render && (
           <>
-            {RankUser && <ChallengesPage />}
+            {RankUser && <RankUser />}
           </>
         )}
       </div>
-    </>
+    </div>
   );
 }
 

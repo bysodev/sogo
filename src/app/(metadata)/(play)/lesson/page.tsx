@@ -9,27 +9,34 @@ import { FaCircleCheck, FaCircleXmark, FaLocationCrosshairs } from 'react-icons/
 import useSWR from 'swr';
 
 const LevelStage = () => {
-  const { data: lesson, isLoading, error: isError } = useSWR(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/section/`, Fetcher)
+  const { data: lesson, isLoading, error: isError } = useSWR(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/section/`, Fetcher, { revalidateOnFocus: false })
   const [open, setOpen] = useState(false);
   const [currentMessage, setCurrentMessage] = useState<any | null>(null);
 
-  const handleOpen = (lesson: any, active: number) => {
+  const createMessage = (lesson: any, active: number) => {
+    const baseMessage = {
+      "title": `${lesson.name}${active === 1 ? "/#" : ""}`,
+      "stateId": lesson.state_id,
+      "section_id": lesson.section_id
+    };
+
     if (active !== 1) {
-      setCurrentMessage({
-        "title": `${lesson.name}`,
+      return {
+        ...baseMessage,
         "message": `${lesson.content}`,
         "random": `${lesson.random === true ? "Si" : "No"}`,
         "id": `${lesson.id}`,
-        "stateId": lesson.state_id,
-        "section_id": lesson.section_id
-      });
+      };
     } else {
-      setCurrentMessage({
-        "title": `${lesson.name}/#`,
+      return {
+        ...baseMessage,
         "blocked": true,
-        "stateId": lesson.state_id
-      });
+      };
     }
+  };
+
+  const handleOpen = (lesson: any, active: number) => {
+    setCurrentMessage(createMessage(lesson, active));
     setOpen(true);
   };
 
@@ -50,10 +57,10 @@ const LevelStage = () => {
     const colors = ["purple-600", "indigo-600", "pink-400"];
     return colors[index % colors.length];
   };
-
+  let buttonIndex = 0;
   return (
-    <div className='p-10'>
-      <h1 className='text-gray-500 font-bold text-xl border-b-2'>Las lecciones se basan en señas estáticas</h1>
+    <div className='lg:py-10 px-6'>
+      <h1 className='text-gray-500 font-bold text-xl border-b-2 p-5 lg:p-0'>Las lecciones se basan en señas estáticas</h1>
       {isLoading ? (
         <p>Cargando...</p>
       ) : isError ? (
@@ -62,22 +69,23 @@ const LevelStage = () => {
         lesson?.data && lesson.data.map((sectionWithLessons: any, index: number) => {
           const color = sectionColor(index);
           return (
-            <div key={sectionWithLessons.section.id} className="grid place-items-center w-full pt-10">
-              <section className={`bg-${color} text-white flex rounded-xl p-4 w-full`}>
+            <div key={sectionWithLessons.section.id} className="grid place-items-center w-full lg:pt-6">
+              <section className={`bg-${color} text-white flex lg:rounded-xl p-6 w-full`}>
                 <article className="w-5/6  font-bold">
                   <header>SECCIÓN {index + 1}: {sectionWithLessons.section.name}</header>
                   <p className="text-xl">{sectionWithLessons.section.description}</p>
                 </article>
-                <aside className={`w-1/6 border-l-2 border-white grid place-items-center text-white`}><BsBookmarkStarFill size={40} /></aside>
+                <aside className={`w-1/6 border-l-2 border-white grid place-items-center text-white transla`}><BsBookmarkStarFill size={40} /></aside>
               </section>
               <div className='grid place-items-center w-full gap-8 m-10'>
                 {sectionWithLessons.lessons.map((lesson: any, index: number) => {
                   const stateId = lesson.state_id;
                   const lockIconValue = lockIcon(stateId);
+                  const transformClass = buttonIndex % 5 === 0 ? 'translate-x-0' : buttonIndex % 5 === 1 ? '-translate-x-9' : buttonIndex % 5 === 2 ? 'translate-x-0' : buttonIndex % 5 === 3 ? 'translate-x-6' : 'translate-x-12'; buttonIndex++;
                   return (
                     <button
                       key={index}
-                      className={`spot-lesson rounded-full text-white ${stateId === 1 ? "bg-gray-400" : "bg-" + color}`}
+                      className={`spot-lesson rounded-full text-white transform transition-transform duration-500 ${transformClass} ${stateId === 1 ? "bg-gray-400" : "bg-" + color}`}
                       onClick={() => handleOpen(lesson, stateId)}
                     >
                       <span className="back opacity-50"></span>
@@ -92,7 +100,7 @@ const LevelStage = () => {
           )
         }))}
 
-      <ModalMUI open={open} handleClose={() => { setOpen(false) }}>
+      <ModalMUI width={{ xs: '90%', sm: 'auto' }} open={open} handleClose={() => { setOpen(false) }}>
         <article className={`${currentMessage?.blocked ? "text-gray-600" : "text-" + sectionColor(currentMessage?.section_id - 1)}`}>
           <h3 className={`rounded-t-xl ${currentMessage?.blocked ? "bg-gray-400" : "bg-" + sectionColor(currentMessage?.section_id - 1)} p-4 font-bold text-white text-lg`}>
             {currentMessage?.title}
@@ -107,13 +115,13 @@ const LevelStage = () => {
                 : "No disponible"
               }
             </p>
-            <div className='grid lg:grid-cols-2'>
-              <p className='flex gap-6 items-center'>Aleatorio: {currentMessage?.random === "Si" ? <FaCircleCheck size={22} /> : <FaCircleXmark size={22} />}</p>
+            <div className='flex gap-6 justify-between'>
+              <p className='flex gap-5 items-center'>Aleatorio: {currentMessage?.random === "Si" ? <FaCircleCheck size={22} /> : <FaCircleXmark size={22} />}</p>
               <div>
                 <p className='flex gap-6 items-center'>Estado: <span
-                  className={`whitespace-nowrap rounded-full ${currentMessage?.blocked ? "bg-gray-100" : "bg-purple-100"} px-2.5 py-0.5 text-${sectionColor(currentMessage?.section_id - 1)}`}
+                  className={`whitespace-nowrap rounded-full ${currentMessage?.blocked ? "bg-gray-100 text-gray-600" : "bg-purple-100 text-" + sectionColor(currentMessage?.section_id - 1)} px-2.5 py-0.5`}
                 >
-                  {currentMessage?.id == 1 ? "Bloqueado" : currentMessage?.id == 2 ? "Disponible" : currentMessage?.id == 3 ? "Recuperar" : currentMessage?.id == 4 ? "Completado" : "No disponible"}
+                  {currentMessage?.stateId == 1 ? "Bloqueado" : currentMessage?.stateId == 2 ? "Disponible" : currentMessage?.stateId == 3 ? "Recuperar" : currentMessage?.stateId == 4 ? "Completado" : "No disponible"}
                 </span></p>
 
               </div>

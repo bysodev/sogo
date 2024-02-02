@@ -20,7 +20,14 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 export const Progressbar = ({ porcentaje, setDrawer, totalTry }: { porcentaje: number, setDrawer: Dispatch<SetStateAction<boolean>>, totalTry: number }) => {
     const { push } = useRouter();
     return (
-        <div className='w-full flex gap-5 items-center p-10 px-16 pb-0'>
+        <div className='w-full flex gap-5 items-center py-8 px-4 lg:px-16'>
+            <div className='flex gap-2 items-center'>
+                <HiHeart color="#9333ea" size={30} />
+                <span className='text-purple-600 font-bold leading-none'>{totalTry}</span>
+            </div>
+            <div className='w-full'>
+                <BorderLinearProgress variant="determinate" value={porcentaje} />
+            </div>
             <button
                 title='Cerrar'
                 type='button'
@@ -33,13 +40,7 @@ export const Progressbar = ({ porcentaje, setDrawer, totalTry }: { porcentaje: n
                     size={26}
                 />
             </button>
-            <div className='w-full'>
-                <BorderLinearProgress variant="determinate" value={porcentaje} />
-            </div>
-            <div className='flex gap-2 items-center'>
-                <HiHeart color="#9333ea" size={30} />
-                <span className='text-purple-600 font-bold leading-none'>{totalTry}</span>
-            </div>
+
         </div>
     );
 }

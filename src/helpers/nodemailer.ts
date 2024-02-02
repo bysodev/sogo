@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 
 import { templateConfirmUser } from '@/emails/templateConfirmUser';
+import { templateRecoveryPassword } from '@/emails/templateRecoveryPassword';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 export const transporter = () => {
@@ -36,16 +37,15 @@ export const sendEmail = async (
   // verify connection configuration
   transport.verify(function (error) {
     if (error) {
-      console.log(error);
-    } else {
-      console.log('Server is ready to take our messages');
+      console.error(error);
     }
   });
   const html = () => {
     switch (template) {
       case 'validate-email':
         return templateConfirmUser(link, username);
-
+      case 'recovery-password':
+        return templateRecoveryPassword(link, username);
       default:
         'No template';
     }

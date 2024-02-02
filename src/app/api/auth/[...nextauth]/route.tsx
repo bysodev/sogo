@@ -1,91 +1,112 @@
-import NextAuth from 'next-auth'
-import CredentialsProvider from 'next-auth/providers/credentials'
-import GitHubProvider from 'next-auth/providers/github'
-import GoogleProvider from 'next-auth/providers/google'
+import NextAuth from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import GitHubProvider from 'next-auth/providers/github';
+import GoogleProvider from 'next-auth/providers/google';
 
-export const authOptions = {
-    providers: [
-        GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID || '',
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET || ''
-        }),
-        GitHubProvider({
-            clientId: process.env.GITHUB_ID || '',
-            clientSecret: process.env.GITHUB_SECRET || ''
-        }),
-        CredentialsProvider({
-            name: 'Credentials',
-            credentials: {
-                username: { label: 'Username', type: 'text', placeholder: 'jsmith' },
-                password: { label: 'Password', type: 'password' }
+const authOptions = {
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID || '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+    }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_ID || '',
+      clientSecret: process.env.GITHUB_SECRET || '',
+    }),
+    CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        username: { label: 'Username', type: 'text', placeholder: 'jsmith' },
+        password: { label: 'Password', type: 'password' },
+      },
+      async authorize(credentials) {
+        const response = await fetch(
+          `${process.env.NEXTAUTH_URL}/api/auth/user?username=${credentials?.username}&password=${credentials?.password}`,
+          {
+            method: 'GET',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
             },
-            async authorize(credentials) {
-                const response = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/user?username=${credentials?.username}&password=${credentials?.password}`, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        "Content-Type": "application/json",
-                    },
-                });
-                if (response.status === 501) {
-                    throw new Error('Error al procesar la solicitud');
-                }
-                const data = await response.json();
-                if (!response.ok) {
-                    throw new Error(data.detail);
-                }
-                return data;
-            }
-        })
-    ],
-    pages: {
-        signIn: '/auth/login',
-        signOut: '/'
-    },
-    secret: process.env.SECRET_KEY,
-    session: {
-        maxAge: 30 * 60, // 30 minutos,
-        rollingSession: false,
-    },
-    callbacks: {
-        jwt: async ({ token, user }: any) => {
-            if (user) {
-                token.name = user.username
-                token.accessToken = user.accessToken
-            }
-            return token
-        },
-        session: async ({ session, token }: any) => {
-            if (token) {
-                session.accessToken = token.accessToken
-            }
-            return session
-        },
-        signIn: async ({ user, account }: any) => {
-            if (account.provider === 'google' || account.provider === 'github') {
-                const { name, email, id } = user;
-                const response = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/user/`, {
-                    method: 'PUT',
-                    body: JSON.stringify({
-                        "username": name,
-                        "password": id,
-                        "email": email
-                    }),
-                    headers: {
-                        'Accept': 'application/json',
-                        "Content-Type": "application/json",
-                    },
-                });
-
-                const userData = await response.json();
-                console.log(userData)
-            }
-            return true;
+          }
+        );
+        if (response.status === 501) {
+          throw new Error('Error al procesar la solicitud');
         }
-    }
-}
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.detail);
+        }
+        return data;
+      },
+    }),
+  ],
+  pages: {
+    signIn: '/auth/login',
+    signOut: '/',
+  },
+  secret: process.env.SECRET_KEY,
+  session: {
+    maxAge: 30 * 60, // 30 minutos,
+    rollingSession: false,
+  },
+  callbacks: {
+    jwt: async ({ token, user, trigger, session }: any) => {
+      if (trigger === "update") {
+        // Aquí puedes actualizar el nombre y el token
+        token.name = session.user.name;
+        token.image = session.user.image;
+        token.accessToken = session.user.accessToken;
+        return token;
+      }
+      if (user) {
+        token.name = user.username;
+        token.image = user.image;
+        token.accessToken = user.accessToken;
+      }
+      return token;
+    },
+    session: async ({ session, token }: any) => {
+      if (token) {
+        // Aquí puedes actualizar el nombre y el token
+        session.user.name = token.name;
+        session.user.image = token.image;
+        session.user.accessToken = token.accessToken;
+      }
+      return session;
+    },
+    signIn: async ({ user, account }: any) => {
+      if (account.provider === 'google' || account.provider === 'github') {
+        const { name, email, id, image } = user;
+        const response = await fetch(
+          `${process.env.NEXTAUTH_URL}/api/auth/user/provider`,
+          {
+            method: 'POST',
+            body: JSON.stringify({
+              username: name,
+              password: id,
+              email: email,
+              image: image,
+              provider: account.provider,
+            }),
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        const userData = await response.json();
+        if (response.status === 201) {
+          user.accessToken = userData.accessToken;
+          return true;
+        }
+      }
+      return false;
+    },
+  },
+};
 
-const handler = NextAuth(authOptions)
+const handler = NextAuth(authOptions);
 
-export { handler as GET, handler as POST }
+export { handler as GET, handler as POST, authOptions as config };
 

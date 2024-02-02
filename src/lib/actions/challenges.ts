@@ -58,7 +58,6 @@ export async function getChallengesByCategory( token: string): Promise<CardChall
 
   if (response.status === 200) {
     const challenge = await response.json()
-    console.log(challenge)
     return challenge
   }else{
     return null
