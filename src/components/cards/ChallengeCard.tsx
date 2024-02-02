@@ -2,6 +2,7 @@
 import { DetailsChallengeApi, EnumCategory, EnumDifficulty } from '@/lib/types/challenge';
 import { FormControl, FormHelperText, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { FaQuestion } from "react-icons/fa";
 import { Striped } from '../progress/Striped';
@@ -11,7 +12,7 @@ export function ChallengeCard({ details, title, category }: { details: Array<Det
     const [select, setSelect] = useState<EnumDifficulty>(EnumDifficulty.FACIL);
     const [detalle, setDetalle] = useState<DetailsChallengeApi>();
     const [modal, setModal] = useState(false);
-
+    const router = useRouter();
     const StyledMenuItem = styled(MenuItem)(() => ({
         '&.Mui-selected': { // This targets the selected menu item
             backgroundColor: 'light', // Change this to your preferred color
@@ -68,7 +69,7 @@ export function ChallengeCard({ details, title, category }: { details: Array<Det
                     <Striped gradientColor1={category === "PALABRAS" ? '#e6b4ff' : '#bbbcf1'} gradientColor2={category === "PALABRAS" ? '#caa6ea' : '#8a8cf1'} progreso={obtenerProgreso()} puntos={detalle?.progreso} total={detalle?.total} />
                 </div>
                 <div className='flex justify-between'>
-                    <button type='button' title='Comenzar reto' className={`${category === "PALABRAS" ? "text-purple-500" : "text-indigo-500"} p-2 px-4 bg-white font-bold rounded-xl hover:bg-opacity-80 leading-none`}>
+                    <button onClick={() => { router.push(`/challenge/${category}/${detalle?.dificultad}`) }} type='button' title='Comenzar reto' className={`${category === "PALABRAS" ? "text-purple-500" : "text-indigo-500"} p-2 px-4 bg-white font-bold rounded-xl hover:bg-opacity-80 leading-none`}>
                         COMENZAR
                     </button>
                     <div className='flex justify-end'>
