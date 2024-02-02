@@ -1,15 +1,15 @@
 
 
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../[...nextauth]/route";
+import { config } from "../[...nextauth]/route";
 
 const url = process.env.NEXT_PUBLIC_API_BACKEND
 
 export async function POST(request: Request) {
-    const session = await getServerSession(authOptions)
+    const session = await getServerSession(config)
     var myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
-    myHeaders.append('Authorization', `Bearer ${session?.accessToken}`)
+    myHeaders.append('Authorization', `Bearer ${session?.user.accessToken}`)
 
     const requestBody = await request.json();
     const { ...dataChall } = requestBody;

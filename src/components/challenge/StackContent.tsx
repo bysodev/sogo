@@ -2,7 +2,7 @@
 
 import { EnumCategory } from "@/lib/types/challenge";
 
-export const StackContent = ({content, objetivos, objetivo, operacion}: { content: any[], objetivos: any[] , objetivo: any, operacion: string[] | null }) => {
+export const StackContent = ({content, objetivos, objetivo, operacion}: { content: any[], objetivos: any[] , objetivo: any, operacion: string[]}) => {
     const categoria = EnumCategory.PALABRAS;
 
     if( categoria == EnumCategory.PALABRAS ){
@@ -14,7 +14,7 @@ export const StackContent = ({content, objetivos, objetivo, operacion}: { conten
     return <div className="grid place-content-center w-full gap-6">
         <div className="flex gap-2 justify-center">
             {
-                operacion && operacion.map((op, index) => {
+                operacion?.length > 1 && operacion.map((op, index) => {
                     return <div key={index} className="opacity-65 p-4 w-14 h-14 flex items-center justify-center shadow-lg rounded-lg bg-gradient-to-tl bg-slate-500 text-white font-bold text-2xl">{op}</div>
                 })
             }

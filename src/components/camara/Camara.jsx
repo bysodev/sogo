@@ -1,18 +1,22 @@
 import IconTouch from '@/components/icons/IconTouch';
-import Image from 'next/image';
-import { memo } from 'react';
 import Webcam from 'react-webcam';
 /**
  * Componente de la cámara.
  * @param {object} props - Propiedades del componente.
  * @param {object} props.webcamRef - Referencia al componente Webcam.
- * @param {string} props.imagen - URL de la imagen.
+ * @param {string} props.imagen ?? ''  - URL de la imagen.
  * @param {number} props.counter - Contador.
  * @param {function} props.setFoto - Función para establecer la foto.
  * @param {object} props.hiddenCanvasRef - Función para establecer cuadro por matrices.
  * @returns {JSX.Element} - Elemento JSX que representa la cámara.
  */
-export default function Camara({ webcamRef, imagen, counter, setFoto }) {
+export default function Camara({
+  webcamRef,
+  // imagen,
+  counter,
+  setFoto,
+  hiddenCanvasRef,
+}) {
   /**
    * Maneja el evento de hacer clic en el botón.
    */
@@ -48,7 +52,7 @@ export default function Camara({ webcamRef, imagen, counter, setFoto }) {
         />
       </div>
       <div className="w-full h-full absolute overflow-hidden top-0 left-0 aspect-square">
-        {imagen && <Image src={imagen} alt="" width={640} height={480} />}
+        {/* {imagen && <Image src={imagen} alt="" width={640} height={480} />} */}
       </div>
       <div className=" object-cover z-10 h-full">
         <div
@@ -123,5 +127,3 @@ export default function Camara({ webcamRef, imagen, counter, setFoto }) {
     </div>
   );
 }
-
-export default memo(Camara)

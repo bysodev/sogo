@@ -40,18 +40,18 @@ export default function ProfilePage() {
   const [user, setUser] = useState({'username': '', 'email': '', 'creation': ''});
   
   useEffect(() => {
-    if( session?.accessToken !== undefined && user.username === '' ){
+    if( session?.user.accessToken !== undefined && user.username === '' ){
       (
         async () => {
-          console.log(`Este es el token: ${session?.accessToken}`)
-          const respuesta = await getDataProfile( session?.accessToken || '' )
+          console.log(`Este es el token: ${session?.user.accessToken}`)
+          const respuesta = await getDataProfile( session?.user.accessToken || '' )
           if (respuesta !== null)
             setUser(respuesta)
         }
       )()
     }
 
-  }, [session?.accessToken, user])
+  }, [session?.user.accessToken, user])
 
   return (
     <div className='w-full p-12'>

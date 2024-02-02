@@ -5,6 +5,7 @@ import { WebVideoElementWithScreenshot } from "@/lib/types/lessons";
 import { Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import Camara from "../camara/Camara";
 import CompleteChallenge from "../progress/CompleteChallenge";
 import { FooterChallenge, FooterEndChallenge } from "../progress/FooterChallenge";
 import ModalDetallesChallenge from "../progress/ModalDetallesChallenge";
@@ -134,6 +135,7 @@ const handlePostChallenge = async (id: number, points: number, minutes: number, 
 
 export default function ProPalabras({ challenge, dificultad }: { challenge: ContentChallenge, dificultad: string }) {
     const webcamRef = useRef<WebVideoElementWithScreenshot>(null);
+    const webcamCanva = useRef<WebVideoElementWithScreenshot>(null);
     const [open, setOpen] = useState(true);
     const [toggleTime, setToogleTime] = useState("3");
     const [startime, setTime] = useState<Times>({ inicio: new Date(), final: new Date() });
@@ -319,7 +321,7 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
             <>
               <div className="flex flex-col gap-4 h-full">
                 <ProgressbarChallenge porcentaje={progres.porcentaje} setDrawer={setDrawer} totalTry={progres.intentos} />
-                <StackContent content={progres.arreglo} objetivos={progres.objetivos} objetivo={progres.objetivo} operacion={null} />
+                <StackContent content={progres.arreglo} objetivos={progres.objetivos} objetivo={progres.objetivo} operacion={['']} />
 
                 <div className="grid lg:grid-cols-2 justify-center items-center text-center h-full">
                       {
@@ -350,12 +352,13 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
                             <ToggleButton className="border-none text-bold px-4" color="secondary" value="7">7 Sec</ToggleButton>
                           </ToggleButtonGroup>
                         </Stack>
-                        {/* <Camara
+                        <Camara
                           webcamRef={webcamRef}
-                          img={img}
+                          hiddenCanvasRef={webcamCanva}
+                          imagen={img}
                           counter={counter}
                           setFoto={setFoto}
-                        /> */}
+                        />
                       </div>
                     </div>
                     {drawer && <DrawerBottonChall drawer={drawer} setDrawer={setDrawer} />}
