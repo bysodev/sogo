@@ -9,7 +9,7 @@ import { FooterLesson } from "@/components/progress/FooterLesson";
 import { Progressbar } from "@/components/progress/Progressbar";
 import { PredictSign } from "@/lib/actions/lesson";
 import { Fetcher, Progress, Times, WebVideoElementWithScreenshot } from '@/lib/types/lessons';
-import { Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { CircularProgress, Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useSearchParams } from 'next/navigation';
@@ -333,7 +333,7 @@ export default function LessonVocales() {
   };
 
   if (isError) {
-    return <div>Error loading lesson data</div>;
+    return <div>Error al cargar los datos</div>;
   }
 
   return (
@@ -348,7 +348,7 @@ export default function LessonVocales() {
             <div className="grid lg:grid-cols-2 justify-center items-center text-center h-full max-xl:gap-10 px-4">
               {
                 isLoading ? (
-                  <div>Loading...</div>
+                  <div className="m-auto text-center"><CircularProgress /></div>
                 ) : (
                   <Image
                     className="shadow-lg border rounded-xl m-auto aspect-[12/9] object-contain"
