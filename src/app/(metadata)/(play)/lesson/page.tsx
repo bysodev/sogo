@@ -1,6 +1,7 @@
 "use client"
 import ModalMUI from '@/components/ModalMUI';
 import { Fetcher } from '@/lib/types/lessons';
+import { CircularProgress } from '@mui/material';
 import Link from 'next/link';
 import { useState } from 'react';
 import { BsBookmarkStarFill } from 'react-icons/bs';
@@ -62,10 +63,10 @@ const LevelStage = () => {
     <div className='lg:py-4 px-4'>
       <h1 className="rounded-xl border-2 p-1 font-bold text-2xl text-center text-gray-500 mb-4">Lecciones</h1>
       <h1 className='text-gray-500 font-bold text-xl border-b-2 p-5 lg:p-0'>Las lecciones se basan en señas estáticas</h1>
-      {isLoading ? (
-        <p>Cargando...</p>
-      ) : isError ? (
-        <p>Ocurrió un error al cargar los productos.</p>
+      {isError ? (
+        <p>Error al cargar los datos</p>
+      ) : isLoading ? (
+        <div className="m-auto text-center p-10"><CircularProgress /></div>
       ) : (
         lesson?.data && lesson.data.map((sectionWithLessons: any, index: number) => {
           const color = sectionColor(index);
@@ -99,7 +100,8 @@ const LevelStage = () => {
               </div>
             </div>
           )
-        }))}
+        })
+      )}
 
       <ModalMUI width={{ xs: '90%', sm: 'auto' }} open={open} handleClose={() => { setOpen(false) }}>
         <article className={`${currentMessage?.blocked ? "text-gray-600" : "text-" + sectionColor(currentMessage?.section_id - 1)}`}>

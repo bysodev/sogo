@@ -31,6 +31,18 @@ export default function ProfilePage() {
   const handleOpen = () => setModalOpen(true); // function to open the modal
   const handleClose = () => setModalOpen(false); // function to close the modal
 
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    reset,
+    getValues,
+    formState: { errors },
+  } = useForm<UseFormInputs>({ mode: "onChange" });
+
+
+
   async function handleUpdate(data: any) {
     setFetching(true);
     const { username, image, currentPassword, password } = data
@@ -62,6 +74,14 @@ export default function ProfilePage() {
       });
       const status = await response.json();
       if (response.status === 201) {
+        const valoresActuales = getValues();
+
+        reset({
+          ...valoresActuales,
+          currentPassword: '',
+          password: '',
+          repass: '',
+        });
         // Aquí actualizas la sesión con el nuevo nombre de usuario y el nuevo token
         await update({
           ...session,
@@ -83,7 +103,12 @@ export default function ProfilePage() {
       throw new Error('La actualización de datos de perfil falló');
     }
   }
+
   const [selectedAvatar, setSelectedAvatar] = useState<{ url: string, id: string } | null>(null);
+
+  useEffect(() => {
+    setValue("image", selectedAvatar?.id || '');
+  }, [selectedAvatar, setValue]);
 
   useEffect(() => {
     if (session?.user?.image?.startsWith('https')) {
@@ -109,12 +134,6 @@ export default function ProfilePage() {
     image: string;
   }
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<UseFormInputs>({ mode: "onChange" });
 
   return (
     <div className="w-full p-4">
@@ -177,9 +196,14 @@ export default function ProfilePage() {
                       </div>
                     </div>
                     <div className="flex flex-col">
-                      <label className="font-semibold">
-                        Email:
-                      </label>
+                      <div className="font-semibold whitespace-nowrap flex items-center gap-2">
+                        <span>Email:</span>
+                        <Tooltip title="Este campo no se puede modificar" placement="right-end" arrow>
+                          <div>
+                            <FaQuestionCircle />
+                          </div>
+                        </Tooltip>
+                      </div>
                       <div className={`relative flex flex-wrap text-sm text-gray-600 border-gray-400 dark:text-gray-400 container-fluid`}
                       >
                         <input
@@ -316,7 +340,6 @@ export default function ProfilePage() {
                   }
                   <input
                     type="hidden"
-                    value={selectedAvatar?.id}
                     {...register("image", {
                       required: {
                         value: true,

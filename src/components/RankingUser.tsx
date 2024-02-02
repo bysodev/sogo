@@ -53,14 +53,6 @@ export default function RankingChallengePage() {
   const { data: rankPalabras, error: errorPalabras } = useSWR(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/ranking?category=${EnumCategory.PALABRAS}`, fetcher);
   const { data: rankNumeros, error: errorNumeros } = useSWR(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/ranking?category=${EnumCategory.NUMEROS}`, fetcher);
 
-  if (errorPalabras || errorNumeros) {
-    return <>Error loading data</>;
-  }
-
-  if (!rankPalabras || !rankNumeros) {
-    return <>Loading...</>;
-  }
-
   return (
     <section className="relative dark:bg-gray-900 h-full duration-300 border-l-4">
       <div className="fixed overflow-y-auto h-screen text-center text-gray-900 dark:text-gray-100 py-10 px-6 grid gap-4">
@@ -69,21 +61,32 @@ export default function RankingChallengePage() {
         <div className="border-2 p-4 rounded-lg">
           <h2 className="text-xl text-start text-gray-600 font-semibold">Categoría: <span className="font-normal">Palabras</span></h2>
           <NavRanking value={palabras} setValue={setPalabras} key='PALABRAS' />
-          {Object.values(EnumDifficulty).map((difficulty, index) => (
-            <TabPanel value={palabras} index={difficulty} key={index}>
-              {rankPalabras.PALABRAS && <ListRankings ranks={rankPalabras.PALABRAS[difficulty]} />}
-            </TabPanel>
-          ))}
+          {errorPalabras || errorNumeros ? (
+            <p>Error al cargar los datos</p>
+          ) : !rankPalabras || !rankNumeros ? (
+            <CircularProgress />
+          ) : (
+            Object.values(EnumDifficulty).map((difficulty, index) => (
+              <TabPanel value={palabras} index={difficulty} key={index}>
+                {rankPalabras.PALABRAS && <ListRankings ranks={rankPalabras.PALABRAS[difficulty]} />}
+              </TabPanel>
+            ))
+          )}
         </div>
-
         <div className="border-2 p-4 rounded-lg">
           <h2 className="text-xl text-start text-gray-600 font-semibold">Categoría: <span className="font-normal">Números</span></h2>
           <NavRanking value={numeros} setValue={setNumeros} key='NUMEROS' />
-          {Object.values(EnumDifficulty).map((difficulty, index) => (
-            <TabPanel value={numeros} index={difficulty} key={index}>
-              {rankNumeros.NUMEROS && <ListRankings ranks={rankNumeros.NUMEROS[difficulty]} />}
-            </TabPanel>
-          ))}
+          {errorPalabras || errorNumeros ? (
+            <p>Error al cargar los datos</p>
+          ) : !rankPalabras || !rankNumeros ? (
+            <CircularProgress />
+          ) : (
+            Object.values(EnumDifficulty).map((difficulty, index) => (
+              <TabPanel value={numeros} index={difficulty} key={index}>
+                {rankNumeros.NUMEROS && <ListRankings ranks={rankNumeros.NUMEROS[difficulty]} />}
+              </TabPanel>
+            ))
+          )}
         </div>
       </div>
     </section>
