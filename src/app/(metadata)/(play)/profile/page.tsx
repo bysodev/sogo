@@ -181,7 +181,7 @@ export default function ProfilePage() {
                           autoComplete="username"
                           className="w-full flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
                           type="text"
-                          defaultValue={user.data.username}
+                          defaultValue={user?.data.username}
                           {...register("username", {
                             required: { value: true, message: "Usuario requerido" },
                             minLength: {
@@ -215,7 +215,7 @@ export default function ProfilePage() {
                           autoComplete="email"
                           className="w-full flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
                           type="email"
-                          defaultValue={user.data.email}
+                          defaultValue={user?.data.email}
                         />
                       </div>
                     </div>
