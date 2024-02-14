@@ -4,6 +4,7 @@ import TooltipMessage from "@/components/TooltipMessage";
 import IconLoading from "@/components/icons/IconLoading";
 import IconLogo from "@/components/icons/logo";
 import { showErrorMessage, showErrorToast, showSuccessMessage } from "@/utilities/sweet-alert";
+import { rgxEmail } from "@/validators/auth-validators";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -265,7 +266,7 @@ export default function PasswordRecoveryPage() {
                     {...register("email", {
                       required: { value: true, message: "Correo electrónico requerido" },
                       pattern: {
-                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                        value: rgxEmail,
                         message: "Correo electrónico inválido",
                       },
                     })}

@@ -12,7 +12,7 @@ const useScreenshot = (webcamRef: any, hiddenCanvasRef: any) => {
         const context = canvas?.getContext('2d');
         if (canvas && context) {
           // Calcula las dimensiones del cuadrado
-          const squareSize = Math.min(canvas.width, canvas.height) / 3;
+          const squareSize = Math.min(canvas.width, canvas.height) / 2;
           const x = (canvas.width - squareSize) / 2;
           const y = (canvas.height - squareSize) / 2;
           // Calcula las dimensiones para mantener la relación de aspecto original de la imagen

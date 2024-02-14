@@ -1,0 +1,204 @@
+{
+    "numbers": [
+        {
+            "level": "Principiante",
+            "title": "Número 0",
+            "audioPath": "/numbers/number-0",
+            "preaload": "/numbers/preload-number-0"
+        },
+        {
+            "level": "Principiante",
+            "title": "Número 1",
+            "audioPath": "/numbers/number-1",
+            "preaload": "/numbers/preload-number-1"
+        },
+        {
+            "level": "Principiante",
+            "title": "Número 2",
+            "audioPath": "/numbers/number-2",
+            "preaload": "/numbers/preload-number-2"
+        },
+        {
+            "level": "Principiante",
+            "title": "Número 3",
+            "audioPath": "/numbers/number-3",
+            "preaload": "/numbers/preload-number-3"
+        },
+        {
+            "level": "Principiante",
+            "title": "Número 4",
+            "audioPath": "/numbers/number-4",
+            "preaload": "/numbers/preload-number-4"
+        },
+        {
+            "level": "Principiante",
+            "title": "Número 5",
+            "audioPath": "/numbers/number-5",
+            "preaload": "/numbers/preload-number-5"
+        },
+        {
+            "level": "Principiante",
+            "title": "Número 6",
+            "audioPath": "/numbers/number-6",
+            "preaload": "/numbers/preload-number-6"
+        },
+        {
+            "level": "Principiante",
+            "title": "Número 7",
+            "audioPath": "/numbers/number-7",
+            "preaload": "/numbers/preload-number-7"
+        },
+        {
+            "level": "Principiante",
+            "title": "Número 8",
+            "audioPath": "/numbers/number-8",
+            "preaload": "/numbers/preload-number-8"
+        },
+        {
+            "level": "Principiante",
+            "title": "Número 9",
+            "audioPath": "/numbers/number-9",
+            "preaload": "/numbers/preload-number-9"
+        }
+    ],
+    "letters": [
+        {
+            "level": "Intermedio",
+            "title": "Letra A",
+            "audioPath": "/letters/letter-A",
+            "preaload": "/letters/preload-letter-A"
+        },
+        {
+            "level": "Intermedio",
+            "title": "Letra B",
+            "audioPath": "/letters/letter-B",
+            "preaload": "/letters/preload-letter-B"
+        },
+        {
+            "level": "Intermedio",
+            "title": "Letra C",
+            "audioPath": "/letters/letter-C",
+            "preaload": "/letters/preload-letter-C"
+        },
+        {
+            "level": "Intermedio",
+            "title": "Letra D",
+            "audioPath": "/letters/letter-D",
+            "preaload": "/letters/preload-letter-D"
+        },
+        {
+            "level": "Intermedio",
+            "title": "Letra F",
+            "audioPath": "/letters/letter-F",
+            "preaload": "/letters/preload-letter-F"
+        },
+        {
+            "level": "Intermedio",
+            "title": "Letra G",
+            "audioPath": "/letters/letter-G",
+            "preaload": "/letters/preload-letter-G"
+        },
+        {
+            "level": "Intermedio",
+            "title": "Letra H",
+            "audioPath": "/letters/letter-H",
+            "preaload": "/letters/preload-letter-H"
+        },
+        {
+            "level": "Intermedio",
+            "title": "Letra I",
+            "audioPath": "/letters/letter-I",
+            "preaload": "/letters/preload-letter-I"
+        },
+        {
+            "level": "Intermedio",
+            "title": "Letra K",
+            "audioPath": "/letters/letter-K",
+            "preaload": "/letters/preload-letter-K"
+        },
+        {
+            "level": "Intermedio",
+            "title": "Letra L",
+            "audioPath": "/letters/letter-L",
+            "preaload": "/letters/preload-letter-L"
+        },
+        {
+            "level": "Intermedio",
+            "title": "Letra M",
+            "audioPath": "/letters/letter-M",
+            "preaload": "/letters/preload-letter-M"
+        },
+        {
+            "level": "Intermedio",
+            "title": "Letra N",
+            "audioPath": "/letters/letter-N",
+            "preaload": "/letters/preload-letter-N"
+        },
+        {
+            "level": "Intermedio",
+            "title": "Letra O",
+            "audioPath": "/letters/letter-O",
+            "preaload": "/letters/preload-letter-O"
+        },
+        {
+            "level": "Intermedio",
+            "title": "Letra P",
+            "audioPath": "/letters/letter-P",
+            "preaload": "/letters/preload-letter-P"
+        },
+        {
+            "level": "Intermedio",
+            "title": "Letra Q",
+            "audioPath": "/letters/letter-Q",
+            "preaload": "/letters/preload-letter-Q"
+        },
+        {
+            "level": "Intermedio",
+            "title": "Letra R",
+            "audioPath": "/letters/letter-R",
+            "preaload": "/letters/preload-letter-R"
+        },
+        {
+            "level": "Intermedio",
+            "title": "Letra S",
+            "audioPath": "/letters/letter-S",
+            "preaload": "/letters/preload-letter-S"
+        },
+        {
+            "level": "Intermedio",
+            "title": "Letra T",
+            "audioPath": "/letters/letter-T",
+            "preaload": "/letters/preload-letter-T"
+        },
+        {
+            "level": "Intermedio",
+            "title": "Letra U",
+            "audioPath": "/letters/letter-U",
+            "preaload": "/letters/preload-letter-U"
+        },
+        {
+            "level": "Intermedio",
+            "title": "Letra V",
+            "audioPath": "/letters/letter-V",
+            "preaload": "/letters/preload-letter-V"
+        },
+        {
+            "level": "Intermedio",
+            "title": "Letra W",
+            "audioPath": "/letters/letter-W",
+            "preaload": "/letters/preload-letter-W"
+        },
+        {
+            "level": "Intermedio",
+            "title": "Letra X",
+            "audioPath": "/letters/letter-X",
+            "preaload": "/letters/preload-letter-X"
+        },
+        {
+            "level": "Intermedio",
+            "title": "Letra Y",
+            "audioPath": "/letters/letter-Y",
+            "preaload": "/letters/preload-letter-Y"
+        }
+    ]
+}

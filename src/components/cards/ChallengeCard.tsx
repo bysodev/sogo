@@ -10,7 +10,7 @@ import ModalDetalles from './ModalDetalles';
 
 export function ChallengeCard({ details, title, category }: { details: Array<DetailsChallengeApi>, title: string, category: EnumCategory }) {
     const [select, setSelect] = useState<EnumDifficulty>(EnumDifficulty.FACIL);
-    const [detalle, setDetalle] = useState<DetailsChallengeApi>();
+    const [detalle, setDetalle] = useState<DetailsChallengeApi | null>();
     const [modal, setModal] = useState(false);
     const router = useRouter();
     const StyledMenuItem = styled(MenuItem)(() => ({
@@ -49,9 +49,12 @@ export function ChallengeCard({ details, title, category }: { details: Array<Det
 
     useEffect(() => {
         let temporal = handleDetalis(select);
-        if (temporal)
-            setDetalle(temporal)
-    }, [select, handleDetalis])
+        if (temporal) {
+            setDetalle(temporal);
+        } else {
+            setDetalle(null);
+        }
+    }, [select, handleDetalis]);
 
     const handleChange = useCallback((event: SelectChangeEvent) => {
         setSelect(event.target.value as EnumDifficulty)
@@ -69,7 +72,7 @@ export function ChallengeCard({ details, title, category }: { details: Array<Det
                     <Striped gradientColor1={category === "PALABRAS" ? '#e6b4ff' : '#bbbcf1'} gradientColor2={category === "PALABRAS" ? '#caa6ea' : '#8a8cf1'} progreso={obtenerProgreso()} puntos={detalle?.progreso} total={detalle?.total} />
                 </div>
                 <div className='flex justify-between'>
-                    <button onClick={() => { router.push(`/challenge/${category}/${detalle?.dificultad}`) }} type='button' title='Comenzar reto' className={`${category === "PALABRAS" ? "text-purple-500" : "text-indigo-500"} p-2 px-4 bg-white font-bold rounded-xl hover:bg-opacity-80 leading-none`}>
+                    <button type="button" onClick={() => { router.push(`/challenge/${category}/${detalle?.dificultad}`) }} title='Comenzar reto' className={`${category === "PALABRAS" ? "text-purple-500" : "text-indigo-500"} p-2 px-4 bg-white font-bold rounded-xl hover:bg-opacity-80 leading-none`}>
                         COMENZAR
                     </button>
                     <div className='flex justify-end'>
@@ -92,7 +95,6 @@ export function ChallengeCard({ details, title, category }: { details: Array<Det
                     <ModalDetalles key={category} open={modal} handleClose={handleModal} category={category} />
                 </div>
                 <ThemeProvider theme={theme}>
-
                     <FormControl sx={{ minWidth: 50 }} size="small">
                         <FormHelperText className="!text-white !font-semibold !m-0 !text-end !text-sm !font-inter">Dificultad:</FormHelperText>
                         <Select

@@ -43,7 +43,7 @@ const authOptions = {
   ],
   pages: {
     signIn: '/auth/login',
-    signOut: '/',
+    signOut: '/auth/login',
   },
   secret: process.env.SECRET_KEY,
   session: {

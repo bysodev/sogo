@@ -1,10 +1,11 @@
 import IconTouch from '@/components/icons/IconTouch';
+import Image from 'next/image';
 import Webcam from 'react-webcam';
 /**
  * Componente de la cámara.
  * @param {object} props - Propiedades del componente.
  * @param {object} props.webcamRef - Referencia al componente Webcam.
- * @param {string} props.imagen ?? ''  - URL de la imagen.
+ * @param {string} props.imagen - URL de la imagen.
  * @param {number} props.counter - Contador.
  * @param {function} props.setFoto - Función para establecer la foto.
  * @param {object} props.hiddenCanvasRef - Función para establecer cuadro por matrices.
@@ -12,7 +13,7 @@ import Webcam from 'react-webcam';
  */
 export default function Camara({
   webcamRef,
-  // imagen,
+  imagen,
   counter,
   setFoto,
   hiddenCanvasRef,
@@ -48,7 +49,7 @@ export default function Camara({
         />
       </div>
       <div className="w-full h-full absolute overflow-hidden top-0 left-0 aspect-square">
-        {/* {imagen && <Image src={imagen} alt="" width={640} height={480} />} */}
+        {imagen && <Image src={imagen} alt="" width={640} height={480} />}
       </div>
       <div className=" object-cover z-10 h-full">
         <div
@@ -57,7 +58,7 @@ export default function Camara({
             top: 0,
             left: 0,
             right: 0,
-            bottom: 'calc(50% + 4.5rem)', // Ajusta estos valores para cambiar el tamaño del "hueco"
+            bottom: 'calc(50% + 7rem)', // Ajusta estos valores para cambiar el tamaño del "hueco"
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
             backdropFilter: 'blur(7px)',
           }}
@@ -68,7 +69,7 @@ export default function Camara({
             bottom: 0,
             left: 0,
             right: 0,
-            top: 'calc(50% + 4.5rem)', // Ajusta estos valores para cambiar el tamaño del "hueco"
+            top: 'calc(50% + 7rem)', // Ajusta estos valores para cambiar el tamaño del "hueco"
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
             backdropFilter: 'blur(7px)',
           }}
@@ -76,10 +77,10 @@ export default function Camara({
         <div
           style={{
             position: 'absolute',
-            top: 'calc(50% - 4.5rem)',
+            top: 'calc(50% - 7rem)',
             left: 0,
-            bottom: 'calc(50% - 4.5rem)',
-            right: 'calc(50% + 4.5rem)',
+            bottom: 'calc(50% - 7rem)',
+            right: 'calc(50% + 7rem)',
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
             backdropFilter: 'blur(7px)',
           }}
@@ -87,10 +88,10 @@ export default function Camara({
         <div
           style={{
             position: 'absolute',
-            top: 'calc(50% - 4.5rem)',
+            top: 'calc(50% - 7rem)',
             right: 0,
-            bottom: 'calc(50% - 4.5rem)',
-            left: 'calc(50% + 4.5rem)',
+            bottom: 'calc(50% - 7rem)',
+            left: 'calc(50% + 7rem)',
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
             backdropFilter: 'blur(7px)',
           }}
@@ -109,8 +110,8 @@ export default function Camara({
             }`}
           >
             {counter === 0 ? (
-              <p className="text-3xl lg:text-4xl whitespace-nowrap flex gap-4 items-center justify-center text-white">
-                <IconTouch className="h-10 w-10 lg:h-12 lg:w-12" />
+              <p className="text-3xl lg:text-2xl whitespace-nowrap flex gap-4 items-center justify-center text-white">
+                <IconTouch className="h-6 w-6 lg:h-8 lg:w-8" />
                 <span>Tomar otra foto</span>
               </p>
             ) : (

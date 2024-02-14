@@ -144,8 +144,8 @@ export default function LoginPage() {
           <div className="grid md:grid-flow-row sm:grid-cols-2 gap-4 text-sm">
             <button
               disabled={isLoading}
-              onClick={() => signIn("google", { callbackUrl: '/lesson' })}
-              className="items-center inline-flex justify-center gap-2 2xl:gap-4 py-3 px-4 w-full font-semibold text-gray-950 border border-gray-600 btn hover:bg-gray-50 dark:bg-gray-50 dark:hover:bg-gray-200"
+              onClick={() => signIn("google", { callbackUrl: '/learn' })}
+              className="button_login_provider transition-all items-center inline-flex justify-center gap-2 2xl:gap-4 py-3 px-4 w-full font-semibold text-gray-950 border border-gray-600 btn hover:bg-200 hover:border-gray-400 dark:bg-gray-50 dark:hover:bg-gray-200"
               type="button"
             >
               <Image
@@ -159,8 +159,8 @@ export default function LoginPage() {
             </button>
             <button
               disabled={isLoading}
-              onClick={() => signIn("github", { callbackUrl: '/lesson' })}
-              className="items-center inline-flex justify-center gap-2 2xl:gap-4 py-3 px-4 w-full font-semibold text-gray-950 border border-gray-600 btn hover:bg-gray-50 dark:bg-gray-50 dark:hover:bg-gray-200"
+              onClick={() => signIn("github", { callbackUrl: '/learn' })}
+              className="button_login_provider transition-all items-center inline-flex justify-center gap-2 2xl:gap-4 py-3 px-4 w-full font-semibold text-gray-950 border border-gray-600 btn hover:bg-200 hover:border-gray-400 dark:bg-gray-50 dark:hover:bg-gray-200"
               type="button"
             >
               <Image
@@ -170,8 +170,7 @@ export default function LoginPage() {
                 src="./../src/github-icon.svg"
                 alt="Logo de GitHub"
               />
-              GitHub
-              <span></span>
+              <span>GitHub</span>
             </button>
           </div>
           <div className="text-center mt-8 text-sm font-semibold text-gray-400 align-baseline dark:text-gray-300">
