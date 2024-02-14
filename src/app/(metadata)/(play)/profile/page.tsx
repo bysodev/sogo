@@ -21,8 +21,8 @@ const IMAGE_PROVIDER = "https://api.dicebear.com/7.x/fun-emoji/jpg";
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 export default function ProfilePage() {
-  const { data: user, error, isLoading, mutate } = useSWR(`${url}/api/auth/user/profile`, fetcher, { revalidateOnFocus: false });
-  const { data: session, update } = useSession();
+  const { data: user, error, isLoading, mutate } = useSWR(`${url}/api/auth/user/profile`, fetcher, { revalidateOnFocus: false }) || {};
+  const { data: session, update } = useSession() || {};
   const [modalOpen, setModalOpen] = useState(false); // state to control the modal
   const [isChecked, setIsChecked] = useState(false);
   const [fetching, setFetching] = useState(false); // fix: separate the setter function from the state variable
