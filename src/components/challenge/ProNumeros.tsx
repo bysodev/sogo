@@ -257,7 +257,9 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
         let intentos = challenge.fails_max;
         let distancia = objetivos.length;
       
-        const img_principal = obtenerURLImagen(objetivo);
+        // const img_principal = obtenerURLImagen(objetivo);
+        const img_principal = `/lesson/numbers/numero_${objetivo}.jpg`; 
+
         setCurrentImage( img_principal )
         setprogress((prev) => ({
           ...prev, 
@@ -277,7 +279,7 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
       setSubmit(false);
       const raw = JSON.stringify({
         category: 'palabras',
-        // image: img,
+        image: img,
         extension: 'jpeg',
         type: 'byte64',
         char: progres.objetivo,
@@ -291,7 +293,7 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
       if( respuesta.ok ){
         const predict = await (respuesta as Response).json();
 
-        if (predict.data === progres.objetivo) {
+        if (predict.data.result === progres.objetivo) {
           console.log(`Predicción: ${predict.data}, objetivo: ${progres.objetivo} y objetivos: ${progres.objetivos}`)
           setCheck(true);
           setprogress((pro) => ({
@@ -329,9 +331,6 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
       setCheck(null)
       setFoto()
     };
-
-
- 
 
     const handleSubmit = () => {
       const totalTime = (startime.final.getTime() - startime.inicio.getTime());
@@ -380,7 +379,7 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
                         <Image
                             className="shadow-lg border rounded-xl m-auto aspect-video object-contain"
                             src={currentImage}
-                            loader={imageLoader}
+                            // loader={imageLoader}
                             height={480}
                             width={480}
                             alt="Defalt"
@@ -417,7 +416,7 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
               
               {
                 progres.intentos == 0 ? (
-                  <FooterEndChallenge categoria="palabras" dificultad={dificultad} />
+                  <FooterEndChallenge />
                 ) : (
                   <FooterChallenge
                     description={challenge.description}

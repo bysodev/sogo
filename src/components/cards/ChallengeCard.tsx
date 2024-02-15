@@ -43,6 +43,7 @@ export function ChallengeCard({ details, title, category }: { details: Array<Det
     }, [details]);
 
     const obtenerProgreso = useCallback((): number => {
+        console.log(detalle)
         if (detalle?.progreso)
             return (detalle?.progreso / detalle?.total) * 100
         return 0;
@@ -72,11 +73,15 @@ export function ChallengeCard({ details, title, category }: { details: Array<Det
                 <div className='flex justify-between'>
                     <button type='button' title='Comenzar reto' className={`${category === "PALABRAS" ? "text-purple-500" : "text-indigo-500"} p-2 px-4 bg-white font-bold rounded-xl hover:bg-opacity-80 leading-none`}
                          onClick={() => {
-                            router.push(`/challenge/${category}/${detalle?.dificultad}`)
+                            ( detalle && (detalle?.progreso == detalle?.total) && detalle?.progreso != 0 ) ?
+                                router.push(`/challenge/customized?category=${category}&difficulty=${select}`) :
+                                router.push(`/challenge/${category}/${select}`) 
                         }}
                     >
                         COMENZAR
                     </button>
+                  
+                  
                     <div className='flex justify-end'>
                         <div className='flex bg-white bg-opacity-20 p-2 rounded-md'>
                             <span className='font-bold text-lg text-white'>{detalle?.puntos} EXP</span>
