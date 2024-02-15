@@ -13,7 +13,6 @@ export function ChallengeCard({ details, title, category }: { details: Array<Det
     const [detalle, setDetalle] = useState<DetailsChallengeApi>();
     const [modal, setModal] = useState(false);
     const router = useRouter();
-
     const StyledMenuItem = styled(MenuItem)(() => ({
         '&.Mui-selected': { // This targets the selected menu item
             backgroundColor: 'light', // Change this to your preferred color

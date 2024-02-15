@@ -9,15 +9,14 @@ export type Times = {
   final: Date;
 };
 
-
-export   type Progress = {
-    preguntas: number,
-    etapa: number;
-    porcentaje: number,
-    asiertos: number,
-    tipo: string,
-    continue: boolean,
-    char: string,
+export type Progress = {
+  preguntas: number;
+  etapa: number;
+  porcentaje: number;
+  asiertos: number;
+  tipo: string;
+  continue: boolean;
+  char: string;
 };
 
 export type Lesson = {

@@ -15,7 +15,6 @@ export default function ChallengesPage() {
     if (session?.user.accessToken !== undefined) {
       (
         async () => {
-          // console.log(`Este es el token: ${session?.user.accessToken}`)
           const respuesta: CardChallengesCategoryProps | null = await getChallengesByCategory(session?.user.accessToken)
           if (respuesta)
             setChallenge(respuesta)
