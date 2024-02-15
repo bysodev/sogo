@@ -36,20 +36,22 @@ export const FooterChallenge: React.FC<FooterLessonProps> = ({
     }, [start, minutes, seconds])
   
     useEffect(() => {
-        const tick = () => {
-            if (secs === 0) {
-                setTime([mins - 1, 59]);
-            } else {
-                setTime([mins, secs - 1]);
+        if( !end ){
+            const tick = () => {
+                if (secs === 0) {
+                    setTime([mins - 1, 59]);
+                } else {
+                    setTime([mins, secs - 1]);
+                }
+            };
+        
+            const timerId = setInterval(() => tick(), 1000);
+            if( mins == 0 && secs == 0 ){
+                setEnd(true)
             }
-        };
-    
-        const timerId = setInterval(() => tick(), 1000);
-        if( mins == 0 && secs == 0 ){
-            setEnd(true)
+            return () => clearInterval(timerId);
         }
-        return () => clearInterval(timerId);
-    }, [mins, secs]);
+    }, [mins, secs, end]);
 
     const formatoDosDigitos = (valor: any) => {
         return valor.toString().padStart(2, '0');
@@ -109,7 +111,7 @@ export const FooterChallenge: React.FC<FooterLessonProps> = ({
     );
 };
 
-export const FooterEndChallenge = ( { categoria, dificultad }: { categoria: string, dificultad: string } ) => {
+export const FooterEndChallenge = ( ) => {
 
     const router = useRouter();
 

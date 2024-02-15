@@ -14,15 +14,15 @@ const formatoDosDigitos = (valor: any) => {
 
 type res_challenge = {
     bonus: number
-    end_points: number
-    fails: number
-    id_challenge: number
-    id_user: number
+    end_points?: number
+    fails?: number
+    id_challenge?: number
+    id_user?: number
     minutes: number
     points: number
     seconds: number
-    streak: number
-    state: string
+    streak?: number
+    state?: string
   }
 
 export default function CompleteChallenge(
@@ -40,6 +40,16 @@ export default function CompleteChallenge(
 }: res_challenge
 ) {
 
+    console.log({  bonus,
+        end_points,
+        fails,
+        id_challenge,
+        id_user,
+        minutes,
+        points,
+        seconds,
+        streak,
+        state})
     const router = useRouter();
 
     return (
