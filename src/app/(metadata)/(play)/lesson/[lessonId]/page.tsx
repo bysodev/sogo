@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from "react";
+import Confetti from 'react-confetti';
 import useSWR from "swr";
 
 const handlePostLesson = async (token: string, id_lesson: number, points_reached: number, state_id: number, fails: number, detail_fails: number[]) => {
@@ -115,8 +116,14 @@ export default function LessonVocales() {
   const [errosArrow, setErrosArrow] = useState(3)
   const [totalTry, setTotalTry] = useState(3)
   const [messageLesson, setMessageLesson] = useState("")
-  const [score, setScore] = useState(0)
   const [counter, setCounter] = useState(0);
+  type StatusLessonType = {
+    score: number;
+    status: number;
+    prevStatus: number
+  };
+
+  const [statusLesson, setStatusLesson] = useState<StatusLessonType>({ score: 0, status: 0, prevStatus: 1 });
 
   useEffect(() => {
     if (counter <= 0) {
@@ -156,7 +163,7 @@ export default function LessonVocales() {
     const contentRandom = lesson?.data.random ? shuffleArray(content) : content;
     setCharResults(initialResults);
     setErrors(initialResults);
-
+    setStatusLesson(prevState => ({ ...prevState, prevStatus: lesson?.data.state_id }));
     setprogress((prevProgress) => ({
       ...prevProgress,
       preguntas: contentRandom.length,
@@ -213,7 +220,7 @@ export default function LessonVocales() {
       }, 0);
       const totalTime = (startime.final.getTime() - startime.inicio.getTime());
       const { score, status } = calculateScore(lesson?.data.points, totalFails, 15, totalTime, lesson.data.max_time);
-      setScore(score)
+      setStatusLesson(prevState => ({ ...prevState, score, status }));
       // Llama a la función handlePostLesson con el lessonIdInt
       fetchStatusLesson(session?.user?.accessToken || "", lessonIdInt).then((response) => {
         // get data of response from reposne.data
@@ -273,6 +280,10 @@ export default function LessonVocales() {
     }
   }, [totalTry, progres.char])
 
+  const isValidResult = (char: string, result: string) => {
+    return char === result || (char === '0' && result === 'O') || (char === 'O' && result === '0');
+  };
+
   const handleVerification = async () => {
     setSubmit(false);
     if (progres.porcentaje != 100) {
@@ -283,7 +294,7 @@ export default function LessonVocales() {
           } else {
             // La respuesta fue exitosa, maneja los datos de la respuesta
             const predict = await (response as Response).json();
-            if (predict.data.result === progres.char) {
+            if (isValidResult(progres.char, predict.data.result)) {
               setCheck(true);
               setprogress((pro) => ({
                 ...pro,
@@ -338,10 +349,10 @@ export default function LessonVocales() {
 
   return (
     <>
-      <div className="2xl:container mx-auto w-full h-full">
+      <div className="2xl:container mx-auto w-full h-full relative">
+        {check && <Confetti className="!z-50 !h-full !w-full" />}
         {progres.porcentaje === 100 || totalTry === 0 ? (
-          <CompleteLesson messageLesson={messageLesson} startime={startime} errors={errors} score={score} />
-          // <CompleteLesson isOpen={isOpen} setIsOpen={setIsOpen} />
+          <CompleteLesson messageLesson={messageLesson} startime={startime} errors={errors} statusLesson={statusLesson} />
         ) : (
           <div className="flex flex-col gap-4 h-full">
             <Progressbar porcentaje={progres.porcentaje} setDrawer={setDrawer} totalTry={totalTry} />

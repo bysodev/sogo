@@ -1,11 +1,11 @@
 "use client"
 import ModalMUI from '@/components/ModalMUI';
 import { Fetcher } from '@/lib/types/lessons';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Tooltip } from '@mui/material';
 import Link from 'next/link';
 import { useState } from 'react';
 import { BsBookmarkStarFill } from 'react-icons/bs';
-import { FaCheck, FaExclamationTriangle, FaLock } from "react-icons/fa";
+import { FaCheck, FaExclamationTriangle, FaLock, FaQuestionCircle } from "react-icons/fa";
 import { FaCircleCheck, FaCircleXmark, FaLocationCrosshairs } from 'react-icons/fa6';
 import useSWR from 'swr';
 
@@ -60,9 +60,9 @@ const LevelStage = () => {
   };
   let buttonIndex = 0;
   return (
-    <div className='lg:py-4 px-4'>
-      <h1 className="rounded-xl border-2 p-1 font-bold text-2xl text-center text-gray-500 mb-4">Lecciones</h1>
-      <h1 className='text-gray-500 font-bold text-xl border-b-2 p-5 lg:p-0'>Las lecciones se basan en señas estáticas</h1>
+    <div className='lg:p-4'>
+      <h1 className="lg:rounded-xl border-2 p-1 font-bold text-2xl text-center text-gray-500">Lecciones</h1>
+      <h1 className='text-gray-500 font-bold text-base border-b-2 p-4'>Las lecciones se basan en señas estáticas</h1>
       {isError ? (
         <p>Error al cargar los datos</p>
       ) : isLoading ? (
@@ -79,7 +79,7 @@ const LevelStage = () => {
                 </article>
                 <aside className={`w-1/6 border-l-2 border-white grid place-items-center text-white transla`}><BsBookmarkStarFill size={40} /></aside>
               </section>
-              <div className='grid place-items-center w-full gap-8 m-10'>
+              <div className='grid place-items-center w-full gap-8 my-10 lg:m-10'>
                 {sectionWithLessons.lessons.map((lesson: any, index: number) => {
                   const stateId = lesson.state_id;
                   const lockIconValue = lockIcon(stateId);
@@ -120,13 +120,11 @@ const LevelStage = () => {
             </p>
             <div className='flex gap-6 justify-between'>
               <p className='flex gap-5 items-center'>Aleatorio: {currentMessage?.random === "Si" ? <FaCircleCheck size={22} /> : <FaCircleXmark size={22} />}</p>
-              <div>
-                <p className='flex gap-6 items-center'>Estado: <span
-                  className={`whitespace-nowrap rounded-full ${currentMessage?.blocked ? "bg-gray-100 text-gray-600" : "bg-purple-100 text-" + sectionColor(currentMessage?.section_id - 1)} px-2.5 py-0.5`}
-                >
+              <div className="flex gap-4">
+                <div className='flex gap-2 items-center'><p>Estado: </p><Tooltip placement="top" title={currentMessage?.stateId == 1 ? "Lección no disponible" : currentMessage?.stateId == 2 ? "Lección disponible" : currentMessage?.stateId == 3 ? "Puedes mejorar el puntaje" : currentMessage?.stateId == 4 ? "Los intentos no se registrarán" : "Estado incorrecto"}><div><FaQuestionCircle /></div></Tooltip></div>
+                <span className={`whitespace-nowrap rounded-full ${currentMessage?.blocked ? "bg-gray-100 text-gray-600" : "bg-purple-100 text-" + sectionColor(currentMessage?.section_id - 1)} px-2.5 py-0.5`}>
                   {currentMessage?.stateId == 1 ? "Bloqueado" : currentMessage?.stateId == 2 ? "Disponible" : currentMessage?.stateId == 3 ? "Recuperar" : currentMessage?.stateId == 4 ? "Completado" : "No disponible"}
-                </span></p>
-
+                </span>
               </div>
             </div>
             <div className='text-center my-4'>

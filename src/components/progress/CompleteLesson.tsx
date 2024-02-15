@@ -8,7 +8,13 @@ type Times = {
     final: Date
 }
 
-export default function CompleteLesson({ startime, errors, messageLesson, score }: { startime: Times, errors: { [key: string]: number }, messageLesson: string, score: number }) {
+type StatusLessonType = {
+    score: number;
+    status: number;
+    prevStatus: number;
+};
+
+export default function CompleteLesson({ startime, errors, messageLesson, statusLesson }: { startime: Times, errors: { [key: string]: number }, messageLesson: string, statusLesson: StatusLessonType }) {
     const [tiempo, setTiempo] = useState({ hora: 0, minuto: 0, segundo: 0 });
 
     useEffect(() => {
@@ -39,8 +45,19 @@ export default function CompleteLesson({ startime, errors, messageLesson, score 
                 width={200}
                 alt="Letra A"
             />
-            <h1 className="text-3xl text-purple-600 font-extrabold">{messageLesson === "" ? "¡Lección Completada!" : "Vaya..."}</h1>
+            <h1 className="text-2xl text-purple-600 font-extrabold">{messageLesson === "" ? "¡Lección Completada!" : "Vaya..."}</h1>
             {messageLesson !== "" && <p className="text-xl text-gray-500">{messageLesson}</p>}
+            {messageLesson === "" && (
+                <div className="m-auto text-balance w-96">
+                    {statusLesson.prevStatus === 1 && statusLesson.status === 3 && (
+                        <p className="text-base text-gray-500">Tu puntaje te permite recuperar la lección.</p>
+                    )}
+                    {((statusLesson.prevStatus === 3 && statusLesson.status === 4)) && (
+                        <p className="text-base text-gray-500">Los próximos intentos no contabilizarán en tu puntaje total.</p>
+                    )}
+                    {statusLesson.prevStatus === 4 && <p className="text-base text-gray-500">Este puntaje no será registrado porque la lección ya se ha compeltado correctamente.</p>}
+                </div>
+            )}
             <div className="grid grid-cols-1 sm:grid-cols-3 justify-center gap-4">
                 <div className="border overflow-hidden border-purple-600 text-purple-600 rounded-lg text-center font-bold">
                     <div className="bg-purple-600 p-2">
@@ -59,7 +76,7 @@ export default function CompleteLesson({ startime, errors, messageLesson, score 
                     </div>
                     <div className="p-6">
                         <span>
-                            🏆{" "}{score} puntos
+                            🏆{" "}{statusLesson.score} puntos
                         </span>
                     </div>
                 </div>

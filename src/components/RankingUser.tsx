@@ -2,11 +2,11 @@ import NavRanking from "@/components/cards/NavRanking";
 import { EnumCategory, EnumDifficulty } from "@/lib/types/challenge";
 import { DetailsRankingApi } from "@/lib/types/rankings";
 import { useAvatar } from "@/utilities/useAvatars";
-import { Alert, Avatar, Box, Card, CircularProgress, List, ListItemAvatar, ListItemText, ListItem as MuiListItem, Typography } from "@mui/material";
+import { Alert, Avatar, Box, Card, CircularProgress, List, ListItemAvatar, ListItemText, ListItem as MuiListItem, Tooltip, Typography } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import Image from "next/image";
 import { useState } from "react";
-import { FaCrown } from "react-icons/fa";
+import { FaCrown, FaQuestionCircle } from "react-icons/fa";
 import useSWR from "swr";
 
 interface TabPanelProps {
@@ -17,7 +17,6 @@ interface TabPanelProps {
 }
 
 const ListItemTop3 = styled(MuiListItem)({
-  // reemplaza esto con tus propios estilos para el top 3
   display: 'flex',
   flexDirection: "column",
   padding: '0',
@@ -54,44 +53,53 @@ export default function RankingChallengePage() {
   const { data: rankNumeros, error: errorNumeros } = useSWR(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/ranking?category=${EnumCategory.NUMEROS}`, fetcher);
 
   return (
-    <section className="relative dark:bg-gray-900 h-full duration-300 border-l-4">
-      <div className="fixed overflow-y-auto h-screen text-center text-gray-900 dark:text-gray-100 py-10 px-6 grid gap-4">
-        <h1 className="text-3xl font-bold">Tabla de clasificación</h1>
-        <p className="text-gray-500">Top 5 de los personas con el puntaje más alto alcanzado entre las lecciones y retos.</p>
-        <div className="border-2 p-4 rounded-lg">
-          <h2 className="text-xl text-start text-gray-600 font-semibold">Categoría: <span className="font-normal">Palabras</span></h2>
-          <NavRanking value={palabras} setValue={setPalabras} key='PALABRAS' />
-          {errorPalabras || errorNumeros ? (
-            <p>Error al cargar los datos</p>
-          ) : !rankPalabras || !rankNumeros ? (
-            <CircularProgress />
-          ) : (
-            Object.values(EnumDifficulty).map((difficulty, index) => (
-              <TabPanel value={palabras} index={difficulty} key={index}>
-                {rankPalabras.PALABRAS && <ListRankings ranks={rankPalabras.PALABRAS[difficulty]} />}
-              </TabPanel>
-            ))
-          )}
-        </div>
-        <div className="border-2 p-4 rounded-lg">
-          <h2 className="text-xl text-start text-gray-600 font-semibold">Categoría: <span className="font-normal">Números</span></h2>
-          <NavRanking value={numeros} setValue={setNumeros} key='NUMEROS' />
-          {errorPalabras || errorNumeros ? (
-            <p>Error al cargar los datos</p>
-          ) : !rankPalabras || !rankNumeros ? (
-            <CircularProgress />
-          ) : (
-            Object.values(EnumDifficulty).map((difficulty, index) => (
-              <TabPanel value={numeros} index={difficulty} key={index}>
-                {rankNumeros.NUMEROS && <ListRankings ranks={rankNumeros.NUMEROS[difficulty]} />}
-              </TabPanel>
-            ))
-          )}
+    <section className="relative dark:bg-gray-900 h-full duration-300 pt-5 lg:pt-0">
+      <div className="mb-32 lg:mb-0 lg:fixed overflow-y-auto h-full lg:border-l-4">
+        <div className="h-auto text-center text-gray-900 dark:text-gray-100 lg:py-4 px-4 grid gap-4 border-t-4 lg:border-t-0 ">
+          <h1 className="text-2xl font-bold mt-5 lg:mt-0">Tabla de clasificación</h1>
+          <p className="text-gray-500 text-sm text-balance">Top 5 de los personas con el puntaje más alto alcanzado entre las lecciones y retos.</p>
+          <div className="border-2 p-4 rounded-lg">
+            <h2 className="text-sm text-start text-gray-600 font-semibold">Categoría: <span className="font-normal">Palabras</span></h2>
+            <NavRanking value={palabras} setValue={setPalabras} key='PALABRAS' />
+            {errorPalabras || errorNumeros ? (
+              <p>Error al cargar los datos</p>
+            ) : !rankPalabras || !rankNumeros ? (
+              <CircularProgress />
+            ) : (
+              Object.values(EnumDifficulty).map((difficulty, index) => (
+                <TabPanel value={palabras} index={difficulty} key={index}>
+                  {rankPalabras.PALABRAS && <ListRankings ranks={rankPalabras.PALABRAS[difficulty]} />}
+                </TabPanel>
+              ))
+            )}
+          </div>
+          <div className="border-2 p-4 rounded-lg">
+            <h2 className="text-sm text-start text-gray-600 font-semibold">Categoría: <span className="font-normal">Números</span></h2>
+            <NavRanking value={numeros} setValue={setNumeros} key='NUMEROS' />
+            {errorPalabras || errorNumeros ? (
+              <p>Error al cargar los datos</p>
+            ) : !rankPalabras || !rankNumeros ? (
+              <CircularProgress />
+            ) : (
+              Object.values(EnumDifficulty).map((difficulty, index) => (
+                <TabPanel value={numeros} index={difficulty} key={index}>
+                  {rankNumeros.NUMEROS && <ListRankings ranks={rankNumeros.NUMEROS[difficulty]} />}
+                </TabPanel>
+              ))
+            )}
+          </div>
         </div>
       </div>
     </section>
   )
 }
+
+const rankColors: { [key: number]: string } = {
+  1: 'bg-yellow-300 border-yellow-400 text-yellow-600', // oro
+  2: 'bg-gray-300 border-gray-400 text-gray-600', // plata
+  3: 'bg-orange-300 border-orange-400 text-orange-600', // bronce
+};
+
 
 export const RankItem = ({ rank, rankNumber }: { rank: DetailsRankingApi, rankNumber: number }) => {
   const { avatar, avatarError, isLoading } = useAvatar(rank.image);
@@ -101,11 +109,7 @@ export const RankItem = ({ rank, rankNumber }: { rank: DetailsRankingApi, rankNu
 
   const ListItem = rankNumber <= 3 ? ListItemTop3 : ListItem4And5;
 
-  const rankColors: { [key: number]: string } = {
-    1: 'bg-yellow-200 border-yellow-300 text-yellow-500',
-    2: 'bg-slate-200 border-slate-300 text-slate-500',
-    3: 'bg-purple-200 border-purple-300 text-purple-500',
-  };
+  const marginTopClass = rankNumber === 1 ? '' : rankNumber === 2 ? 'mt-8' : 'mt-10';
 
   return (
     <ListItem className='text-base'>
@@ -115,12 +119,13 @@ export const RankItem = ({ rank, rankNumber }: { rank: DetailsRankingApi, rankNu
             {isLoading ? (
               <CircularProgress />
             ) : (
-              <Image className={`rounded-full border-[6px] ${rankColors[rankNumber]} w-auto ${rankNumber === 1 ? "h-28" : "h-20"}`} src={avatar || ''} height={100} width={100} alt={`Imagen del usuario ${rank.username}`} />
+              <Image className={`rounded-full border-[6px] ${rankColors[rankNumber]} w-auto ${rankNumber === 1 ? "h-28" : "h-24"} ${marginTopClass}`} src={avatar || ''} height={100} width={100} alt={`Imagen del usuario ${rank.username}`} />
             )}
             {rankNumber === 1 && <FaCrown size={75} className={`absolute -top-11 rotate-[35deg] -right-6 text-4xl text-yellow-300`} />}
             <span className={`absolute grid place-content-center bottom-0 leading-none rounded-full border-[6px] h-10 w-10 text-center text-xl font-semibold ${rankColors[rankNumber]}`}>{rankNumber}</span>
           </ListItemAvatar>
           <ListItemText
+            className={rankColors[rankNumber] + " w-full py-4 rounded-t-lg"}
             sx={{ fontSize: 20 }}
             primary={
               <Typography component="p" variant="body1" fontSize={20} fontWeight={600} color="text.primary" textAlign={"center"}>
@@ -128,8 +133,12 @@ export const RankItem = ({ rank, rankNumber }: { rank: DetailsRankingApi, rankNu
               </Typography>
             }
             secondary={
-              <Typography fontSize={15} fontWeight={600} color="text.secondary" textAlign={"center"}>
-                {rank.puntos} pts
+              <Typography fontSize={15} fontWeight={600} textAlign={"center"} className={"rounded-lg bg-purple-100 border-2 border-purple-500 text-purple-600 w-min !mx-auto whitespace-nowrap p-1 px-4 flex gap-2 flex-nowrap items-center"}>
+                {rank.puntos} pts <Tooltip title={`Lecciones: ${rank.lecciones} | Retos: ${rank.retos}`} placement="top" arrow>
+                  <div>
+                    <FaQuestionCircle />
+                  </div>
+                </Tooltip>
               </Typography>
             }
           />
@@ -162,15 +171,6 @@ export const RankItem = ({ rank, rankNumber }: { rank: DetailsRankingApi, rankNu
           </Card>
         </>
       )}
-      {/* <ListItemText
-        sx={{ fontSize: 20 }}
-        primary={
-          <Typography component="p" variant="body1" fontSize={25} fontWeight={600} color="text.primary" textAlign={"center"}>
-            {rank.username}
-          </Typography>
-        }
-        secondary={`Retos: ${rank.retos} | ${rank.puntos} EXP`}
-      /> */}
     </ListItem>
   )
 }
@@ -194,36 +194,32 @@ export const ListRankings = ({ ranks }: { ranks: DetailsRankingApi[] }) => {
   const remainingRanks = ranks.slice(3);
   let vacancyCounter = 1;
 
-
-
-  const rankColors: { [key: number]: string } = {
-    1: 'bg-yellow-200 border-yellow-300 text-yellow-500',
-    2: 'bg-slate-200 border-slate-300 text-slate-500',
-    3: 'bg-purple-200 border-purple-300 text-purple-500',
-  };
-
-
   return (
     <List dense={true}>
       <div className="grid grid-cols-3">
         {topThree.map(({ rank, rankNumber }, index) => {
+          const marginTopClass = rankNumber === 1 ? '' : rankNumber === 2 ? 'mt-8' : 'mt-10';
           if (rank) {
             vacancyCounter++;
-            return <RankItem key={index} rank={rank} rankNumber={rankNumber} />
+            return (
+              <RankItem key={index} rank={rank} rankNumber={rankNumber} />
+            );
           } else {
+            vacancyCounter++;
             const ListItem = ListItemTop3;
             return (
-              <ListItem key={index} className='text-base'>
+              <ListItem key={index} className={"text-base"}>
                 <ListItemAvatar className="relative">
                   <Avatar
-                    className={`${rankColors[rankNumber]} rounded-full border-[6px]`}
+                    className={`${rankColors[rankNumber]} rounded-full border-[6px] ${marginTopClass}`}
                     src={''}
                     alt={'Imagen por defecto'}
                     sx={{ width: 100, height: 100 }}
                   />
-                  <span className={`${rankColors[rankNumber]} absolute grid place-content-center bottom-0 leading-none rounded-full border-[6px] h-10 w-10 text-center text-xl font-semibold`}>{vacancyCounter++}</span>
+                  <span className={`${rankColors[rankNumber]} absolute grid place-content-center bottom-0 leading-none rounded-full border-[6px] h-10 w-10 text-center text-xl font-semibold`}>{rankNumber}</span>
                 </ListItemAvatar>
                 <ListItemText
+                  className={rankColors[rankNumber] + " w-full py-4 rounded-t-lg"}
                   sx={{ fontSize: 20 }}
                   primary={
                     <Typography component="p" variant="body1" fontSize={20} fontWeight={600} color="text.primary" textAlign={"center"}>
@@ -231,13 +227,13 @@ export const ListRankings = ({ ranks }: { ranks: DetailsRankingApi[] }) => {
                     </Typography>
                   }
                   secondary={
-                    <Typography fontSize={15} fontWeight={600} color="text.secondary" textAlign={"center"}>
+                    <Typography fontSize={15} fontWeight={600} textAlign={"center"} className={"rounded-lg bg-purple-100 border-2 border-purple-500 text-purple-600 w-min !mx-auto whitespace-nowrap p-1 px-4 flex gap-2 flex-nowrap items-center"}>
                       ? pts
                     </Typography>
                   }
                 />
               </ListItem>
-            )
+            );
           }
         })}
       </div>

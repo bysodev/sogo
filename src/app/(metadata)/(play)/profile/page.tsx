@@ -21,8 +21,8 @@ const IMAGE_PROVIDER = "https://api.dicebear.com/7.x/fun-emoji/jpg";
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 export default function ProfilePage() {
-  const { data: user, error, isLoading, mutate } = useSWR(`${url}/api/auth/user/profile`, fetcher, { revalidateOnFocus: false });
-  const { data: session, update } = useSession();
+  const { data: user, error, isLoading, mutate } = useSWR(`${url}/api/auth/user/profile`, fetcher, { revalidateOnFocus: false }) || {};
+  const { data: session, update } = useSession() || {};
   const [modalOpen, setModalOpen] = useState(false); // state to control the modal
   const [isChecked, setIsChecked] = useState(false);
   const [fetching, setFetching] = useState(false); // fix: separate the setter function from the state variable
@@ -137,7 +137,7 @@ export default function ProfilePage() {
 
   return (
     <div className="w-full p-4">
-      <h1 className="rounded-xl border-2 p-1 font-bold text-2xl text-center text-gray-500">Perfil</h1>
+      <h1 className="lg:rounded-xl border-2 p-1 font-bold text-2xl text-center text-gray-500">Perfil</h1>
       <hr className="mt-4" />
       <div className="p-2 grid place-items-center gap-4">
         {!selectedAvatar || !selectedAvatar?.url ? (
@@ -179,14 +179,18 @@ export default function ProfilePage() {
                       >
                         <input
                           autoComplete="username"
-                          className="flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
+                          className="w-full flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
                           type="text"
-                          defaultValue={user.data.username}
+                          defaultValue={user?.data.username}
                           {...register("username", {
                             required: { value: true, message: "Usuario requerido" },
                             minLength: {
-                              value: 6,
+                              value: 5,
                               message: "Requiere al menos 6 caracteres",
+                            },
+                            maxLength: {
+                              value: 15,
+                              message: "Máximo 15 caracteres",
                             },
                           })}
                         />
@@ -209,9 +213,9 @@ export default function ProfilePage() {
                         <input
                           disabled={true}
                           autoComplete="email"
-                          className="flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
+                          className="w-full flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
                           type="email"
-                          defaultValue={user.data.email}
+                          defaultValue={user?.data.email}
                         />
                       </div>
                     </div>
@@ -250,11 +254,11 @@ export default function ProfilePage() {
                               message: "Contraseña requerida",
                             },
                             minLength: {
-                              value: 6,
-                              message: "Requiere al menos 6 caracteres",
+                              value: 8,
+                              message: "Requiere al menos 8 caracteres",
                             },
                             pattern: {
-                              value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+                              value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
                               message: "La contraseña debe contener al menos una letra y un número"
                             },
                           })}
@@ -277,7 +281,7 @@ export default function ProfilePage() {
                           } container-fluid`}
                         >
                           <input
-                            className="flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
+                            className="w-full flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
                             type="password"
                             {...register("password", {
                               required: {
@@ -285,8 +289,8 @@ export default function ProfilePage() {
                                 message: "Nueva contraseña requerida",
                               },
                               minLength: {
-                                value: 6,
-                                message: "Requiere al menos 6 caracteres",
+                                value: 8,
+                                message: "Requiere al menos 8 caracteres",
                               },
                               pattern: {
                                 value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
@@ -309,7 +313,7 @@ export default function ProfilePage() {
                           } container-fluid`}
                         >
                           <input
-                            className="flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
+                            className="w-full flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
                             type="password"
                             {...register("repass", {
                               required: {

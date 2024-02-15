@@ -23,6 +23,20 @@
     direction: rtl;
   }
 }
+.button_login_provider img,
+.button_login_provider span {
+  transition: all 0.3s ease 0s;
+}
+.button_login_provider:hover img {
+  transform: scale(1.1);
+  transition: all 0.3s ease 0s;
+  transform: translateX(2rem);
+}
+
+.button_login_provider:hover span {
+  transition: all 0.3s ease 0s;
+  opacity: 0;
+}
 
 .frame::before {
   content: '';
