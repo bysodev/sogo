@@ -21,6 +21,8 @@ type Times = {
     final: Date
 }
 
+const defect_palabra = `/lesson/vocals/letra_A.jpg`;
+
 function obtenerURLImagen( name: string) {
   console.log('Entramos a ver la vocal')
   return  `/lesson/vocals/letra_${name}.jpg`; 
@@ -258,7 +260,7 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
             continue: true
           }));
           const img_principal = `/lesson/vocals/letra_${progres.objetivos[1]}.jpg`; 
-          setCurrentImage(img_principal)
+          setCurrentImage(img_principal || defect_palabra)
         }else{
           setprogress((prev) => ({
             ...prev,

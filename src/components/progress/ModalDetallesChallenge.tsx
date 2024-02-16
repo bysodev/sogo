@@ -5,7 +5,7 @@ import { purple } from "@mui/material/colors";
   
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
     color: theme.palette.getContrastText(purple[500]),
-    backgroundColor: purple[500],
+    backgroundColor: purple[700],
     '&:hover': {
       backgroundColor: purple[700],
     },
@@ -43,11 +43,12 @@ export default function ModalDetallesChallenge({ open, setOpen, number, name, de
             <DialogActions
                 sx={{ width: '100%', placeContent: 'center', paddingBottom: 4 }}
             >
-                <ColorButton
-                    variant="contained"
+                <Button
+                    variant="outlined"
+                    color="secondary"
                     onClick={setOpen}>
                     Entendido
-                </ColorButton>
+                </Button>
             </DialogActions>
         </Dialog>
     )

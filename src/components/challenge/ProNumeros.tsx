@@ -17,6 +17,7 @@ type Times = {
     inicio: Date,
     final: Date
 }
+const defect_numero = `/lesson/numbers/numero_0.jpg`;
 
 function obtenerURLImagen( name: string | number) {
     return  `/lesson/numbers/numero_${name}.jpg`; 
@@ -303,7 +304,7 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
             continue: true
           }));
           const img_principal = `/lesson/numbers/numero_${progres.objetivos[1]}.jpg`; 
-          setCurrentImage( img_principal )
+          setCurrentImage( img_principal || defect_numero )
         }else{
           setprogress((prev) => ({
             ...prev,

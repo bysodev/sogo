@@ -22,6 +22,9 @@ import { IoClose } from "react-icons/io5";
 
 const not_pass = ['E', 'J', 'Ñ', 'Z'];
 
+const defect_palabra = `/lesson/vocals/letra_A.jpg`;
+const defect_numero = `/lesson/numbers/numero_0.jpg`;
+
 type ElementOperation = {
     operacion: any[], 
     resultado: string[],
@@ -430,7 +433,7 @@ export default function ChallengesPage() {
             }));
             const urlPalabraImg = `/lesson/vocals/letra_${progres.objetivos[1]}.jpg`;
             const urlNumeroImg = `/lesson/numbers/numero_${progres.objetivos[1]}.jpg`;
-            const urlImg = category === EnumCategory.PALABRAS ? urlPalabraImg : ( category === EnumCategory.NUMEROS ? urlNumeroImg : '/lesson/default.jpg' )
+            const urlImg = category === EnumCategory.PALABRAS ? (urlPalabraImg || defect_palabra) : ( category === EnumCategory.NUMEROS ? (urlNumeroImg || defect_numero) : '/lesson/default.jpg' )
             setCurrentImage( urlImg )
           }else{
             setprogress((prev) => ({

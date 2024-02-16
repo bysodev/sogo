@@ -1,5 +1,4 @@
 import IconTouch from '@/components/icons/IconTouch';
-import Image from 'next/image';
 import Webcam from 'react-webcam';
 /**
  * Componente de la cámara.
@@ -49,7 +48,7 @@ export default function Camara({
         />
       </div>
       <div className="w-full h-full absolute overflow-hidden top-0 left-0 aspect-square">
-        {imagen && <Image src={imagen} alt="" width={640} height={480} />}
+        {/* {imagen && <Image src={imagen} alt="" width={640} height={480} />} */}
       </div>
       <div className=" object-cover z-10 h-full">
         <div
