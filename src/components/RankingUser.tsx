@@ -53,7 +53,7 @@ export default function RankingChallengePage() {
   const { data: rankNumeros, error: errorNumeros } = useSWR(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/ranking?category=${EnumCategory.NUMEROS}`, fetcher);
 
   return (
-    <section className="relative dark:bg-gray-900 h-full duration-300 pt-5 lg:pt-0">
+    <section className="relative dark:bg-gray-900 w-4/5 h-full duration-300 pt-5 lg:pt-0">
       <div className="mb-32 lg:mb-0 lg:fixed overflow-y-auto h-full lg:border-l-4">
         <div className="h-auto text-center text-gray-900 dark:text-gray-100 lg:py-4 px-4 grid gap-4 border-t-4 lg:border-t-0 ">
           <h1 className="text-2xl font-bold mt-5 lg:mt-0">Tabla de clasificación</h1>

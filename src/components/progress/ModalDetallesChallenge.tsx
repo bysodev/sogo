@@ -1,6 +1,15 @@
 'use client'
 
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Button, ButtonProps, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, styled } from "@mui/material";
+import { purple } from "@mui/material/colors";
+  
+const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
+    color: theme.palette.getContrastText(purple[500]),
+    backgroundColor: purple[500],
+    '&:hover': {
+      backgroundColor: purple[700],
+    },
+}));
 
 export default function ModalDetallesChallenge({ open, setOpen, number, name, descripction }: {open: boolean,  setOpen: () => void, number: number, name: string, descripction: string}) {
    
@@ -11,18 +20,34 @@ export default function ModalDetallesChallenge({ open, setOpen, number, name, de
             open={open}
             onClose={setOpen}
         >
-            <DialogTitle>
-                <span className="text-zinc-900 dark:text-white font-extrabold text-xl">
-                    {`#${number} ${name}`}
-                </span>
+            <DialogTitle
+                sx={{ paddingTop: 6 }}
+            >
+                <div className="w-full flex justify-center gap-2">
+                    <span className="px-2 rounded-md bg-cyan-600 text-white font-extrabold text-xl">
+                        {number}
+                    </span>
+                    <p className="font-extrabold text-xl">{name}</p>                    
+                </div>
+                
             </DialogTitle>
-            <DialogContent>
-                <DialogContentText>
+            <DialogContent
+                sx={{ paddingBottom: 4 }}
+            >
+                <DialogContentText
+                    sx={{ textAlign: 'center', fontSize: '1.4rem'}}
+                >
                     <span>{descripction}</span>
                 </DialogContentText>
             </DialogContent>
-            <DialogActions>
-            <Button onClick={setOpen}>Entendido</Button>
+            <DialogActions
+                sx={{ width: '100%', placeContent: 'center', paddingBottom: 4 }}
+            >
+                <ColorButton
+                    variant="contained"
+                    onClick={setOpen}>
+                    Entendido
+                </ColorButton>
             </DialogActions>
         </Dialog>
     )

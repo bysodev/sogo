@@ -257,9 +257,7 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
         let intentos = challenge.fails_max;
         let distancia = objetivos.length;
       
-        // const img_principal = obtenerURLImagen(objetivo);
         const img_principal = `/lesson/numbers/numero_${objetivo}.jpg`; 
-
         setCurrentImage( img_principal )
         setprogress((prev) => ({
           ...prev, 
@@ -304,6 +302,8 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
             objetivo: pro.objetivos.find((obj) => obj !== progres.objetivo) as string,
             continue: true
           }));
+          const img_principal = `/lesson/numbers/numero_${progres.objetivos[1]}.jpg`; 
+          setCurrentImage( img_principal )
         }else{
           setprogress((prev) => ({
             ...prev,

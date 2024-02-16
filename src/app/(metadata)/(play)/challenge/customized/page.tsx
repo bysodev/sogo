@@ -11,12 +11,16 @@ import { FooterChallenge, FooterEndChallenge } from "@/components/progress/Foote
 import ModalDetallesChallenge, { ModalNotParameters, ModalOutsideTime } from "@/components/progress/ModalDetallesChallenge";
 import { EnumCategory, EnumDifficulty } from "@/lib/types/challenge";
 import { WebVideoElementWithScreenshot } from "@/lib/types/lessons";
-import { Alert, Stack, ToggleButton, ToggleButtonGroup, toggleButtonGroupClasses } from "@mui/material";
+import { Alert, Stack, ToggleButton, ToggleButtonGroup, Tooltip, toggleButtonGroupClasses } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { FaQuestionCircle } from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
+
+const not_pass = ['E', 'J', 'Ñ', 'Z'];
 
 type ElementOperation = {
     operacion: any[], 
@@ -88,14 +92,15 @@ function ordenamientoContent(category: string, content: string, supplement: bool
                     letrasSaltandoUna.push(content[i]);
             }
         }else{
-            return content.split('');
+            const prime_arr = content.split('');
+            return prime_arr.filter(letra => !not_pass.includes(letra));
         }
       
         if( supplement == true ){
             let indiceAleatorio = Math.floor(Math.random() * content.length);
             letrasSaltandoUna.push(content[indiceAleatorio]);
         }
-        return letrasSaltandoUna;
+        return letrasSaltandoUna.filter(letra => !not_pass.includes(letra));
     }
 
     if( category == EnumCategory.NUMEROS ){
@@ -213,7 +218,10 @@ export default function ChallengesPage() {
     // TEMAS DE MODALES
     const handleDetailsModal = () => setDetailsModal(false);
     const handleRouter = () => router.back();
+    const [showDialog, setShowDialog] = useState(true);
 
+    const handleOpen = () => setShowDialog(true);
+    const handleClose = () => setShowDialog(false);
     // PARA EL FORMULARIO
     const [isLoading, setIsLoading] = useState(false);
     const [operaciones, setOperation] = useState(() => ['+']);
@@ -246,6 +254,7 @@ export default function ChallengesPage() {
         seconds: number;
     }
 
+    
     // FUNCIONES PARA LA CAMARA
     const handleToogleTime = (event: React.MouseEvent<HTMLElement>, newTime: string) => {
         setToogleTime(newTime)
@@ -260,6 +269,19 @@ export default function ChallengesPage() {
         setCounter(parseInt(toggleTime))
     }
   
+    useEffect(() => {
+        if( searchParams.has('category') && searchParams.has('difficulty') ){
+            const categoria = searchParams.get('category') as string;
+            const dificultad = searchParams.get('difficulty') as string;
+            if( isValidCategory(categoria) && isValidDifficulty(dificultad) ){
+                setCategory(categoria.toUpperCase() as EnumCategory)
+                setDifficulty(dificultad.toUpperCase() as EnumDifficulty)
+                setProcced(true)
+                console.log('Hacen falta los parametros para esta pagina, no tocar nada de la URL')
+            }
+        }
+    }, [searchParams])
+
     useEffect(() => {
         setTime((tim) => ({
             ...tim,
@@ -376,19 +398,6 @@ export default function ChallengesPage() {
         }
     };
 
-    useEffect(() => {
-        if( searchParams.has('category') && searchParams.has('difficulty') ){
-            const categoria = searchParams.get('category') as string;
-            const dificultad = searchParams.get('difficulty') as string;
-            if( isValidCategory(categoria) && isValidDifficulty(dificultad) ){
-                setCategory(searchParams.get('category') as EnumCategory)
-                setDifficulty(searchParams.get('difficulty') as EnumDifficulty)
-                setProcced(true)
-                console.log('Hacen falta los parametros para esta pagina, no tocar nada de la URL')
-            }
-        }
-    }, [searchParams])
-
     const handleVerification = async () => {
         setSubmit(false);
         const raw = JSON.stringify({
@@ -494,11 +503,38 @@ export default function ChallengesPage() {
         NUMEROS: "Solo se permiten numeros"
     }
 
-    if( prime ){
+    if( prime ){ 
         return <>
-        <div className="h-screen w-full max-h-screen grid place-content-center">
-
-             <div className="p-4 lg:p-0">
+        <div className="h-screen w-full max-h-screen grid justify-center content-around">
+            <div className="grid gap-4 lg:py-4 px-4">
+                <h1 className="rounded-xl border-2 p-1 font-bold text-2xl text-center text-gray-500">Retos Personalizados</h1>
+                {!showDialog && (
+                    <button className="flex gap-4 items-center justify-end" onClick={handleOpen}><span>Volver a mostrar</span> <Tooltip title={'Volver a mostrar las indicaciones de la sección de retos'} placement="top" arrow>
+                    <div>
+                        <FaQuestionCircle />
+                    </div>
+                    </Tooltip>
+                    </button>
+                )}
+                {showDialog && (
+                    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+                        <div className="md:flex">
+                            <div className="p-2">
+                                <div className="tracking-wide text-sm text-indigo-500 font-semibold flex justify-between">
+                                    <span className="text-gray-900 dark:text-white font-extrabold text-xl">
+                                        ¿Cómo funciona?
+                                    </span>
+                                    <button className="text-gray-700" onClick={handleClose}><IoClose size={20} /></button>
+                                </div>
+                                <p className="mt-2 text-gray-500">
+                                    En el formulario de abajo puede seleccionar el contenido que quiera predecir por su cuenta, <br /> como es la mismo logica de los retos usted podra personalizar todos los parametros
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+            <div className="p-4 lg:p-0">
                 <div className="p-2 sm:p-8 sm:py-2 xl:px-6">
                     <form
                     autoComplete="off"
@@ -663,22 +699,26 @@ export default function ChallengesPage() {
 
                         <Alert severity="info">Por defecto todo el contenido a desarrollar</Alert>
                         <div className="flex justify-around border rounded-md p-4">
-                            <div
-                            className={`relative flex flex-wrap gap-2 text-sm ${errors.supplement
-                                ? "text-red-600 border-red-400"
-                                : "text-gray-600 border-gray-400 dark:text-gray-400"
-                                } container-fluid`}
-                            >
-                                <label htmlFor="supplement" className="font-semibold text-xl">Complemento</label>
-                                <input
-                                    disabled={isLoading}
-                                    className="w-8"
-                                    type="checkbox"
-                                    {
-                                        ...register("supplement")
-                                    }
-                                />
-                            </div>
+                            {
+                                category == EnumCategory.PALABRAS && (
+                                <div
+                                className={`relative flex flex-wrap gap-2 text-sm ${errors.supplement
+                                    ? "text-red-600 border-red-400"
+                                    : "text-gray-600 border-gray-400 dark:text-gray-400"
+                                    } container-fluid`}
+                                >
+                                    <label htmlFor="supplement" className="font-semibold text-xl">Uno aleatorio</label>
+                                    <input
+                                        disabled={isLoading}
+                                        className="w-8"
+                                        type="checkbox"
+                                        {
+                                            ...register("supplement")
+                                        }
+                                    />
+                                </div>
+                                )
+                            }
 
                             <div
                             className={`relative flex flex-wrap gap-2 text-sm ${errors.supplement
@@ -686,7 +726,7 @@ export default function ChallengesPage() {
                                 : "text-gray-600 border-gray-400 dark:text-gray-400"
                                 } container-fluid`}
                             >
-                                <label htmlFor="operation" className="font-semibold text-xl">Operation</label>
+                                <label htmlFor="operation" className="font-semibold text-xl"> {category == EnumCategory.PALABRAS ? 'Salteadas' : 'Operaciones'}</label>
                                 <input
                                     disabled={isLoading}
                                     className="w-8"

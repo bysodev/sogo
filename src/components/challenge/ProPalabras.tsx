@@ -14,6 +14,8 @@ import DrawerBottonChall from "./DrawerBottonChall";
 import { ProgressbarChallenge } from "./ProgressbarChallenge";
 import { StackContent } from "./StackContent";
 
+const not_pass = ['E', 'J', 'Ñ', 'Z'];
+
 type Times = {
     inicio: Date,
     final: Date
@@ -75,7 +77,8 @@ function tomarElementosEnOrden(palabra: string, spelled: boolean, supplement: bo
             letrasSaltandoUna.push(palabra[i]);
         }
       }else{
-        return palabra.split('');
+        const prime_arr = palabra.split('');
+        return prime_arr.filter(letra => !not_pass.includes(letra));
       }
     } 
 
@@ -84,7 +87,7 @@ function tomarElementosEnOrden(palabra: string, spelled: boolean, supplement: bo
       letrasSaltandoUna.push(palabra[indiceAleatorio]);
     }
   
-    return letrasSaltandoUna;
+    return letrasSaltandoUna.filter(letra => !not_pass.includes(letra));
 }
 
 function calculateScore(maxScore: number, totalErrors: number, maxErrors: number, time: number, maxTime: number) {
@@ -211,7 +214,6 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
         let distancia = objetivos.length;
         // const img_principal = obtenerURLImagen(objetivo);
         const img_principal = `/lesson/vocals/letra_${objetivo}.jpg`; 
-
         setCurrentImage(img_principal)
         setprogress((prev) => ({
           ...prev,
@@ -244,7 +246,7 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
       if( respuesta.ok ){
         const predict = await (respuesta as Response).json();
 
-        if (predict.result === progres.objetivo) {
+        if (predict.data.result === progres.objetivo) {
           console.log(`Predicción: ${predict.data}, objetivo: ${progres.objetivo} y objetivos: ${progres.objetivos}`)
           setCheck(true);
           setprogress((pro) => ({
@@ -255,6 +257,8 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
             objetivo: pro.objetivos.find((obj) => obj !== progres.objetivo) as string,
             continue: true
           }));
+          const img_principal = `/lesson/vocals/letra_${progres.objetivos[1]}.jpg`; 
+          setCurrentImage(img_principal)
         }else{
           setprogress((prev) => ({
             ...prev,
@@ -335,11 +339,10 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
                 <div className="grid lg:grid-cols-2 justify-center items-center text-center h-full">
                       {
                         (challenge.supplement == false) && (
-                          currentImage != '' &&  <Image
-                          priority={true}
+                          <Image
+                          // priority={true}
                           className="shadow-lg border rounded-xl m-auto aspect-video object-contain"
                           src={currentImage}
-                          
                           height={480}
                           width={480}
                           alt="Defalt"
