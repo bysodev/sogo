@@ -53,7 +53,7 @@ const authOptions = {
   callbacks: {
     jwt: async ({ token, user, trigger, session }: any) => {
       if (trigger === "update") {
-        // Aquí puedes actualizar el nombre y el token
+        // Here you can update the name and the token
         token.name = session.user.name;
         token.image = session.user.image;
         token.accessToken = session.user.accessToken;
@@ -64,6 +64,30 @@ const authOptions = {
         token.image = user.image;
         token.accessToken = user.accessToken;
       }
+
+      // Check if the token is about to expire
+      if (token.expires && Date.now() > token.expires - 30000) {
+        const res = await fetch('/refreshToken', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: token.name,
+            email: token.email
+          })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          token = {
+            ...token,
+            ...data,
+            expires: Date.now() + data.expires_in * 1000
+          };
+        }
+      }
+
       return token;
     },
     session: async ({ session, token }: any) => {
