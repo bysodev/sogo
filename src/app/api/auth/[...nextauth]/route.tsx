@@ -28,12 +28,12 @@ const authOptions = {
                     },
                 })
 
-                const user = await response.json();
+               const user = await response.json();
 
                 if (user) {
-                    return user;
+                    return Promise.resolve(user);
                 } else {
-                    return null;
+                    return Promise.resolve(null);
                 }
             }
         })
