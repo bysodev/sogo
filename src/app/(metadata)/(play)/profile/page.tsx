@@ -1,19 +1,24 @@
 "use client"
-import ModalMUI from "@/components/ModalMUI";
-import TooltipMessage from "@/components/TooltipMessage";
-import IconLoading from "@/components/icons/IconLoading";
-import { showErrorToast, showSuccessToast } from "@/utilities/sweet-alert";
+import { showErrorToast, showSuccessToast } from '@/utilities/sweet-alert';
 import { useAvatars } from "@/utilities/useAvatars";
-import CircularProgress from '@mui/material/CircularProgress';
-import Tooltip from '@mui/material/Tooltip';
 import { useSession } from "next-auth/react";
-import Image from "next/image";
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaQuestionCircle } from "react-icons/fa";
 import { HiX } from 'react-icons/hi';
 import { MdEdit } from "react-icons/md";
 import useSWR from 'swr';
+
+// Dynamically import components that are not critical for initial render
+const ModalMUI = dynamic(() => import("@/components/ModalMUI"));
+const TooltipMessage = dynamic(() => import("@/components/TooltipMessage"));
+const IconLoading = dynamic(() => import("@/components/icons/IconLoading"));
+const CircularProgress = dynamic(() => import('@mui/material/CircularProgress'));
+const Tooltip = dynamic(() => import('@mui/material/Tooltip'));
+const Image = dynamic(() => import("next/image"));
+
+// Rest of your code...
 
 const url = process.env.NEXT_PUBLIC_ROUTE_APP;
 const IMAGE_PROVIDER = "https://api.dicebear.com/7.x/fun-emoji/jpg";

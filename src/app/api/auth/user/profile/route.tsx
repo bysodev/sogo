@@ -1,13 +1,12 @@
-import { getServerSession } from "next-auth/next"
-import { config } from "./../../[...nextauth]/route"
+import { getServerSession } from "next-auth/next";
+import { config } from "./../../[...nextauth]/route";
 
 const url = process.env.NEXT_PUBLIC_API_BACKEND
 
 export async function GET() {
   const session = await getServerSession(config)
-  const myHeaders = new Headers({
-    Accept: 'application/json'
-  })
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
   myHeaders.append('Authorization', `Bearer ${session?.user.accessToken}`)
 
   try {
