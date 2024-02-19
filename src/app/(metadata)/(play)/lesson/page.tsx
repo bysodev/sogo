@@ -3,6 +3,7 @@ import ModalMUI from '@/components/ModalMUI';
 import { Fetcher } from '@/lib/types/lessons';
 import { CircularProgress, Tooltip } from '@mui/material';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { BsBookmarkStarFill } from 'react-icons/bs';
 import { FaCheck, FaExclamationTriangle, FaLock, FaQuestionCircle } from "react-icons/fa";
@@ -13,7 +14,7 @@ const LevelStage = () => {
   const { data: lesson, isLoading, error: isError } = useSWR(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/section/`, Fetcher, { revalidateOnFocus: false })
   const [open, setOpen] = useState(false);
   const [currentMessage, setCurrentMessage] = useState<any | null>(null);
-
+  const { push } = useRouter();
   const createMessage = (lesson: any, active: number) => {
     const baseMessage = {
       "title": `${lesson.name}${active === 1 ? "/#" : ""}`,
@@ -61,7 +62,7 @@ const LevelStage = () => {
   let buttonIndex = 0;
   return (
     <div className='lg:p-4'>
-      <h1 className="lg:rounded-xl border-2 p-1 font-bold text-2xl text-center text-gray-500">Lecciones</h1>
+      <h1 className="lg:rounded-xl border-2 p-1 font-bold text-xl text-center text-gray-500">Lecciones</h1>
       <h1 className='text-gray-500 font-bold text-base border-b-2 p-4'>Las lecciones se basan en señas estáticas</h1>
       {isError ? (
         <p>Error al cargar los datos</p>
@@ -74,10 +75,10 @@ const LevelStage = () => {
             <div key={sectionWithLessons.section.id} className="grid place-items-center w-full lg:pt-6">
               <section className={`bg-${color} text-white flex lg:rounded-xl p-6 w-full`}>
                 <article className="w-5/6  font-bold">
-                  <header>SECCIÓN {index + 1}: {sectionWithLessons.section.name}</header>
+                  <header>Sección {index + 1}: {sectionWithLessons.section.name}</header>
                   <p className="text-xl">{sectionWithLessons.section.description}</p>
                 </article>
-                <aside className={`w-1/6 border-l-2 border-white grid place-items-center text-white transla`}><BsBookmarkStarFill size={40} /></aside>
+                <aside className='w-2/6 border-l-2 border-white grid place-items-center text-white cursor-pointer' onClick={() => (index + 1) === 1 ? push("/learn#number-section") : push("/learn#letter-section")}><BsBookmarkStarFill size={40} /></aside>
               </section>
               <div className='grid place-items-center w-full gap-8 my-10 lg:m-10'>
                 {sectionWithLessons.lessons.map((lesson: any, index: number) => {
@@ -118,7 +119,7 @@ const LevelStage = () => {
                 : "No disponible"
               }
             </p>
-            <div className='flex gap-6 justify-between'>
+            <div className='flex flex-col md:flex-row gap-2 md:gap-6 justify-between'>
               <p className='flex gap-5 items-center'>Aleatorio: {currentMessage?.random === "Si" ? <FaCircleCheck size={22} /> : <FaCircleXmark size={22} />}</p>
               <div className="flex gap-4">
                 <div className='flex gap-2 items-center'><p>Estado: </p><Tooltip placement="top" title={currentMessage?.stateId == 1 ? "Lección no disponible" : currentMessage?.stateId == 2 ? "Lección disponible" : currentMessage?.stateId == 3 ? "Puedes mejorar el puntaje" : currentMessage?.stateId == 4 ? "Los intentos no se registrarán" : "Estado incorrecto"}><div><FaQuestionCircle /></div></Tooltip></div>
@@ -133,7 +134,7 @@ const LevelStage = () => {
                 query: { id: currentMessage?.id },
               }}
                 className={`${currentMessage?.blocked && "disabled"} text-lg text-center py-2 px-8 rounded-xl ${currentMessage?.blocked ? "text-gray-600 bg-gray-300" : "text-white bg-" + sectionColor(currentMessage?.section_id - 1)} p-1 px-4 text-[0.6rem] font-bold`}>
-                {currentMessage?.blocked ? "BLOQUEADO" : "COMENZAR"}
+                {currentMessage?.blocked ? "No Disponible" : "Comenzar"}
               </Link>
             </div>
           </div>

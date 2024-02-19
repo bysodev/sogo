@@ -40,19 +40,17 @@ export default function Learn() {
 
   return (
     <div className="lg:p-4">
-      <h1 className="lg:rounded-xl border-2 p-1 font-bold text-2xl text-center text-gray-500">Aprendizaje</h1>
-      <h1 className='text-gray-500 font-bold text-base p-4'>Las señas se basan en señas estáticas del lenguaje de señas ecuatorino</h1>
-      <hr className='mb-4' />
+      <h1 className="lg:rounded-xl border-2 p-1 font-bold text-xl text-center text-gray-500 mb-4">Aprendizaje</h1>
       <div className="grid">
-        <section className={`bg-purple-500 text-white flex lg:rounded-xl p-6 w-full gap-4`}>
-          <article className="w-5/6 font-bold grid gap-4">
-            <header className="w-fit text-purple-500 bg-white p-2 px-4 text-center rounded-md text-lg">
+        <section className='bg-purple-500 text-white text-center sm:text-start sm:flex lg:rounded-xl p-4 w-full gap-4' id='number-section'>
+          <article className="w-5/6 font-bold grid gap-4 m-auto justify-items-center">
+            <header className="w-fit text-purple-500 bg-white p-2 px-4 text-center rounded-md text-base">
               <h5>Números</h5>
             </header>
-            <p className="text-base font-medium">Aprende como realizar correctamente los números del 0 al 9 con videotutoriales de personas certificadas</p>
+            <p className="text-xs font-medium 2xl:text-sm">Aprende como realizar correctamente los números del 0 al 9 con videotutoriales de personas certificadas</p>
           </article>
           <aside className={`w-auto grid place-items-center text-white`}>
-            <button onClick={() => push("/learn/course?search=number")} className="bg-purple-700 p-2 px-4 font-bold text-lg rounded-lg hover:bg-purple-800 hover:scale-105">Comenzar</button>
+            <button onClick={() => push("/learn/course?search=number")} className="bg-purple-700 p-2 px-4 font-bold text-base rounded-lg hover:bg-purple-800 hover:scale-105">Comenzar</button>
           </aside>
         </section>
         <div className="flex justify-end p-4 pb-0 lg:px-0">
@@ -66,18 +64,18 @@ export default function Learn() {
         </div>
         <div className="grid p-4 lg:px-0 gap-4 grid-cols-2 2xl:grid-cols-3">
           {filteredNumbers.map((item, index) => (
-            <div key={index} className="relative flex flex-col bg-gray-300 p-6 rounded-lg h-72 justify-between">
+            <div key={index} className="relative flex flex-col bg-gray-300 p-6 rounded-lg h-64 justify-between">
               <div className='z-10 absolute h-full w-full top-0 start-0 bg-gradient-to-b from-gray-950 from-10% via-gray-800 via-30% to-transparent to-90% opacity-70 rounded-lg'></div>
               <Image height={100} width={100} placeholder="blur" blurDataURL={'/images/learn/numbers/preload-number-0.webp'} className='z-0 absolute h-full w-full top-0 start-0 rounded-lg object-cover object-top' src={`/images/learn${item.preaload}.webp`} alt={`Imagen de precarga para la lección ${item.title}`} />
               <div className="grid gap-4 z-20">
-                <div className="flex gap-4">
-                  <h2 className="font-bold text-gray-700 bg-gray-200 p-2 text-lg leading-none rounded-lg">{(index + 1).toString().padStart(2, '0')}</h2>
-                  <h2 className="font-bold text-base p-2 bg-transparent text-white border-white leading-none border-2 rounded-lg">{item.level}</h2>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <h2 className="font-bold text-gray-700 w-min bg-gray-200 p-2 text-sm lg:text-base leading-none rounded-lg">{(index + 1).toString().padStart(2, '0')}</h2>
+                  <h2 className="w-min font-bold text-sm lg:text-base p-2 bg-transparent text-white border-white leading-none border-2 rounded-lg">{item.level}</h2>
                 </div>
                 <div className="flex gap-4">
-                  <h1 className="text-lg text-white font-bold">{item.title}</h1>
+                  <h1 className="text-base lg:text-lg text-white font-bold whitespace-nowrap">{item.title}</h1>
                   <button className="bg-gray-200 p-2 rounded-lg" onClick={() => handlePlayPause(index)}>
-                    {isPlaying[index] ? <FaPause /> : <FaPlay />}
+                    {isPlaying[index] ? <FaPause className="w-2 h-2 lg:w-8 lg:h-8" /> : <FaPlay className="w-2 h-2 lg:w-8 lg:h-8" />}
                   </button>
                   <audio
                     ref={el => audioRefs.current[index] = el!}
@@ -86,21 +84,21 @@ export default function Learn() {
                   />
                 </div>
               </div>
-              <button type="button" onClick={() => push("/learn/course?search=number&char=" + item.title.slice(-1))} title="Iniciar etapa" className="block z-10 bg-purple-600 font-bold text-white rounded-lg py-2 text-xl hover:bg-purple-800 hover:scale-105">Iniciar</button>
+              <button type="button" onClick={() => push("/learn/course?search=number&char=" + item.title.slice(-1))} title="Iniciar etapa" className="block z-10 bg-purple-600 font-bold text-white rounded-lg py-2 text-base hover:bg-purple-800 hover:scale-105">Iniciar</button>
             </div>
           ))}
         </div>
-      </div>
+      </div >
       <div className="grid gap-4">
-        <section className={`bg-indigo-500 text-white flex lg:rounded-xl p-6 w-full gap-4`}>
-          <article className="w-5/6 font-bold grid gap-4">
-            <header className="w-fit text-indigo-500 bg-white p-2 px-4 text-center rounded-md text-lg">
+        <section className={`bg-indigo-500 text-white text-center sm:text-start sm:flex lg:rounded-xl p-4 w-full gap-4`} id='letter-section'>
+          <article className="w-5/6 font-bold grid gap-4 m-auto justify-items-center">
+            <header className="w-fit text-indigo-500 bg-white p-2 px-4 text-center rounded-md text-base">
               <h5>Abecedario</h5>
             </header>
-            <p className="text-base font-medium">Aprende como realizar correctamente las señas estáticas del abecedario con videotutoriales de personas certificadas</p>
+            <p className="text-xs font-medium 2xl:text-sm">Aprende como realizar correctamente las señas estáticas del abecedario con videotutoriales de personas certificadas</p>
           </article>
           <aside className={`w-auto grid place-items-center text-white`}>
-            <button onClick={() => push("/learn/course?search=letter")} className="bg-indigo-700 p-2 px-4 font-bold text-lg rounded-lg hover:bg-indigo-800 hover:scale-110">Comenzar</button>
+            <button onClick={() => push("/learn/course?search=letter")} className="bg-indigo-700 p-2 px-4 font-bold text-base rounded-lg hover:bg-indigo-800 hover:scale-110">Comenzar</button>
           </aside>
         </section>
         <div className="flex justify-end p-4 pb-0 lg:px-0">
@@ -114,18 +112,18 @@ export default function Learn() {
         </div>
         <div className="grid p-4 gap-4 grid-cols-2 2xl:grid-cols-3">
           {filteredletters.map((item, index) => (
-            <div key={index} className="relative flex flex-col bg-gray-300 p-6 rounded-lg h-72 justify-between">
+            <div key={index} className="relative flex flex-col bg-gray-300 p-6 rounded-lg h-64 justify-between">
               <div className='z-10 absolute h-full w-full top-0 start-0 bg-gradient-to-b from-gray-950 from-10% via-gray-800 via-30% to-transparent to-90% opacity-70 rounded-lg'></div>
               <Image height={100} width={100} placeholder="blur" blurDataURL={'/images/learn/numbers/preload-letter-A.webp'} className='z-0 absolute h-full w-full top-0 start-0 rounded-lg object-cover object-top' src={`/images/learn${item.preaload}.webp`} alt={`Imagen de precarga para la lección ${item.title}`} />
               <div className="grid gap-4 z-20">
-                <div className="flex gap-4">
-                  <h2 className="font-bold text-gray-700 bg-gray-200 p-3 text-xl leading-none rounded-lg">{(index + 1).toString().padStart(2, '0')}</h2>
-                  <h2 className="font-bold text-base p-3 bg-transparent text-white border-white leading-none border-2 rounded-lg">{item.level}</h2>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <h2 className="font-bold text-gray-700 w-min bg-gray-200 p-2 text-sm lg:text-base leading-none rounded-lg">{(index + 1).toString().padStart(2, '0')}</h2>
+                  <h2 className="w-min font-bold text-sm lg:text-base p-2 bg-transparent text-white border-white leading-none border-2 rounded-lg">{item.level}</h2>
                 </div>
                 <div className="flex gap-4">
-                  <h1 className="text-lg text-white font-bold">{item.title}</h1>
+                  <h1 className="text-base lg:text-lg text-white font-bold whitespace-nowrap">{item.title}</h1>
                   <button className="bg-gray-200 p-2 rounded-lg" onClick={() => handlePlayPause(index + filteredNumbers.length)}>
-                    {isPlaying[index + filteredNumbers.length] ? <FaPause /> : <FaPlay />}
+                    {isPlaying[index + filteredNumbers.length] ? <FaPause className="w-2 h-2 lg:w-8 lg:h-8" /> : <FaPlay className="w-2 h-2 lg:w-8 lg:h-8" />}
                   </button>
                   <audio
                     ref={el => audioRefs.current[index + filteredNumbers.length] = el!}
@@ -134,11 +132,11 @@ export default function Learn() {
                   />
                 </div>
               </div>
-              <button type="button" onClick={() => push("/learn/course?search=letter&char=" + item.title.slice(-1))} title="Iniciar etapa" className="block z-10 bg-indigo-600 font-bold text-white rounded-lg py-2 text-xl hover:bg-indigo-800 hover:scale-105">Iniciar</button>
+              <button type="button" onClick={() => push("/learn/course?search=letter&char=" + item.title.slice(-1))} title="Iniciar etapa" className="block z-10 bg-indigo-600 font-bold text-white rounded-lg py-2 text-base hover:bg-indigo-800 hover:scale-105">Iniciar</button>
             </div>
           ))}
         </div>
       </div>
-    </div>
+    </div >
   );
 }

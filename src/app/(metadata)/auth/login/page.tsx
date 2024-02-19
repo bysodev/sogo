@@ -8,13 +8,14 @@ import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoArrowBackOutline } from "react-icons/io5";
 
 export default function LoginPage() {
   const { push } = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [isPrivate, setIsPrivate] = useState(false);
 
   interface UseFormInputs {
     username: string;
@@ -43,6 +44,25 @@ export default function LoginPage() {
       push("/learn");
     }
     setIsLoading(false);
+  };
+
+  useEffect(() => {
+    const hostname = window.location.hostname;
+    const privateIpPattern = /^(192\.168\.|10\.|172\.(1[6-9]|2[0-9]|3[0-1])\.)/;
+    if (privateIpPattern.test(hostname)) {
+      setIsPrivate(true);
+    }
+  }, []);
+
+  const handleSignIn = (provider: string) => {
+    if (!isLoading) {
+      if (isPrivate) {
+        showErrorToast('La red MIESPE no permite inicio de sesión por proveedores externos')
+        return;
+      }
+      setIsLoading(true);
+      signIn(provider, { callbackUrl: '/learn' });
+    }
   };
   return (
     <div className="w-full lg:w-auto xl:w-[50%] p-4 lg:p-0">
@@ -108,9 +128,10 @@ export default function LoginPage() {
                     value: true,
                     message: "Contraseña requerida",
                   },
-                  minLength: {
-                    value: 6,
-                    message: "Requiere al menos 6 caracteres",
+                  minLength: { value: 8, message: "La contraseña debe tener al menos 8 caracteres" },
+                  pattern: {
+                    value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+                    message: "La contraseña debe contener al menos una letra y un número"
                   },
                 })}
               />
@@ -129,12 +150,13 @@ export default function LoginPage() {
             </Link>
           </div>
           <button
+            title="Iniciar Sesión"
             disabled={isLoading}
             className="mt-2 py-3 px-4 w-full font-bold text-white bg-gray-900 btn hover:bg-gray-950 dark:bg-purple-500 dark:hover:bg-purple-600"
             type="submit"
             id="submit-login"
           >
-            {isLoading ? <IconLoading height={20} className="text-white" /> : 'Iniciar Sesión'}
+            {isLoading ? <IconLoading height={20} width={20} className="text-white" /> : 'Iniciar Sesión'}
           </button>
           <div className="flex flex-row items-center gap-4 my-4">
             <div className="h-0.5 w-full bg-gray-300"></div>
@@ -144,7 +166,7 @@ export default function LoginPage() {
           <div className="grid md:grid-flow-row sm:grid-cols-2 gap-4 text-sm">
             <button
               disabled={isLoading}
-              onClick={() => signIn("google", { callbackUrl: '/learn' })}
+              onClick={() => handleSignIn("google")}
               className="button_login_provider transition-all items-center inline-flex justify-center gap-2 2xl:gap-4 py-3 px-4 w-full font-semibold text-gray-950 border border-gray-600 btn hover:bg-200 hover:border-gray-400 dark:bg-gray-50 dark:hover:bg-gray-200"
               type="button"
             >
@@ -159,7 +181,7 @@ export default function LoginPage() {
             </button>
             <button
               disabled={isLoading}
-              onClick={() => signIn("github", { callbackUrl: '/learn' })}
+              onClick={() => handleSignIn("github")}
               className="button_login_provider transition-all items-center inline-flex justify-center gap-2 2xl:gap-4 py-3 px-4 w-full font-semibold text-gray-950 border border-gray-600 btn hover:bg-200 hover:border-gray-400 dark:bg-gray-50 dark:hover:bg-gray-200"
               type="button"
             >

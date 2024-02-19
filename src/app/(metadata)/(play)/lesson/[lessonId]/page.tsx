@@ -356,11 +356,11 @@ export default function LessonVocales() {
         ) : (
           <div className="flex flex-col gap-4 h-full">
             <Progressbar porcentaje={progres.porcentaje} setDrawer={setDrawer} totalTry={totalTry} />
-            <div className="grid lg:grid-cols-2 justify-center items-center text-center h-full max-xl:gap-10 px-4">
-              {
-                isLoading ? (
-                  <div className="m-auto text-center"><CircularProgress /></div>
-                ) : (
+            {
+              isLoading ? (
+                <div className="m-auto text-center"><CircularProgress /></div>
+              ) : (
+                <div className="grid lg:grid-cols-2 justify-center items-center text-center h-full max-xl:gap-10 px-4">
                   <Image
                     className="shadow-lg border rounded-xl m-auto aspect-[12/9] object-contain"
                     src={currentImage}
@@ -368,33 +368,33 @@ export default function LessonVocales() {
                     width={500}
                     alt="Letra A"
                   />
-                )
-              }
-              <div className="relative mx-auto grid place-content-center">
-                <Stack className="bg-white/90 w-full absolute z-30" spacing={2} alignItems="start">
-                  <ToggleButtonGroup
-                    // orientation="vertical"
-                    size="medium"
-                    color="primary"
-                    value={toggleTime}
-                    exclusive
-                    onChange={handleToogleTime}
-                    aria-label="Platform"
-                  >
-                    <ToggleButton className="border-none text-bold px-4" color="secondary" value="3">3 Sec</ToggleButton>
-                    <ToggleButton className="border-none text-bold px-4" color="secondary" value="5">5 Sec</ToggleButton>
-                    <ToggleButton className="border-none text-bold px-4" color="secondary" value="7">7 Sec</ToggleButton>
-                  </ToggleButtonGroup>
-                </Stack>
-                <Camara
-                  webcamRef={webcamRef}
-                  imagen={imagen}
-                  counter={counter}
-                  setFoto={setFoto}
-                  hiddenCanvasRef={hiddenCanvasRef}
-                />
-              </div>
-            </div>
+                  <div className="relative mx-auto grid place-content-center">
+                    <Stack className="bg-white/90 w-full absolute z-30" spacing={2} alignItems="start">
+                      <ToggleButtonGroup
+                        // orientation="vertical"
+                        size="medium"
+                        color="primary"
+                        value={toggleTime}
+                        exclusive
+                        onChange={handleToogleTime}
+                        aria-label="Platform"
+                      >
+                        <ToggleButton className="border-none text-bold px-4" color="secondary" value="3">3 Sec</ToggleButton>
+                        <ToggleButton className="border-none text-bold px-4" color="secondary" value="5">5 Sec</ToggleButton>
+                        <ToggleButton className="border-none text-bold px-4" color="secondary" value="7">7 Sec</ToggleButton>
+                      </ToggleButtonGroup>
+                    </Stack>
+                    <Camara
+                      webcamRef={webcamRef}
+                      imagen={imagen}
+                      counter={counter}
+                      setFoto={setFoto}
+                      hiddenCanvasRef={hiddenCanvasRef}
+                    />
+                  </div>
+                </div>
+              )
+            }
             {drawer && <DrawerBotton drawer={drawer} setDrawer={setDrawer} />}
           </div>
         )}

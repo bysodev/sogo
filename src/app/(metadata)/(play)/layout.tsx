@@ -47,8 +47,8 @@ export default function PlayLayout({
           {BottomNavbar && <BottomNavbar />}
         </>
       )}
-      <div className={`w-full transition-all duration-300 grid ${render ? "max-w-screen-2xl lg:grid-cols-2" : "lg:grid-cols-1"} xl:mx-auto`}>
-        <section className='h-full flex flex-col gap-10'>{children}</section>
+      <div className={`w-full transition-all duration-300 flex flex-col lg:flex-row ${render ? "max-w-screen-2xl lg:columns-2" : "lg:columns-1"} xl:mx-auto`}>
+        <section className='h-full flex flex-col gap-10 lg:w-2/3'>{children}</section>
         {render && (
           <>
             {RankUser && <RankUser />}

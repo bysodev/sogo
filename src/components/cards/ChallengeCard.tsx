@@ -66,27 +66,27 @@ export function ChallengeCard({ details, title, category }: { details: Array<Det
     }, []);
 
     return (
-        <div className={`${category === "PALABRAS" ? "bg-purple-500" : "bg-indigo-500"} gap-4 flex flex-row justify-between h-full w-full rounded-2xl transition-all duration-700 ease-out p-8 px-6`}>
+        <div className={`${category === "PALABRAS" ? "bg-purple-500" : "bg-indigo-500"} gap-4 flex flex-row justify-between h-full w-full lg:rounded-2xl transition-all duration-700 ease-out p-8 px-6`}>
             <div className='w-full grid items-center gap-4'>
                 <div className='block'>
-                    <p className='text-2xl font-bold text-white'>Categoría: {title.charAt(0).toUpperCase() + title.slice(1).toLowerCase()}</p>
+                    <p className='text-xl lg:text-2xl font-bold text-white'>Categoría: {title.charAt(0).toUpperCase() + title.slice(1).toLowerCase()}</p>
                     <Striped gradientColor1={category === "PALABRAS" ? '#e6b4ff' : '#bbbcf1'} gradientColor2={category === "PALABRAS" ? '#caa6ea' : '#8a8cf1'} progreso={obtenerProgreso()} puntos={detalle?.progreso} total={detalle?.total} />
                 </div>
-                <div className='flex justify-between'>
-                    <button type="button" title='Comenzar reto' className={`${category === "PALABRAS" ? "text-purple-500" : "text-indigo-500"} p-2 px-4 bg-white font-bold rounded-xl hover:bg-opacity-80 leading-none`}
-                         onClick={() => {
-                            ( detalle && (detalle?.progreso == detalle?.total) && detalle?.progreso != 0 ) ?
+                <div className='flex gap-2 justify-between'>
+                    <button type="button" title='Comenzar reto' className={`${category === "PALABRAS" ? "text-purple-500" : "text-indigo-500"} p-2 px-4 w-min mx-auto lg:m-0 bg-white font-bold rounded-xl hover:bg-opacity-80 leading-none text-md lg:text-base`}
+                        onClick={() => {
+                            (detalle && (detalle?.progreso == detalle?.total) && detalle?.progreso != 0) ?
                                 router.push(`/challenge/customized?category=${category}&difficulty=${select}`) :
-                                router.push(`/challenge/${category}/${select}`) 
+                                router.push(`/challenge/${category}/${select}`)
                         }}
                     >
                         COMENZAR
                     </button>
-                  
-                  
+
+
                     <div className='flex justify-end'>
                         <div className='flex bg-white bg-opacity-20 p-2 rounded-md'>
-                            <span className='font-bold text-lg text-white'>{detalle?.puntos} EXP</span>
+                            <span className='font-bold text-base lg:text-lg whitespace-nowrap text-white'>{detalle?.puntos} EXP</span>
                         </div>
                     </div>
                 </div>

@@ -6,8 +6,7 @@ const url = process.env.NEXT_PUBLIC_API_BACKEND
 export async function GET() {
   const session = await getServerSession(config)
   const myHeaders = new Headers({
-    Accept: 'application/json',
-    'Content-Type': 'application/x-www-form-urlencoded'
+    Accept: 'application/json'
   })
   myHeaders.append('Authorization', `Bearer ${session?.user.accessToken}`)
 
@@ -20,7 +19,7 @@ export async function GET() {
     });
     if (!response.ok) {
       return new Response('Solicitud no autorizada', {
-        status: 501,
+        status: 401,
       })
     }
     return response

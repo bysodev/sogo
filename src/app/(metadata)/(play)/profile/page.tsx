@@ -136,10 +136,10 @@ export default function ProfilePage() {
 
 
   return (
-    <div className="w-full p-4">
-      <h1 className="lg:rounded-xl border-2 p-1 font-bold text-2xl text-center text-gray-500">Perfil</h1>
+    <div className="w-full lg:p-4">
+      <h1 className="lg:rounded-xl border-2 p-1 font-bold text-xl text-center text-gray-500">Perfil</h1>
       <hr className="mt-4" />
-      <div className="p-2 grid place-items-center gap-4">
+      <div className="p-4 grid place-items-center gap-4">
         {!selectedAvatar || !selectedAvatar?.url ? (
           <CircularProgress />
         ) : (
@@ -179,7 +179,7 @@ export default function ProfilePage() {
                       >
                         <input
                           autoComplete="username"
-                          className="w-full flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
+                          className="w-full focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
                           type="text"
                           defaultValue={user?.data.username}
                           {...register("username", {
@@ -220,10 +220,10 @@ export default function ProfilePage() {
                       </div>
                     </div>
                   </div>
-                  <div className="flex columns-2 gap-4">
+                  <div className="flex gap-3">
                     <div className="flex flex-col">
                       <div className="font-semibold whitespace-nowrap flex items-center gap-2">
-                        <span>Modificar:</span>
+                        <span>Cambiar:</span>
                         <Tooltip title="Modificar contraseña" placement="right-end" arrow>
                           <div>
                             <FaQuestionCircle />

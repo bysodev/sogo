@@ -24,7 +24,7 @@ export const useAvatars = () => {
             } else {
                 randomString = Math.random().toString(36).substring(2, 15);
             }
-            const avatarUrl = await fetch(`${IMAGE_PROVIDER}?seed=${randomString}`).then(res => res.url);
+            const avatarUrl = await fetch(`${IMAGE_PROVIDER}?seed=${randomString}&eyes=closed,closed2,cute,glasses,love,plain,shades,sleepClose,stars,wink,wink2&mouth=cute,faceMask,kissHeart,lilSmile,smileLol,smileTeeth,tongueOut,wideSmile`).then(res => res.url);
             const label = avatarUrl.split('jpg?seed=')[1];
             avatars.push({
                 src: avatarUrl,

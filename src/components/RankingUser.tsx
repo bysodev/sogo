@@ -37,7 +37,7 @@ function TabPanel(props: TabPanelProps) {
   return (
     <div {...other}>
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box>
           {children}
         </Box>
       )}
@@ -53,11 +53,11 @@ export default function RankingChallengePage() {
   const { data: rankNumeros, error: errorNumeros } = useSWR(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/ranking?category=${EnumCategory.NUMEROS}`, fetcher);
 
   return (
-    <section className="relative dark:bg-gray-900 w-4/5 h-full duration-300 pt-5 lg:pt-0">
-      <div className="mb-32 lg:mb-0 lg:fixed overflow-y-auto h-full lg:border-l-4">
-        <div className="h-auto text-center text-gray-900 dark:text-gray-100 lg:py-4 px-4 grid gap-4 border-t-4 lg:border-t-0 ">
-          <h1 className="text-2xl font-bold mt-5 lg:mt-0">Tabla de clasificación</h1>
-          <p className="text-gray-500 text-sm text-balance">Top 5 de los personas con el puntaje más alto alcanzado entre las lecciones y retos.</p>
+    <section className="relative dark:bg-gray-900 lg:w-[38rem] h-full duration-300 pt-5 lg:pt-0">
+      <div className="mb-32 lg:mb-0 lg:fixed overflow-y-auto h-full lg:border-l-4 ">
+        <div className="h-auto text-center text-gray-900 dark:text-gray-100 lg:py-4 px-4 pt-10 lg:p-4 grid gap-4 border-t-4 lg:border-t-0 ">
+          <h1 className="lg:rounded-xl border-2 p-1 font-bold text-xl text-center text-gray-500">Tabla de clasificación</h1>
+          <p className="text-gray-500 text-xs text-balance">Top 5 de los personas con el puntaje más alto alcanzado entre las lecciones y retos</p>
           <div className="border-2 p-4 rounded-lg">
             <h2 className="text-sm text-start text-gray-600 font-semibold">Categoría: <span className="font-normal">Palabras</span></h2>
             <NavRanking value={palabras} setValue={setPalabras} key='PALABRAS' />
@@ -109,31 +109,30 @@ export const RankItem = ({ rank, rankNumber }: { rank: DetailsRankingApi, rankNu
 
   const ListItem = rankNumber <= 3 ? ListItemTop3 : ListItem4And5;
 
-  const marginTopClass = rankNumber === 1 ? '' : rankNumber === 2 ? 'mt-8' : 'mt-10';
+  const marginTopClass = rankNumber === 1 ? '' : rankNumber === 2 ? 'mt-6' : 'mt-10';
 
   return (
-    <ListItem className='text-base'>
+    <ListItem className='text-base mt-5'>
       {rankNumber <= 3 ? (
         <>
           <ListItemAvatar className="relative">
             {isLoading ? (
               <CircularProgress />
             ) : (
-              <Image className={`rounded-full border-[6px] ${rankColors[rankNumber]} w-auto ${rankNumber === 1 ? "h-28" : "h-24"} ${marginTopClass}`} src={avatar || ''} height={100} width={100} alt={`Imagen del usuario ${rank.username}`} />
+              <Image className={`rounded-full border-[4px] ${rankColors[rankNumber]} w-auto ${rankNumber === 1 ? "h-24" : "h-[5.5rem]"} ${marginTopClass}`} src={avatar || ''} height={100} width={100} alt={`Imagen del usuario ${rank.username}`} />
             )}
             {rankNumber === 1 && <FaCrown size={75} className={`absolute -top-11 rotate-[35deg] -right-6 text-4xl text-yellow-300`} />}
-            <span className={`absolute grid place-content-center bottom-0 leading-none rounded-full border-[6px] h-10 w-10 text-center text-xl font-semibold ${rankColors[rankNumber]}`}>{rankNumber}</span>
+            <span className={`absolute grid place-content-center bottom-0 leading-none rounded-full border-[4px] h-8 w-8 text-center text-base font-bold ${rankColors[rankNumber]}`}>{rankNumber}</span>
           </ListItemAvatar>
           <ListItemText
             className={rankColors[rankNumber] + " w-full py-4 rounded-t-lg"}
-            sx={{ fontSize: 20 }}
             primary={
-              <Typography component="p" variant="body1" fontSize={20} fontWeight={600} color="text.primary" textAlign={"center"}>
+              <Typography component="p" variant="body1" fontSize={16} fontWeight={600} color="text.primary" textAlign={"center"}>
                 {rank.username}
               </Typography>
             }
             secondary={
-              <Typography fontSize={15} fontWeight={600} textAlign={"center"} className={"rounded-lg bg-purple-100 border-2 border-purple-500 text-purple-600 w-min !mx-auto whitespace-nowrap p-1 px-4 flex gap-2 flex-nowrap items-center"}>
+              <Typography fontSize={10} fontWeight={600} textAlign={"center"} className={"rounded-lg bg-purple-100 border-2 border-purple-500 text-purple-600 w-min !mx-auto whitespace-nowrap p-1 px-4 flex gap-2 flex-nowrap items-center"}>
                 {rank.puntos} pts <Tooltip title={`Lecciones: ${rank.lecciones} | Retos: ${rank.retos}`} placement="top" arrow>
                   <div>
                     <FaQuestionCircle />
@@ -147,23 +146,23 @@ export const RankItem = ({ rank, rankNumber }: { rank: DetailsRankingApi, rankNu
         <>
           <Card variant="outlined" sx={{ width: '100%', display: 'flex', padding: '0.5rem 0rem 0.5rem 0rem', border: '2px solid #E5E7EB' }}>
             <ListItemAvatar className="flex justify-center items-center relative">
-              <span className={`grid place-content-center leading-none h-10 w-10 text-center text-xl font-semibold ${rankColors[rankNumber]}`}>{rankNumber}</span>
+              <span className={`grid place-content-center leading-none h-8 w-8 text-center text-base font-bold ${rankColors[rankNumber]}`}>{rankNumber}</span>
               {isLoading ? (
                 <CircularProgress />
               ) : (
-                <Image className="rounded-full border-2 border-gray-400 w-auto" src={avatar || ''} height={30} width={30} alt={`Imagen del usuario ${rank.username}`} />
+                <Image className="rounded-full border-2 border-gray-400 w-auto" src={avatar || ''} height={20} width={20} alt={`Imagen del usuario ${rank.username}`} />
               )}
             </ListItemAvatar>
             <ListItemText
               className="justify-between items-center px-4"
               sx={{ fontSize: 20, display: 'inline-flex', justifyContent: 'around' }}
               primary={
-                <Typography component="p" variant="body1" fontSize={20} fontWeight={600} color="text.primary" textAlign={"center"}>
+                <Typography component="p" variant="body1" fontSize={16} fontWeight={600} color="text.primary" textAlign={"center"}>
                   {rank.username}
                 </Typography>
               }
               secondary={
-                <Typography fontSize={20} fontWeight={600} color="text.secondary" textAlign={"center"}>
+                <Typography fontSize={16} fontWeight={600} color="text.secondary" textAlign={"center"}>
                   {rank.puntos} pts
                 </Typography>
               }
@@ -180,7 +179,7 @@ export const ListRankings = ({ ranks }: { ranks: DetailsRankingApi[] }) => {
     return (
       <List dense={true}>
         <Alert variant="outlined" severity="info">
-          Animate a intentarlo, puedes estar de primero en el TOP
+          Animate a intentarlo. Puedes estar de primero en el TOP
         </Alert>
       </List>
     )
@@ -208,26 +207,26 @@ export const ListRankings = ({ ranks }: { ranks: DetailsRankingApi[] }) => {
             vacancyCounter++;
             const ListItem = ListItemTop3;
             return (
-              <ListItem key={index} className={"text-base"}>
+              <ListItem key={index} className={"text-base mt-4"}>
                 <ListItemAvatar className="relative">
                   <Avatar
-                    className={`${rankColors[rankNumber]} rounded-full border-[6px] ${marginTopClass}`}
+                    className={`${rankColors[rankNumber]} rounded-full border-[4px] ${marginTopClass}`}
                     src={''}
                     alt={'Imagen por defecto'}
-                    sx={{ width: 100, height: 100 }}
+                    sx={{ width: 90, height: 90 }}
                   />
-                  <span className={`${rankColors[rankNumber]} absolute grid place-content-center bottom-0 leading-none rounded-full border-[6px] h-10 w-10 text-center text-xl font-semibold`}>{rankNumber}</span>
+                  <span className={`${rankColors[rankNumber]} absolute grid place-content-center bottom-0 leading-none rounded-full border-[4px] h-8 w-8 text-center text-base font-bold`}>{rankNumber}</span>
                 </ListItemAvatar>
                 <ListItemText
                   className={rankColors[rankNumber] + " w-full py-4 rounded-t-lg"}
                   sx={{ fontSize: 20 }}
                   primary={
-                    <Typography component="p" variant="body1" fontSize={20} fontWeight={600} color="text.primary" textAlign={"center"}>
+                    <Typography component="p" variant="body1" fontSize={16} fontWeight={600} color="text.primary" textAlign={"center"}>
                       Vacante
                     </Typography>
                   }
                   secondary={
-                    <Typography fontSize={15} fontWeight={600} textAlign={"center"} className={"rounded-lg bg-purple-100 border-2 border-purple-500 text-purple-600 w-min !mx-auto whitespace-nowrap p-1 px-4 flex gap-2 flex-nowrap items-center"}>
+                    <Typography fontSize={10} fontWeight={600} textAlign={"center"} className={"rounded-lg bg-purple-100 border-2 border-purple-500 text-purple-600 w-min !mx-auto whitespace-nowrap p-1 px-4 flex gap-2 flex-nowrap items-center"}>
                       ? pts
                     </Typography>
                   }
@@ -244,19 +243,19 @@ export const ListRankings = ({ ranks }: { ranks: DetailsRankingApi[] }) => {
         <ListItem4And5 key={ranks.length + index}>
           <Card variant="outlined" sx={{ width: '100%', display: 'flex', padding: '0.5rem 0rem 0.5rem 0rem', border: '2px solid #E5E7EB' }}>
             <ListItemAvatar className="flex justify-center items-center relative">
-              <span className={`grid place-content-center leading-none h-10 w-10 text-center text-xl font-semibold`}>{vacancyCounter++}</span>
+              <span className={`grid place-content-center leading-none h-8 w-8 text-center text-base font-bold`}>{vacancyCounter++}</span>
               <Avatar />
             </ListItemAvatar>
             <ListItemText
               className="justify-between items-center px-4"
               sx={{ fontSize: 20, display: 'inline-flex', justifyContent: 'around' }}
               primary={
-                <Typography component="p" variant="body1" fontSize={20} fontWeight={600} color="text.primary" textAlign={"center"}>
+                <Typography component="p" variant="body1" fontSize={16} fontWeight={600} color="text.primary" textAlign={"center"}>
                   Vacante
                 </Typography>
               }
               secondary={
-                <Typography fontSize={20} fontWeight={600} color="text.secondary" textAlign={"center"}>
+                <Typography fontSize={16} fontWeight={600} color="text.secondary" textAlign={"center"}>
                   ? pts
                 </Typography>
               }

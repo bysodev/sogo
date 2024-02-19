@@ -64,8 +64,8 @@ export default function LessonVocales() {
                     <button onClick={handleButtonClick} type="button" title="Desplegar menú" className="bg-purple-400 p-2 rounded-lg"><FaAngleRight className={`${isDivVisible && "rotate-180"} text-lg font-bold text-purple-800`} /></button>
                 </div>
                 <div className="block leading-none my-auto text-purple-800">
-                    <h1>Aprende {category_learn === "number" ? "los números del 0 al 9" : "las letras del abecedario"}</h1>
-                    <p className="font-normal">Lección actual: {category_learn === "number" ? "Número" : "Letra"} {" " + selectedChar ?? 0}</p>
+                    <h1>{category_learn === "number" ? "Números del 0 al 9" : "Letras del abecedario"}</h1>
+                    <p className="text-xs sm:text-sm font-normal">Lección actual: {category_learn === "number" ? "Número" : "Letra"} {" " + selectedChar ?? 0}</p>
                 </div>
                 <div className="p-1 bg-white rounded-lg ms-auto">
                     <button onClick={() => { push('/learn') }} type="button" title="Salir" className="bg-purple-400 p-2 rounded-lg"><FaXmark className="text-lg font-bold text-purple-800" /></button>
@@ -89,7 +89,7 @@ export default function LessonVocales() {
                             </div>
                         ))}
                     </div>
-                    <div className={`${(!webcamMounted && selectedChar) && "hidden"} grid gap-20 w-full h-min p-20 bg-gray-100 rounded-lg lg:grid-cols-2 justify-center items-center text-center max-xl:gap-10 px-4`}>
+                    <div className={`${(!webcamMounted && selectedChar) && "hidden"} grid gap-20 w-full h-min p-4 lg:p-20 bg-gray-100 rounded-lg lg:grid-cols-2 justify-center items-center text-center max-xl:gap-10 px-4`}>
                         <video
                             key={pathname}
                             ref={videoRef}
@@ -98,7 +98,7 @@ export default function LessonVocales() {
                             width="500"
                             controls
                         >
-                            <source src={videoPath} type="video/mp4" /> {/* Provide the source of your video here */}
+                            <source src={videoPath} type="video/mp4" />
                             Your browser does not support the video tag.
                         </video>
                         <div className="w-full h-auto relative overflow-hidden rounded-xl">

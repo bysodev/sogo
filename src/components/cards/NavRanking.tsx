@@ -14,8 +14,8 @@ const actionStyles =
   '& .MuiBottomNavigationAction-root': { // Estilos para todos los BottomNavigationAction
     display: 'flex',
     flexDirection: 'row',
-    gap: '0.5rem',
-    fontSize: '1rem',
+    gap: '0.1rem',
+    fontSize: '0.8rem',
     fontWeight: 'bold',
     color: '#9333ea',
     backgroundColor: 'transparent',
@@ -25,7 +25,7 @@ const actionStyles =
       color: 'rgb(88,28,135)',
     },
     '& .MuiBottomNavigationAction-label': { // Estilo para la etiqueta
-      fontSize: '1rem',
+      fontSize: '0.8rem',
     },
   },
   '& .MuiBottomNavigationAction-root:nth-of-type(1)': { // Estilos para el primer BottomNavigationAction
@@ -59,13 +59,13 @@ export default function NavRanking({ value, setValue }: { value: EnumDifficulty,
 }
 
 const FacilIcon = () => {
-  return <> <BiHappy size={25} /> </>
+  return <> <BiHappy size={20} /> </>
 }
 
 const MedioIcon = () => {
-  return <> <HiOutlineEmojiHappy size={25} /> </>
+  return <> <HiOutlineEmojiHappy size={20} /> </>
 }
 
 const DificilIcon = () => {
-  return <> <RiEmotionUnhappyLine size={25} /> </>
+  return <> <RiEmotionUnhappyLine size={20} /> </>
 }

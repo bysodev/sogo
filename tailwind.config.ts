@@ -104,6 +104,9 @@ const config: Config = {
       },
     },
   },
+  variants: {
+    animation: ['responsive', 'motion-safe', 'motion-reduce'],
+  },
   plugins: [],
 };
 export default config;

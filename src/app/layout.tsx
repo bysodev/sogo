@@ -19,13 +19,15 @@ const inter = Inter({
 
 export default function RootLayout({ children, session }: any) {
   useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: true,
-      easing: 'ease-in-out',
-      offset: 100,
-      mirror: false,
-    });
+    if (typeof window !== 'undefined') {
+      AOS.init({
+        duration: 1000,
+        once: true,
+        easing: 'ease-in-out',
+        offset: 100,
+        mirror: false,
+      });
+    }
   }, []);
 
   const [theme, setTheme] = useState('');
@@ -47,7 +49,7 @@ export default function RootLayout({ children, session }: any) {
         <SessionProvider session={session}>
           <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip bg-white dark:bg-gray-950 text-gray-900 dark:text-white">
             <NavBar toggleDarkMode={switchTheme} theme={theme} />
-            <main className="grid grow">
+            <main>
               {children}
             </main>
           </div>

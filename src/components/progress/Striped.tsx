@@ -30,7 +30,7 @@ export const Striped = ({ progreso = 50, puntos = 0, total = 0, gradientColor1 =
     <FaTrophy size={40} color='white' />
     <BorderLinearProgress className='w-full' variant="determinate" value={progreso} sx={gradientStyle} />
     <div className="w-1/5 m-auto ml-1">
-      <p className="text-base -tracking-normal font-bold text-white">{puntos} / <span className='text-gray-300'>{total}</span></p>
+      <p className="text-base -tracking-normal font-bold text-white whitespace-nowrap">{puntos} / <span className='text-gray-300'>{total}</span></p>
     </div>
   </div>
 }
