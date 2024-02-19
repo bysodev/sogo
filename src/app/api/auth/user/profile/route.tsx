@@ -16,12 +16,13 @@ export async function GET() {
       credentials: "include",
       redirect: "follow",
     });
-    if (!response.ok) {
-      return new Response('Solicitud no autorizada', {
-        status: 401,
+    const response_dict = await response.json()
+    if (response.status === 200) {
+      return new Response(JSON.stringify(response_dict), {
+        status: 200,
       })
     }
-    return response
+    return new Response(response_dict.detail, { status: response.status })
   } catch (error) {
     return new Response('No se logro la petición', {
       status: 501,
