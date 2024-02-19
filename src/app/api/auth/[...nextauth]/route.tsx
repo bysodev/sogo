@@ -51,84 +51,88 @@ const authOptions = {
     rollingSession: false,
   },
   callbacks: {
-    jwt: async ({ token, user, trigger, session }: any) => {
-      if (trigger === "update") {
-        // Here you can update the name and the token
-        token.name = session.user.name;
-        token.image = session.user.image;
-        token.accessToken = session.user.accessToken;
-        return token;
-      }
-      if (user) {
-        token.name = user.username;
-        token.image = user.image;
-        token.accessToken = user.accessToken;
-      }
-
-      // Check if the token is about to expire
-      if (token.expires && Date.now() > token.expires - 30000) {
-        const res = await fetch('/refreshToken', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            name: token.name,
-            email: token.email
-          })
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          token = {
-            ...token,
-            ...data,
-            expires: Date.now() + data.expires_in * 1000
-          };
-        }
-      }
-
+  jwt: async ({ token, user, trigger, session }: any) => {
+    if (trigger === "update") {
+      // Aquí puedes actualizar el nombre y el token
+      token.name = session.user.name;
+      token.image = session.user.image;
+      token.accessToken = session.user.accessToken;
       return token;
-    },
-    session: async ({ session, token }: any) => {
-      if (token) {
-        // Aquí puedes actualizar el nombre y el token
-        session.user.name = token.name;
-        session.user.image = token.image;
-        session.user.accessToken = token.accessToken;
+    }
+    
+    if (user) {
+      token.name = user.username;
+      token.image = user.image;
+      token.accessToken = user.accessToken;
+    }
+
+    // Comprueba si el token está a punto de caducar
+    if (token.expires && Date.now() > token.expires - 30000) {
+      const res = await fetch('/refreshToken', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: token.name,
+          email: token.email
+        })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        token = {
+          ...token,
+          ...data,
+          expires: Date.now() + data.expires_in * 1000
+        };
       }
-      return session;
-    },
-    signIn: async ({ user, account }: any) => {
-      if (account.provider === 'google' || account.provider === 'github') {
-        const { name, email, id, image } = user;
-        const response = await fetch(
-          `${process.env.NEXTAUTH_URL}/api/auth/user/provider`,
-          {
-            method: 'POST',
-            body: JSON.stringify({
-              username: name,
-              password: id,
-              email: email,
-              image: image,
-              provider: account.provider,
-            }),
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-          }
-        );
-        const userData = await response.json();
-        if (response.status === 201) {
-          user.accessToken = userData.accessToken;
-          return true;
-        } else {
-          return false;
-        }
-      return true;
-    },
+    }
+
+    return token;
   },
+  session: async ({ session, token }: any) => {
+    if (token) {
+      // Aquí puedes actualizar el nombre y el token
+      session.user.name = token.name;
+      session.user.image = token.image;
+      session.user.accessToken = token.accessToken;
+    }
+    return session;
+  },
+  signIn: async ({ user, account }: any) => {
+    if (account.provider === 'google' || account.provider === 'github') {
+      const { name, email, id, image } = user;
+      const response = await fetch(
+        `${process.env.NEXTAUTH_URL}/api/auth/user/provider`,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            username: name,
+            password: id,
+            email: email,
+            image: image,
+            provider: account.provider,
+          }),
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      const userData = await response.json();
+      
+      if (response.status === 201) {
+        user.accessToken = userData.accessToken;
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
+  },
+},
 };
 
 const handler = NextAuth(authOptions);
