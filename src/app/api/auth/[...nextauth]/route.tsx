@@ -123,16 +123,19 @@ const authOptions = {
       const userData = await response.json();
       
       if (response.status === 201) {
-        user.accessToken = userData.accessToken;
-        return true;
-      } else {
-        return false;
+          user.accessToken = userData.accessToken;
+          return true;
+        } else {
+          return false;
+        }
+      } else if (account.provider === 'credentials') {
+        if (user) {
+          return true;
+        }
       }
-    } else {
-      return true;
-    }
+      return false;
+    },
   },
-},
 };
 
 const handler = NextAuth(authOptions);
