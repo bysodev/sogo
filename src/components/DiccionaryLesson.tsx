@@ -4,11 +4,11 @@ const two = "/lesson/numbers/numero_2.jpg";
 const three = "/lesson/numbers/numero_3.jpg";
 const four = "/lesson/numbers/numero_4.jpg";
 
-const A = "/lesson/vocals/letra_A.jpg";
-const E = "/lesson/vocals/letra_E.jpg";
-const I = "/lesson/vocals/letra_I.jpg";
-const O = "/lesson/vocals/letra_O.jpg";
-const U = "/lesson/vocals/letra_U.jpg";
+const A = "/lesson/letters/letra_A.jpg";
+const E = "/lesson/letters/letra_E.jpg";
+const I = "/lesson/letters/letra_I.jpg";
+const O = "/lesson/letters/letra_O.jpg";
+const U = "/lesson/letters/letra_U.jpg";
 
 export const SignImageData = [
   {

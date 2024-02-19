@@ -1,4 +1,4 @@
-import A from "@/public/lesson/vocals/letra_A.jpg";
+import A from "@/public/lesson/letters/letra_A.jpg";
 import Image from "next/image";
 
 export const GeneralCard = () => {

@@ -101,7 +101,6 @@ const authOptions = {
     },
     signIn: async ({ user, account }: any) => {
       if (account.provider === 'google' || account.provider === 'github') {
-        console.log(user, account)
         const { name, email, id, image } = user;
         const response = await fetch(
           `${process.env.NEXTAUTH_URL}/api/auth/user/provider`,

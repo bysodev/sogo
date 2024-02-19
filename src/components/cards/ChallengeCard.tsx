@@ -42,7 +42,6 @@ export function ChallengeCard({ details, title, category }: { details: Array<Det
     }, [details]);
 
     const obtenerProgreso = useCallback((): number => {
-        console.log(detalle)
         if (detalle?.progreso)
             return (detalle?.progreso / detalle?.total) * 100
         return 0;

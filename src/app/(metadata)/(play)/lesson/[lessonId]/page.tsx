@@ -96,7 +96,7 @@ function calculateScore(maxScore: number, totalErrors: number, maxErrors: number
   return { score: roundedScore, status };
 }
 
-const defaultImage = "/lesson/vocals/letra_A.jpg";
+const defaultImage = "/lesson/letters/letra_A.jpg";
 
 export default function LessonVocales() {
   const { data: session } = useSession();
