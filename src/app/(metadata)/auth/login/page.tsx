@@ -34,7 +34,7 @@ export default function LoginPage() {
     const response = await signIn("credentials", {
       username: data.username,
       password: data.password,
-      redirect: false,
+      callbackUrl: '/learn',
     });
     if (!response?.ok)
       showErrorToast(response?.error)
