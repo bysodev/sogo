@@ -43,7 +43,7 @@ export default function Learn() {
       <h1 className="lg:rounded-xl border-2 p-1 font-bold text-xl text-center text-gray-500 mb-4">Aprendizaje</h1>
       <div className="grid">
         <section className='bg-purple-500 text-white text-center sm:text-start sm:flex lg:rounded-xl p-4 w-full gap-4' id='number-section'>
-          <article className="w-5/6 font-bold grid gap-4 m-auto justify-items-center">
+          <article className="w-5/6 font-bold grid gap-4 m-auto justify-items-center lg:justify-items-start">
             <header className="w-fit text-purple-500 bg-white p-2 px-4 text-center rounded-md text-base">
               <h5>Números</h5>
             </header>
@@ -91,7 +91,7 @@ export default function Learn() {
       </div >
       <div className="grid gap-4">
         <section className={`bg-indigo-500 text-white text-center sm:text-start sm:flex lg:rounded-xl p-4 w-full gap-4`} id='letter-section'>
-          <article className="w-5/6 font-bold grid gap-4 m-auto justify-items-center">
+          <article className="w-5/6 font-bold grid gap-4 m-auto justify-items-center lg:justify-items-start">
             <header className="w-fit text-indigo-500 bg-white p-2 px-4 text-center rounded-md text-base">
               <h5>Abecedario</h5>
             </header>
