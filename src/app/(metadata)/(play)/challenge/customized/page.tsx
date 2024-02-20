@@ -16,6 +16,7 @@ import { styled } from '@mui/material/styles';
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import Confetti from 'react-confetti';
 import { useForm } from "react-hook-form";
 import { FaQuestionCircle } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
@@ -448,7 +449,7 @@ export default function ChallengesPage() {
                     // objetivos: pro.objetivos.filter((obj) => obj !== progres.objetivo),
                     objetivos: pro.objetivos.filter((obj, index) => index !== index_trash),
                     indices: pro.indices.filter((obj, index) => index !== index_trash),
-                    objetivo: pro.objetivos.find((obj) => obj !== progres.objetivo) as string,
+                    objetivo: pro.objetivos.find((obj, index) => index !== index_trash) as string,
                     continue: true
                 }));
                 setCurrentImage(urlImg)
@@ -783,6 +784,7 @@ export default function ChallengesPage() {
         )
         ) : (
             <>
+                {check && <Confetti className="!z-50 !h-full !w-full" />}
                 <div className="flex flex-col gap-4 h-full">
                     <ProgressbarChallenge porcentaje={progres.porcentaje} setDrawer={setDrawer} totalTry={progres.intentos} />
                     <StackContent content={progres.arreglo} indices={progres.indices} objetivos={progres.objetivos} objetivo={progres.objetivo} operacion={progres.operacion} />

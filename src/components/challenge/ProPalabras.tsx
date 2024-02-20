@@ -6,6 +6,7 @@ import { WebVideoElementWithScreenshot } from "@/lib/types/lessons";
 import { Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import Confetti from 'react-confetti';
 import Camara from "../camara/Camara";
 import CompleteChallenge from "../progress/CompleteChallenge";
 import { FooterChallenge, FooterEndChallenge } from "../progress/FooterChallenge";
@@ -240,7 +241,7 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
     if (respuesta.ok) {
       const predict = await (respuesta as Response).json();
 
-      if ( isValidResult( predict.data.result, progres.objetivo) ) {
+      if ( isValidResult( predict.data.result, progres.objetivo) ) { 
         let index_trash = progres.objetivos.indexOf(progres.objetivo);
         const img_principal = `/lesson/letters/letra_${progres.objetivos[1]}.jpg`;
         setCheck(true);
@@ -252,7 +253,8 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
           // objetivos: pro.objetivos.splice(0,1),
           objetivos: pro.objetivos.filter((obj, index) => index !== index_trash),
           indices: pro.indices.filter((obj, index) => index !== index_trash),
-          objetivo: pro.objetivos.find((obj) => obj !== progres.objetivo) as string,
+          objetivo: pro.objetivos.find((obj, index) => index !== index_trash) as string,
+          // objetivo: pro.objetivos.find((obj, index) => obj !== progres.objetivo) as string,
           continue: true
         }));
         setCurrentImage(img_principal || defect_palabra)
@@ -325,6 +327,7 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
       )
         : (
           <>
+            {check && <Confetti className="!z-50 !h-full !w-full" />}
             <div className="flex flex-col gap-4 h-full">
               <ProgressbarChallenge porcentaje={progres.porcentaje} setDrawer={setDrawer} totalTry={progres.intentos} />
               <StackContent content={progres.arreglo} indices={progres.indices} objetivos={progres.objetivos} objetivo={progres.objetivo} operacion={['']} />
@@ -342,7 +345,7 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
                     />
                   )
 
-                }
+                } 
                 <div className="relative mx-auto grid place-content-center">
                   <Stack className="bg-white/70 w-full absolute z-10" spacing={2} alignItems="center">
                     <ToggleButtonGroup
