@@ -17,7 +17,7 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 // Progressbar component
-export const Progressbar = ({ porcentaje, setDrawer, totalTry }: { porcentaje: number, setDrawer: Dispatch<SetStateAction<boolean>>, totalTry: number }) => {
+export const ProgressbarChallenge = ({ porcentaje, setDrawer, totalTry }: { porcentaje: number, setDrawer: Dispatch<SetStateAction<boolean>>, totalTry: number }) => {
     const { push } = useRouter();
     return (
         <div className='w-full flex gap-5 items-center py-8 px-4 lg:px-16'>
