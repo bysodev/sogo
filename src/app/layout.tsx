@@ -30,9 +30,8 @@ export default function RootLayout({
       easing: 'ease-out-cubic',
     })
   })
-
-  const [theme, setTheme] = useState('');
-
+  
+  const [theme, setTheme] = useState('light'); // Set 'light' as default
   useEffect(() => {
     const localTheme = window.localStorage.getItem('theme') || "";
     setTheme(localTheme);
