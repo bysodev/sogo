@@ -33,8 +33,10 @@ export default function RootLayout({ children, session }: any) {
   const [theme, setTheme] = useState('light'); // Set 'light' as default
 
   useEffect(() => {
-    const localTheme = window.localStorage.getItem('theme') || "";
-    setTheme(localTheme);
+  const localTheme = window.localStorage.getItem('theme');
+    if (localTheme) {
+      setTheme(localTheme);
+    }
   }, []);
 
   const switchTheme = () => {
