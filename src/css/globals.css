@@ -23,6 +23,26 @@
     direction: rtl;
   }
 }
+
+.swal-modal .swal2-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1.2em;
+  height: 1.2em;
+  transition: color 0.1s ease-out;
+  border: none;
+  background: transparent;
+  color: #cccccc;
+  font-family: serif;
+  font-size: 40px;
+  cursor: pointer;
+}
+
+.swal-modal .swal2-close:hover {
+  color: rgb(104, 104, 104);
+}
+
 .button_login_provider img,
 .button_login_provider span {
   transition: all 0.3s ease 0s;
