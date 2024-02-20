@@ -17,15 +17,22 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 // Progressbar component
-export const ProgressbarChallenge = ({ porcentaje, setDrawer, totalTry }: { porcentaje: number, setDrawer: Dispatch<SetStateAction<boolean>>, totalTry: number }) => {
+export const Progressbar = ({ porcentaje, setDrawer, totalTry }: { porcentaje: number, setDrawer: Dispatch<SetStateAction<boolean>>, totalTry: number }) => {
     const { push } = useRouter();
     return (
-        <div className='w-full flex gap-5 items-center p-10 px-16 pb-0'>
+        <div className='w-full flex gap-5 items-center py-8 px-4 lg:px-16'>
+            <div className='flex gap-2 items-center'>
+                <HiHeart color="#9333ea" size={30} />
+                <span className='text-purple-600 font-bold leading-none'>{totalTry}</span>
+            </div>
+            <div className='w-full'>
+                <BorderLinearProgress variant="determinate" value={porcentaje} />
+            </div>
             <button
                 title='Cerrar'
                 type='button'
                 onClick={() => {
-                    porcentaje === 0 ? push('/lesson') : setDrawer(true);
+                    porcentaje === 0 ? push('/challenge') : setDrawer(true);
                 }}
             >
                 <HiX
@@ -33,13 +40,7 @@ export const ProgressbarChallenge = ({ porcentaje, setDrawer, totalTry }: { porc
                     size={26}
                 />
             </button>
-            <div className='w-full'>
-                <BorderLinearProgress variant="determinate" value={porcentaje} />
-            </div>
-            <div className='flex gap-2 items-center'>
-                <HiHeart color="#9333ea" size={30} />
-                <span className='text-purple-600 font-bold leading-none'>{totalTry}</span>
-            </div>
+
         </div>
     );
 }
