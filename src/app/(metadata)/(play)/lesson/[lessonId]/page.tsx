@@ -41,13 +41,11 @@ async function PredictSign(
   category: string,
   image: string,
   char: string,
-  token: string
 ) {
   var myHeaders = new Headers();
   myHeaders.append('Content-Type', 'application/json');
 
   var raw = JSON.stringify({
-    token: token,
     category: category,
     image: image,
     extension: 'jpeg',
@@ -319,7 +317,7 @@ export default function LessonVocales() {
     setSubmit(false);
     if (progres.porcentaje != 100) {
       if (typeof screenshotUrl === "string") {
-        PredictSign(lesson?.data.category_name, screenshotUrl, progres.char, session?.user.accessToken || "").then(async (response) => {
+        PredictSign(lesson?.data.category_name, screenshotUrl, progres.char).then(async (response) => {
           if (!response.ok) {
             return
           } else {
