@@ -182,9 +182,9 @@ export default function PasswordRecoveryPage() {
                       required: { value: true, message: "Contraseña requerida" },
                       minLength: { value: 8, message: "La contraseña debe tener al menos 8 caracteres" },
                       pattern: {
-                        value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-                        message: "La contraseña debe contener al menos una letra y un número"
-                      }
+                          value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/,
+                          message: "La contraseña debe contener al menos una letra y un número"
+                      },
                     })}
                   />
                   {errors.password && (
@@ -207,8 +207,8 @@ export default function PasswordRecoveryPage() {
                       required: { value: true, message: "Confirmación de contraseña requerida" },
                       minLength: { value: 8, message: "La contraseña debe tener al menos 8 caracteres" },
                       pattern: {
-                        value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-                        message: "La contraseña debe contener al menos una letra y un número"
+                          value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/,
+                          message: "La contraseña debe contener al menos una letra y un número"
                       },
                       validate: value => value === getValues().password || "Las contraseñas no coinciden"
                     })}
