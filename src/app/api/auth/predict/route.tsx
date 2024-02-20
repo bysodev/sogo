@@ -1,3 +1,5 @@
+import { getServerSession } from "next-auth/next";
+import { config } from "../[...nextauth]/route";
 const url = process.env.NEXT_PUBLIC_API_BACKEND
 
 export async function POST(request: Request) {
@@ -8,20 +10,23 @@ export async function POST(request: Request) {
       status: 401,
     })
   }
-  const myHeaders = new Headers({
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-  })
-  myHeaders.append('Authorization', `Bearer ${token}`)
+  const session = await getServerSession(config)
+  var myHeaders = new Headers();
+  myHeaders.append('Content-Type', 'application/json');
+  myHeaders.append('Authorization', `Bearer ${session?.user.accessToken}`)
+
+  var raw = JSON.stringify({
+    category: category,
+    image: image,
+    extension: 'jpeg',
+    type: 'byte64',
+    char: char,
+  });
+
   try {
     const response = await fetch(`${url}/user/lesson/predict`, {
       method: 'POST',
-      body: JSON.stringify({
-        username,
-        password,
-        email,
-        image: username,
-      }),
+      body: raw,
       credentials: 'include',
       headers: myHeaders,
       redirect: 'follow'
