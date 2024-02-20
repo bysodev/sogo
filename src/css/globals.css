@@ -24,7 +24,7 @@
   }
 }
 
-.swal-modal .swal2-close {
+.swal2-container .swal2-close {
   position: absolute;
   top: 0;
   right: 0;
@@ -39,7 +39,7 @@
   cursor: pointer;
 }
 
-.swal-modal .swal2-close:hover {
+.swal2-container .swal2-close:hover {
   color: rgb(104, 104, 104);
 }
 
