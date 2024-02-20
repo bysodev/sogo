@@ -193,10 +193,16 @@ export default function LessonVocales() {
     setCharResults(initialResults);
     setErrors(initialResults);
     setStatusLesson(prevState => ({ ...prevState, prevStatus: lesson?.data.state_id }));
+    const sectionMap = {
+      1: "NUMEROS",
+      2: "VOCALES",
+      3: "PALABRAS"
+    };
+    const tipo = sectionMap[lesson?.data.section_id] || "";
     setprogress((prevProgress) => ({
       ...prevProgress,
       preguntas: contentRandom.length,
-      tipo: category,
+      tipo: tipo,
       char: contentRandom[0],
     }));
   }, [lesson_id, lesson]);
