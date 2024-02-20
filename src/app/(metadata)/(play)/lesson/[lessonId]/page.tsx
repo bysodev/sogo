@@ -325,7 +325,7 @@ export default function LessonVocales() {
            (char === '9' && result === 'T') ||
            (char === 'U' && result === 'R') ||
            (char === 'R' && result === 'U') ||
-           (char === 'F' && result === '9') ||
+           (char === 'F' && result === '9');
   }
   
   const handleVerification = async () => {
