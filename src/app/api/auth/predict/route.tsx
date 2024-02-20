@@ -31,13 +31,7 @@ export async function POST(request: Request) {
       headers: myHeaders,
       redirect: 'follow'
     })
-    const data = await response.json();
-    if (response.status === 201) {
-      return Response.json(data, {
-        status: response.status
-      })
-    }
-    return new Response(data.detail, { status: response.status })
+    return response;
   } catch (error) {
     return new Response('Problemas con el servidor', {
       status: 501,
