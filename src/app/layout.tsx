@@ -49,7 +49,7 @@ export default function RootLayout({ children, session }: any) {
         <SessionProvider session={session}>
           <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip bg-white dark:bg-gray-950 text-gray-900 dark:text-white">
             <NavBar toggleDarkMode={switchTheme} theme={theme} />
-            <main>
+            <main className="h-full">
               {children}
             </main>
           </div>

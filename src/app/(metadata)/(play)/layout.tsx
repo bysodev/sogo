@@ -40,7 +40,7 @@ export default function PlayLayout({
   const RankUser = render ? require("@/components/RankingUser").default : null;
 
   return (
-    <div className='flex'>
+    <div className='flex h-full'>
       {render && (
         <>
           {SideNavbar && <SideNavbar isOpen={isNavbarOpen} />}
