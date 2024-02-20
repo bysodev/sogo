@@ -45,7 +45,7 @@ export default function RootLayout({ children, session }: any) {
 
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${theme} font-inter antialiased tracking-tight relative`}>
+      <body className={`${inter.variable} ${theme} font-inter antialiased tracking-tight relative grid h-full`}>
         <SessionProvider session={session}>
           <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip bg-white dark:bg-gray-950 text-gray-900 dark:text-white">
             <NavBar toggleDarkMode={switchTheme} theme={theme} />
