@@ -193,7 +193,7 @@ export default function LessonVocales() {
     setCharResults(initialResults);
     setErrors(initialResults);
     setStatusLesson(prevState => ({ ...prevState, prevStatus: lesson?.data.state_id }));
-    const sectionMap = {
+    const sectionMap: { [key: number]: string } = {
       1: "NUMEROS",
       2: "VOCALES",
       3: "PALABRAS"
