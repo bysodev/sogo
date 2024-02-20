@@ -217,11 +217,13 @@ export default function LessonVocales() {
 
   useEffect(() => {
     const updateImage = () => {
-      const letter = progres.char;
-      const imagen = SignImageData.find((imagen) => imagen.name === letter);
-      if (imagen) {
-        setCurrentImage(imagen.url);
-      }
+      // const letter = progres.char;
+      // const imagen = SignImageData.find((imagen) => imagen.name === letter);
+      // if (imagen) {
+      //   setCurrentImage(imagen.url);
+      // }
+      const URL_BASE = progres.tipo === "NUMEROS" ? `/lesson/letters/letra_${progres.char}.jpg` : `/lesson/numbers/numero_${progres.char}.jpg`;
+      setCurrentImage(URL_BASE || defaultImage)
     };
     updateImage();
   }, [progres.char]); // Actualiza la imagen cuando progres.char cambia
