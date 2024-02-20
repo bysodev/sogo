@@ -30,7 +30,7 @@ export default function RootLayout({ children, session }: any) {
     }
   }, []);
 
-  const [theme, setTheme] = useState('');
+  const [theme, setTheme] = useState('light'); // Set 'light' as default
 
   useEffect(() => {
     const localTheme = window.localStorage.getItem('theme') || "";
