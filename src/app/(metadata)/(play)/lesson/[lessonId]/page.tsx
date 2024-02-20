@@ -56,7 +56,7 @@ async function PredictSign(
   });
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_ROUTE_APP}/predict/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/predict/`, {
       credentials: 'include',
       method: 'POST',
       headers: myHeaders,
