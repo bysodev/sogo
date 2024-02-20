@@ -19,7 +19,14 @@ export const showErrorMessage = (text) => {
         title: 'Ups...',
         text,
         timer: 3000,
-        showConfirmButton: false
+        showConfirmButton: false,
+        didOpen: () => {
+            let closeButton = document.createElement('button');
+            closeButton.className = 'swal2-close';
+            closeButton.onclick = function() { Swal.close(); };
+            closeButton.textContent = '×';
+            document.querySelector('.swal2-popup').appendChild(closeButton);
+        },
     })
 }
 
@@ -28,6 +35,13 @@ export const showSuccessMessage = (content) => {
         icon: 'success',
         title: '¡Genial!',
         showConfirmButton: false,
+        didOpen: () => {
+            let closeButton = document.createElement('button');
+            closeButton.className = 'swal2-close';
+            closeButton.onclick = function() { Swal.close(); };
+            closeButton.textContent = '×';
+            document.querySelector('.swal2-popup').appendChild(closeButton);
+        },
         ...content
     })
 }
