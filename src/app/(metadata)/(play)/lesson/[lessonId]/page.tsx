@@ -7,7 +7,6 @@ import useScreenshot from "@/components/camara/useScreenshot";
 import CompleteLesson from "@/components/progress/CompleteLesson";
 import { FooterLesson } from "@/components/progress/FooterLesson";
 import { Progressbar } from "@/components/progress/Progressbar";
-import { PredictSign } from "@/lib/actions/lesson";
 import { Fetcher, Progress, Times, WebVideoElementWithScreenshot } from '@/lib/types/lessons';
 import { CircularProgress, Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { useSession } from "next-auth/react";
@@ -37,6 +36,38 @@ const handlePostLesson = async (token: string, id_lesson: number, points_reached
     console.error('Error al obtener la lección', error);
   }
 };
+
+async function PredictSign(
+  category: string,
+  image: string,
+  char: string,
+  token: string
+) {
+  var myHeaders = new Headers();
+  myHeaders.append('Content-Type', 'application/json');
+
+  var raw = JSON.stringify({
+    token: token,
+    category: category,
+    image: image,
+    extension: 'jpeg',
+    type: 'byte64',
+    char: char,
+  });
+
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_ROUTE_APP}/predict/`, {
+      credentials: 'include',
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow',
+    });
+    return res;
+  } catch (error) {
+    return { ok: false };
+  }
+}
 
 const handlePutLesson = async (token: string, id_lesson: number, points_reached: number, state_id: number, fails: number, detail_fails: number[]) => {
   try {
