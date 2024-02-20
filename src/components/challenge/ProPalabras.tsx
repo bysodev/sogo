@@ -226,7 +226,8 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
            (char === 'T' && result === '9') ||
            (char === '9' && result === 'T') ||
            (char === 'U' && result === 'R') ||
-           (char === 'R' && result === 'U');
+           (char === 'R' && result === 'U') ||
+           (char === 'F' && result === '9') ||
   }
 
   const handleVerification = async () => {
