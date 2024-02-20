@@ -27,6 +27,7 @@ const defect_numero = `/lesson/numbers/numero_0.jpg`;
 
 type ElementOperation = {
     operacion: any[],
+    indices: number[],
     resultado: string[],
     calculo: number
 }
@@ -70,14 +71,12 @@ const calc_operaciones = (operador: Operador, num1: number, num2: number): numbe
 
 function getMinutesAndSeconds(totalMilliseconds: number, allowedTime: number) {
     let outside = false;
-    console.log(totalMilliseconds)
     // Calcular los minutos
     const totalSeconds = Math.abs(totalMilliseconds) / 1000;
     const minutes = Math.floor(totalSeconds / 60);
 
     // Calcular los segundos restantes
     const seconds = Math.floor(totalSeconds % 60);
-    console.log({ totalMilliseconds, allowedTime })
     if (Math.abs(totalMilliseconds) > (allowedTime * 1) + 1) {
         outside = true;
     }
@@ -85,36 +84,42 @@ function getMinutesAndSeconds(totalMilliseconds: number, allowedTime: number) {
     return { minutes, seconds, outside };
 }
 
-function ordenamientoContent(category: string, content: string, supplement: boolean, operation: boolean): string[] | ElementOperation {
+function ordenamientoContent(category: string, content: string, supplement: boolean, operation: boolean): [string[], number[]] | ElementOperation {
     const letrasSaltandoUna: string[] = [];
+    const indicesSaltandoUna: number[] = [];
+    const prime_arr_prim = content.split('');
 
     if (category == EnumCategory.PALABRAS) {
         if (operation == true) {
             for (let i = 1; i < content.length; i += 2) {
-                if (content[i])
+                if (content[i] && !not_pass.includes(content[i])){
                     letrasSaltandoUna.push(content[i]);
+                    indicesSaltandoUna.push(i);
+                }
             }
         } else {
             const prime_arr = content.split('');
-            return prime_arr.filter(letra => !not_pass.includes(letra));
+            return [prime_arr.filter(letra => !not_pass.includes(letra)), prime_arr.map((letra, index) => index).filter(index => !not_pass.includes(prime_arr[index])) ];
         }
 
         if (supplement == true) {
             let indiceAleatorio = Math.floor(Math.random() * content.length);
-            letrasSaltandoUna.push(content[indiceAleatorio]);
+            if (content[indiceAleatorio] && !not_pass.includes(content[indiceAleatorio])){
+                letrasSaltandoUna.push(content[indiceAleatorio]); 
+                indicesSaltandoUna.push(indiceAleatorio); 
+            }
         }
-        return letrasSaltandoUna.filter(letra => !not_pass.includes(letra));
+        return [letrasSaltandoUna, indicesSaltandoUna];
     }
 
     if (category == EnumCategory.NUMEROS) {
         const num1: number = Math.floor(Math.random() * 10);
         const num2: number = Math.floor(Math.random() * 10);
         const numeros_salteados = []
+        const prime_arr = content.split('');
 
         if (operation == true) {
-            console.log(content)
             const operator = content[Math.floor(Math.random() * content.length)];
-            console.log(`Este es el operador: ${operator}`)
             let cal = calc_operaciones(operator as Operador, num1, num2);
             if (!cal) {
                 return ordenamientoContent(category, content, supplement, operation)
@@ -122,23 +127,26 @@ function ordenamientoContent(category: string, content: string, supplement: bool
             if (cal) {
                 let calculo = cal.toFixed(2)
                 let tempo = String(calculo).split('')
+                let indices = tempo.map( (numt, index) => index );
                 if (!(parseFloat(calculo) % 1 !== 0)) {
                     tempo = String(parseInt(calculo)).split('')
+                    indices = tempo.map( (numt, index) => index );
                 }
-                return { operacion: [num1, operator, num2], resultado: tempo, calculo: parseFloat(calculo) }
+                return { operacion: [num1, operator, num2], resultado: tempo, indices, calculo: parseFloat(calculo) }
             }
         }
         if (supplement == true) {
             for (let i = 1; i < content.length; i += 2) {
-                if (content[i])
+                if (content[i]){
                     numeros_salteados.push(content[i]);
+                    indicesSaltandoUna.push(i);
+                }
             }
-            return numeros_salteados;
+            return [numeros_salteados, indicesSaltandoUna];
         }
-        return content.split('');
+        return [prime_arr, prime_arr.map((letra, index) => index)];
     }
-
-    return content.split('');
+    return [prime_arr_prim, prime_arr_prim.map((letra, index) => index)]
 }
 
 function isValidCategory(value: string): value is EnumCategory {
@@ -180,12 +188,10 @@ const handlePostChallenge = async (category: string, difficulty: string, minutes
                 fails,
             }),
         });
-        console.log(response)
         if (!response.ok) {
             throw new Error(`Error al registrar el reto: ${response.status}`);
         } else {
             const data = await response.json()
-            console.log(data)
             return data;
         }
     } catch (error) {
@@ -238,6 +244,7 @@ export default function ChallengesPage() {
         continue: false,
         intentos: 0,
         operacion: [''],
+        indices: [0],
         objetivos: [''],
         objetivo: '',
         operation: false,
@@ -280,7 +287,6 @@ export default function ChallengesPage() {
                 setCategory(categoria.toUpperCase() as EnumCategory)
                 setDifficulty(dificultad.toUpperCase() as EnumDifficulty)
                 setProcced(true)
-                console.log('Hacen falta los parametros para esta pagina, no tocar nada de la URL')
             }
         }
     }, [searchParams])
@@ -319,18 +325,22 @@ export default function ChallengesPage() {
         if (category == EnumCategory.NUMEROS && operation)
             content = operaciones[Math.floor(Math.random() * operaciones.length)];
         let arreglo = content.split('');
-        let objetivo_temporal: string[] | ElementOperation = ordenamientoContent(category as string, content, supplement, operation);
-        let objetivos = objetivo_temporal as string[];
+        let objetivo_temporal: [string[], number[]] | ElementOperation = ordenamientoContent(category as string, content, supplement, operation);
+        let objetivos = [''];
+        let indices = [0];
         let operacion = [''];
-        console.log(`Estos son los datos que tenemos: ${JSON.stringify(objetivo_temporal)}`)
 
         if (category == EnumCategory.NUMEROS && operation == true && objetivo_temporal) {
             // let datos = objetivo_temporal as ElementOperation
             objetivo_temporal = objetivo_temporal as ElementOperation
-            console.log(objetivo_temporal)
             operacion = objetivo_temporal?.operacion;
             arreglo = objetivo_temporal?.resultado;
+            indices = objetivo_temporal?.indices;
             objetivos = objetivo_temporal?.resultado.filter((res) => !isNaN(Number(res)));
+        }else{
+            const [objetiv, indic] = objetivo_temporal as [string[], number[]]
+            objetivos = objetiv;
+            indices = indic;
         }
         let objetivo = objetivos[0];
         let setObjetivos = new Set(objetivos);
@@ -353,6 +363,7 @@ export default function ChallengesPage() {
                     ...prev,
                     distancia,
                     content,
+                    indices,
                     objetivos,
                     objetivo,
                     intentos,
@@ -375,6 +386,7 @@ export default function ChallengesPage() {
                 ...prev,
                 distancia,
                 content,
+                indices,
                 objetivos,
                 objetivo,
                 intentos,
@@ -401,6 +413,10 @@ export default function ChallengesPage() {
         }
     };
 
+    const isValidResult = (char: string, result: string) => {
+        return char === result || (char === '0' && result === 'O') || (char === 'O' && result === '0');
+    };
+      
     const handleVerification = async () => {
         setSubmit(false);
         const raw = JSON.stringify({
@@ -419,21 +435,22 @@ export default function ChallengesPage() {
         if (respuesta.ok) {
             const predict = await (respuesta as Response).json();
 
-            console.log({ predict: predict.data, objetivo: progres.objetivo });
-            if (predict.data.result === progres.objetivo) {
-                console.log(`Predicción: ${predict.data}, objetivo: ${progres.objetivo} y objetivos: ${progres.objetivos}`)
+            if (isValidResult(predict.data.result, progres.objetivo)) {
+                const urlPalabraImg = `/lesson/letters/letra_${progres.objetivos[1]}.jpg`;
+                const urlNumeroImg = `/lesson/numbers/numero_${progres.objetivos[1]}.jpg`;
+                const urlImg = category === EnumCategory.PALABRAS ? (urlPalabraImg || defect_palabra) : (category === EnumCategory.NUMEROS ? (urlNumeroImg || defect_numero) : '/lesson/default.jpg')
+                let index_trash = progres.objetivos.indexOf(progres.objetivo);
                 setCheck(true);
                 setprogress((pro) => ({
                     ...pro,
                     asiertos: pro.asiertos + 1,
                     porcentaje: ((pro.asiertos + 1) / pro.distancia) * 100,
-                    objetivos: pro.objetivos.filter((obj) => obj !== progres.objetivo),
+                    // objetivos: pro.objetivos.filter((obj) => obj !== progres.objetivo),
+                    objetivos: pro.objetivos.filter((obj, index) => index !== index_trash),
+                    indices: pro.indices.filter((obj, index) => index !== index_trash),
                     objetivo: pro.objetivos.find((obj) => obj !== progres.objetivo) as string,
                     continue: true
                 }));
-                const urlPalabraImg = `/lesson/letters/letra_${progres.objetivos[1]}.jpg`;
-                const urlNumeroImg = `/lesson/numbers/numero_${progres.objetivos[1]}.jpg`;
-                const urlImg = category === EnumCategory.PALABRAS ? (urlPalabraImg || defect_palabra) : (category === EnumCategory.NUMEROS ? (urlNumeroImg || defect_numero) : '/lesson/default.jpg')
                 setCurrentImage(urlImg)
             } else {
                 setprogress((prev) => ({
@@ -443,14 +460,12 @@ export default function ChallengesPage() {
                 setCheck(false);
                 setFoto();
             }
-            console.log(predict)
         }
 
         if (respuesta.status == 500) {
-            console.log('Error')
+            console.log('Error en el servidor')
         }
 
-        console.log('SUBMIT')
         setSubmit(true);
     };
 
@@ -464,18 +479,15 @@ export default function ChallengesPage() {
     };
 
     const handleSubmitChall = () => {
-        console.log({ final: startime.final.getTime(), inicio: startime.inicio.getTime() })
         const totalTime = (startime.final.getTime() - startime.inicio.getTime());
         const maxTime = ((progres.minutes * 60) + progres.seconds) * 1000;
         const { minutes, seconds, outside } = getMinutesAndSeconds(totalTime, maxTime);
-        console.log({ minutes, seconds, outside })
 
         if (outside) {
             setOutside(true);
         } else {
             const fails = progres.fails_max - progres.intentos
             handlePostChallenge(category as string, difficulty as string, progres.minutes, progres.seconds, minutes, seconds, progres.fails_max, fails).then((response) => {
-                console.log(response)
                 setCompleted(true)
                 setReto({
                     ...response?.data,
@@ -756,8 +768,6 @@ export default function ChallengesPage() {
         </>
     }
 
-    console.log(progres)
-
     return <>
         <ModalDetallesChallenge open={detail} setOpen={handleDetailsModal} number={1} name={'Reto Personalizado'} descripction={'Considere que se trata de un reto personalizado a medidad por usted, cumpla con los requisitos y se registrara su progreso.'} />
         <ModalOutsideTime open={outside} setRouter={handleRouter} />
@@ -765,15 +775,17 @@ export default function ChallengesPage() {
             <CompleteChallenge {...reto} />
         ) : (
             <div className="w-full h-full grid place-content-center">
-                <IconLogo height={80} width={80} className="mx-auto mb-6" />
-                <span className="font-mono text-2xl text-s" >Espere...</span>
+                <div>
+                    <IconLogo height={80} width={80} className="mx-auto mb-6" />
+                    <span className="font-mono text-2xl text-s" >Espere...</span>
+                </div>
             </div>
         )
         ) : (
             <>
                 <div className="flex flex-col gap-4 h-full">
                     <ProgressbarChallenge porcentaje={progres.porcentaje} setDrawer={setDrawer} totalTry={progres.intentos} />
-                    <StackContent content={progres.arreglo} objetivos={progres.objetivos} objetivo={progres.objetivo} operacion={progres.operacion} />
+                    <StackContent content={progres.arreglo} indices={progres.indices} objetivos={progres.objetivos} objetivo={progres.objetivo} operacion={progres.operacion} />
 
                     <div className="grid lg:grid-cols-2 justify-center items-center text-center h-full">
                         {

@@ -1,5 +1,6 @@
 'use client'
 
+import IconLogo from "@/components/icons/logo";
 import { ContentChallenge } from "@/lib/types/challenge";
 import { WebVideoElementWithScreenshot } from "@/lib/types/lessons";
 import { Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
@@ -36,7 +37,6 @@ function obtenerURLImagen(name: string | number) {
 // }
 
 function getMinutesAndSeconds(totalMilliseconds: number) {
-  console.log(totalMilliseconds)
   // Calcular los minutos
   const totalSeconds = Math.abs(totalMilliseconds) / 1000;
   const minutes = Math.floor(totalSeconds / 60);
@@ -85,14 +85,17 @@ const calc_operaciones = (operador: Operador, num1: number, num2: number): numbe
 
 type ElementOperation = {
   operacion: any[],
+  indices: number[],
   resultado: string[],
   calculo: number
 }
 
-function tomarElementosEnOrden(content: string, spelled: boolean, supplement: boolean, operation: boolean): string[] | ElementOperation {
+function tomarElementosEnOrden(content: string, spelled: boolean, supplement: boolean, operation: boolean): [string[], number[]] | ElementOperation {
   const num1: number = Math.floor(Math.random() * 10);
   const num2: number = Math.floor(Math.random() * 10);
   const numeros_salteados = []
+  const indices_salteados = []
+  const prime_arr = content.split('');
 
   if (spelled == true) {
     if (operation == true) {
@@ -104,22 +107,26 @@ function tomarElementosEnOrden(content: string, spelled: boolean, supplement: bo
       if (cal) {
         let calculo = cal.toFixed(2)
         let tempo = String(calculo).split('')
+        let indices = tempo.map( (numt, index) => index );
         if (!(parseFloat(calculo) % 1 !== 0)) {
           tempo = String(parseInt(calculo)).split('')
+          indices = tempo.map( (numt, index) => index );
         }
-        return { operacion: [num1, operator, num2], resultado: tempo, calculo: parseFloat(calculo) }
+        return { operacion: [num1, operator, num2], resultado: tempo, indices, calculo: parseFloat(calculo) }
       }
     }
     if (supplement == true) {
       for (let i = 1; i < content.length; i += 2) {
-        if (content[i])
+        if (content[i]){
           numeros_salteados.push(content[i]);
+          indices_salteados.push(i);
+        }
       }
-      return numeros_salteados;
+      return [numeros_salteados, indices_salteados];
     }
-    return content.split('');
+    return [prime_arr, prime_arr.map((letra, index) => index)];
   }
-  return content.split('');
+  return [prime_arr, prime_arr.map((letra, index) => index)];
 
 }
 
@@ -158,12 +165,10 @@ const handlePostChallenge = async (id: number, points: number, minutes: number, 
         state: "COMPLETADO"
       }),
     });
-    console.log(response)
     if (!response.ok) {
       throw new Error(`Error al obtener la lección: ${response.status}`);
     } else {
       const data = await response.json()
-      console.log(data)
       return data;
     }
   } catch (error) {
@@ -199,6 +204,7 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
     continue: false,
     intentos: 0,
     operacion: [''],
+    indices: [0],
     objetivos: [''],
     objetivo: '',
   });
@@ -238,21 +244,24 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
 
   useEffect(() => {
     if (challenge) {
-      console.log(`De esto se trata el reto: ${JSON.stringify(challenge)}`)
       let content = challenge.content[Math.floor(Math.random() * challenge.content.length)];
       let arreglo = content.split('');
 
-      let objetivo_temporal: string[] | ElementOperation = tomarElementosEnOrden(content, challenge.spelled, challenge.supplement, challenge.operation);
-      let objetivos = objetivo_temporal as string[];
+      let objetivo_temporal: [string[], number[]] | ElementOperation = tomarElementosEnOrden(content, challenge.spelled, challenge.supplement, challenge.operation);
+      let objetivos = [''];
+      let indices = [0];
       let operacion = [''];
-      console.log(`Estos son los datos que tenemos: ${JSON.stringify(objetivo_temporal)}`)
       if (challenge.operation == true && objetivo_temporal) {
         // let datos = objetivo_temporal as ElementOperation
         objetivo_temporal = objetivo_temporal as ElementOperation
-        // console.log(datos.resultado)
         operacion = objetivo_temporal?.operacion;
         arreglo = objetivo_temporal?.resultado;
+        indices = objetivo_temporal?.indices;
         objetivos = objetivo_temporal?.resultado.filter((res) => !isNaN(Number(res)));
+      }else{
+        const [objetiv, indic] = objetivo_temporal as [string[], number[]]
+        objetivos = objetiv;
+        indices = indic;
       }
       let objetivo = objetivos[0];
       let intentos = challenge.fails_max;
@@ -265,6 +274,7 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
         operacion,
         distancia,
         content,
+        indices,
         objetivos,
         objetivo,
         intentos,
@@ -273,6 +283,10 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
 
     }
   }, [challenge])
+
+  const isValidResult = (char: string, result: string) => {
+    return char === result || (char === '0' && result === 'O') || (char === 'O' && result === '0');
+  };
 
   const handleVerification = async () => {
     setSubmit(false);
@@ -292,18 +306,20 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
     if (respuesta.ok) {
       const predict = await (respuesta as Response).json();
 
-      if (predict.data.result === progres.objetivo) {
-        console.log(`Predicción: ${predict.data}, objetivo: ${progres.objetivo} y objetivos: ${progres.objetivos}`)
+      if ( isValidResult( predict.data.result, progres.objetivo )) {
+        let index_trash = progres.objetivos.indexOf(progres.objetivo);
         setCheck(true);
+        const img_principal = `/lesson/numbers/numero_${progres.objetivos[1]}.jpg`;
         setprogress((pro) => ({
           ...pro,
           asiertos: pro.asiertos + 1,
           porcentaje: ((pro.asiertos + 1) / pro.distancia) * 100,
-          objetivos: pro.objetivos.filter((obj) => obj !== progres.objetivo),
+          // objetivos: pro.objetivos.filter((obj) => obj !== progres.objetivo),
+          objetivos: pro.objetivos.filter((obj, index) => index !== index_trash),
+          indices: pro.indices.filter((obj, index) => index !== index_trash),
           objetivo: pro.objetivos.find((obj) => obj !== progres.objetivo) as string,
           continue: true
         }));
-        const img_principal = `/lesson/numbers/numero_${progres.objetivos[1]}.jpg`;
         setCurrentImage(img_principal || defect_numero)
       } else {
         setprogress((prev) => ({
@@ -313,14 +329,12 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
         setCheck(false);
         setFoto();
       }
-      console.log(predict)
     }
 
     if (respuesta.status == 500) {
-      console.log('Error')
+      console.log('Error en el servidor')
     }
 
-    console.log('SUBMIT')
     setSubmit(true);
   };
 
@@ -342,7 +356,6 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
     const fails = challenge.fails_max - progres.intentos
     const score = calculateScore(challenge.points, fails, challenge.fails_max, totalTime, milisegundos)
     handlePostChallenge(challenge.id, score, minutes, seconds, fails).then((response) => {
-      console.log(response)
       setCompleted(true)
       setData({
         ...response?.data,
@@ -359,24 +372,26 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
     }
   }, [progres.porcentaje])
 
-  console.log(progres)
-
-
   return (
     <>
       <ModalDetallesChallenge open={open} setOpen={handleModal} number={challenge.number} name={challenge.name} descripction={challenge.description} />
       {progres.porcentaje === 100 || totalTry === 0 ? (completed && data) ? (
         <CompleteChallenge {...data} />
-      ) : (<div>Esperemos un momento, se esta registrando</div>)
+      ) : (
+        <div className="w-screen h-screen grid place-content-center">
+            <IconLogo height={80} width={80} className="mx-auto mb-6" />
+            <span className="font-mono text-2xl text-s" >Espere...</span>
+        </div>
+      )
         : (
           <>
             <div className="flex flex-col gap-4 h-full">
               <ProgressbarChallenge porcentaje={progres.porcentaje} setDrawer={setDrawer} totalTry={progres.intentos} />
-              <StackContent content={progres.arreglo} objetivos={progres.objetivos} objetivo={progres.objetivo} operacion={progres.operacion} />
+              <StackContent content={progres.arreglo} indices={progres.indices} objetivos={progres.objetivos} objetivo={progres.objetivo} operacion={progres.operacion} />
 
               <div className="grid lg:grid-cols-2 justify-center items-center text-center h-full">
                 {
-                  (true) &&
+                  (currentImage) &&
                   <Image
                     className="shadow-lg border rounded-xl m-auto aspect-video object-contain"
                     src={currentImage}

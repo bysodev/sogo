@@ -14,34 +14,15 @@ import DrawerBottonChall from "./DrawerBottonChall";
 import { ProgressbarChallenge } from "./ProgressbarChallenge";
 import { StackContent } from "./StackContent";
 
-const not_pass = ['E', 'J', 'Ñ', 'Z'];
+const not_pass = ['J', 'Ñ', 'Z', ' ', ''];
+const defect_palabra = `/lesson/letters/letra_A.jpg`;
 
 type Times = {
   inicio: Date,
   final: Date
 }
 
-const defect_palabra = `/lesson/letters/letra_A.jpg`;
-
-function obtenerURLImagen(name: string) {
-  console.log('Entramos a ver la vocal')
-  return `/lesson/letters/letra_${name}.jpg`;
-}
-
-// function obtenerURLImagen(category: string, name: string) {
-//     if( category.toUpperCase() == EnumCategory.NUMEROS ){
-//       return  `/lesson/numbers/numero_${name}.jpg`;
-//     }
-
-//     if( category.toUpperCase() == EnumCategory.PALABRAS ){
-//       return  `/lesson/letters/letra_${name}.jpg`; 
-//     }
-
-//     return  `/lesson/default.jpg`; 
-// }
-
 function getMinutesAndSeconds(totalMilliseconds: number) {
-  console.log(totalMilliseconds)
   // Calcular los minutos
   const totalSeconds = Math.abs(totalMilliseconds) / 1000;
   const minutes = Math.floor(totalSeconds / 60);
@@ -69,27 +50,35 @@ type res_challenge = {
   state: string
 }
 
-function tomarElementosEnOrden(palabra: string, spelled: boolean, supplement: boolean, operation: boolean): string[] {
+function tomarElementosEnOrden(palabra: string, spelled: boolean, supplement: boolean, operation: boolean): [string[], number[]] {
   const letrasSaltandoUna: string[] = [];
+  const indicesSaltandoUna: number[] = [];
 
   if (spelled == true) {
     if (operation == true) {
       for (let i = 1; i < palabra.length; i += 2) {
-        if (palabra[i])
+        if (palabra[i] && !not_pass.includes(palabra[i])){
           letrasSaltandoUna.push(palabra[i]);
+          indicesSaltandoUna.push(i);
+        }
       }
     } else {
       const prime_arr = palabra.split('');
-      return prime_arr.filter(letra => !not_pass.includes(letra));
+      return [prime_arr.filter(letra => !not_pass.includes(letra)), prime_arr.map((letra, index) => index).filter(index => !not_pass.includes(prime_arr[index])) ];
     }
   }
 
   if (supplement == true) {
     let indiceAleatorio = Math.floor(Math.random() * palabra.length);
-    letrasSaltandoUna.push(palabra[indiceAleatorio]);
+    if (palabra[indiceAleatorio] && !not_pass.includes(palabra[indiceAleatorio])){
+      letrasSaltandoUna.push(palabra[indiceAleatorio]);
+      indicesSaltandoUna.push(indiceAleatorio);
+
+    }
   }
 
-  return letrasSaltandoUna.filter(letra => !not_pass.includes(letra));
+  return [letrasSaltandoUna, indicesSaltandoUna];
+  // return [letrasSaltandoUna.filter(letra => !not_pass.includes(letra)), indicesSaltandoUna];
 }
 
 function calculateScore(maxScore: number, totalErrors: number, maxErrors: number, time: number, maxTime: number) {
@@ -127,12 +116,10 @@ const handlePostChallenge = async (id: number, points: number, minutes: number, 
         state: "COMPLETADO"
       }),
     });
-    console.log(response)
     if (!response.ok) {
       throw new Error(`Error al obtener la lección: ${response.status}`);
     } else {
       const data = await response.json()
-      console.log(data)
       return data;
     }
   } catch (error) {
@@ -167,6 +154,7 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
     etapa: 0,
     continue: false,
     intentos: 0,
+    indices: [0],
     objetivos: [''],
     objetivo: '',
   });
@@ -207,20 +195,20 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
 
   useEffect(() => {
     if (challenge) {
-      console.log(currentImage)
       let content: string = challenge.content[Math.floor(Math.random() * challenge.content.length)];
       let arreglo = content.split('');
-      let objetivos: string[] = tomarElementosEnOrden(content, challenge.spelled, challenge.supplement, challenge.operation);
+      let [objetivos, indices] = tomarElementosEnOrden(content, challenge.spelled, challenge.supplement, challenge.operation);
       let objetivo = objetivos[0];
       let intentos = challenge.fails_max;
       let distancia = objetivos.length;
       // const img_principal = obtenerURLImagen(objetivo);
-      const img_principal = `/lesson/letters/letra_${objetivo}.jpg`;
+      const img_principal = `/lesson/letters/letra_${objetivo}.jpg`; 
       setCurrentImage(img_principal)
       setprogress((prev) => ({
         ...prev,
         distancia,
         content,
+        indices,
         objetivos,
         objetivo,
         intentos,
@@ -229,6 +217,10 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
 
     }
   }, [challenge])
+
+  const isValidResult = (char: string, result: string) => {
+    return char === result || (char === '0' && result === 'O') || (char === 'O' && result === '0');
+  };
 
   const handleVerification = async () => {
     setSubmit(false);
@@ -248,18 +240,21 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
     if (respuesta.ok) {
       const predict = await (respuesta as Response).json();
 
-      if (predict.data.result === progres.objetivo) {
-        console.log(`Predicción: ${predict.data}, objetivo: ${progres.objetivo} y objetivos: ${progres.objetivos}`)
+      if ( isValidResult( predict.data.result, progres.objetivo) ) {
+        let index_trash = progres.objetivos.indexOf(progres.objetivo);
+        const img_principal = `/lesson/letters/letra_${progres.objetivos[1]}.jpg`;
         setCheck(true);
         setprogress((pro) => ({
           ...pro,
           asiertos: pro.asiertos + 1,
           porcentaje: ((pro.asiertos + 1) / pro.distancia) * 100,
-          objetivos: pro.objetivos.filter((obj) => obj !== progres.objetivo),
+          // objetivo: pro.objetivos[1] as string,
+          // objetivos: pro.objetivos.splice(0,1),
+          objetivos: pro.objetivos.filter((obj, index) => index !== index_trash),
+          indices: pro.indices.filter((obj, index) => index !== index_trash),
           objetivo: pro.objetivos.find((obj) => obj !== progres.objetivo) as string,
           continue: true
         }));
-        const img_principal = `/lesson/letters/letra_${progres.objetivos[1]}.jpg`;
         setCurrentImage(img_principal || defect_palabra)
       } else {
         setprogress((prev) => ({
@@ -269,14 +264,12 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
         setCheck(false);
         setFoto();
       }
-      console.log(predict)
     }
 
     if (respuesta.status == 500) {
-      console.log('Error')
+      console.log('Error con el servidor')
     }
 
-    console.log('SUBMIT')
     setSubmit(true);
   };
 
@@ -299,7 +292,6 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
     const fails = challenge.fails_max - progres.intentos
     const score = calculateScore(challenge.points, fails, challenge.fails_max, totalTime, milisegundos)
     handlePostChallenge(challenge.id, score, minutes, seconds, fails).then((response) => {
-      console.log(response)
       setCompleted(true)
       setData({
         ...response?.data,
@@ -318,9 +310,6 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
     }
   }, [progres.porcentaje])
 
-  console.log(progres)
-
-
   return (
     <>
       <ModalDetallesChallenge open={open} setOpen={handleModal} number={challenge.number} name={challenge.name} descripction={challenge.description} />
@@ -328,15 +317,17 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
         <CompleteChallenge {...data} />
       ) : (
         <div className="w-full h-full grid place-content-center">
-          <IconLogo height={80} width={80} className="mx-auto mb-6" />
-          <span className="font-mono text-2xl text-s" >Espere...</span>
+          <div>
+            <IconLogo height={80} width={80} className="mx-auto mb-6" />
+            <span className="font-mono text-2xl text-s" >Espere...</span>
+          </div>
         </div>
       )
         : (
           <>
             <div className="flex flex-col gap-4 h-full">
               <ProgressbarChallenge porcentaje={progres.porcentaje} setDrawer={setDrawer} totalTry={progres.intentos} />
-              <StackContent content={progres.arreglo} objetivos={progres.objetivos} objetivo={progres.objetivo} operacion={['']} />
+              <StackContent content={progres.arreglo} indices={progres.indices} objetivos={progres.objetivos} objetivo={progres.objetivo} operacion={['']} />
 
               <div className="grid lg:grid-cols-2 justify-center items-center text-center h-full">
                 {

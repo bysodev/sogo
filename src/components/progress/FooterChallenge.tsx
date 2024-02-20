@@ -77,7 +77,7 @@ export const FooterChallenge: React.FC<FooterLessonProps> = ({
                                 <div>
                                     <p className="text-2xl font-bold">{check === null ? description : check ? "¡Muy bien!" : "¡Sigue intentando!"}</p>
                                     <div className="flex justify-start gap-4">
-                                        <p>Tiempo Restante: <span className={`font-bold bg-white p-1 rounded-md ${ (mins >= 1 ) ? 'text-emerald-600' : 'text-red-600' }`}>{formatoDosDigitos(mins)}:{formatoDosDigitos(secs)}</span></p>
+                                        <p>Tiempo Restante: <span className={`font-bold p-1 rounded-md ${ (mins >= 1 ) ? 'text-emerald-600' : 'text-red-600' }`}>{formatoDosDigitos(mins)}:{formatoDosDigitos(secs)}</span></p>
                                     </div>
                                 </div>
                             )}

@@ -1,17 +1,9 @@
 'use client'
 
-import { EnumCategory } from "@/lib/types/challenge";
 
-export const StackContent = ({content, objetivos, objetivo, operacion}: { content: any[], objetivos: any[] , objetivo: any, operacion: string[]}) => {
-
-    const categoria = EnumCategory.PALABRAS;
+export const StackContent = ({content, indices, objetivos, objetivo, operacion}: { content: any[], indices: number[], objetivos: any[] , objetivo: any, operacion: string[]}) => { 
+    
     const indexObj = content.indexOf(objetivo);
-
-    if( categoria == EnumCategory.PALABRAS ){
-        objetivo as string
-        objetivos as string[]
-        content as string[]
-    }
 
     return <div className="grid place-content-center w-full gap-6">
         <div className="flex gap-2 justify-center">
@@ -24,7 +16,7 @@ export const StackContent = ({content, objetivos, objetivo, operacion}: { conten
         <div className="flex gap-3 justify-center">
             {
                 content.map((cont, index) => {
-                    if (objetivos.includes(cont) ){
+                    if (objetivos.includes(cont) && indices.includes(index) ){
                         // if( cont == objetivo ){
                         if( indexObj == index ){
                             return <div key={index} className="animate-bounce p-4 w-16 h-16 flex items-center justify-center shadow-lg rounded-lg bg-fuchsia-500 shadow-fuchsia-500/50 text-white font-bold text-2xl">{cont}</div>
@@ -37,4 +29,4 @@ export const StackContent = ({content, objetivos, objetivo, operacion}: { conten
         </div>
      
   </div>
-}
+} 
