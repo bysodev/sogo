@@ -286,8 +286,14 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
   }, [challenge])
 
   const isValidResult = (char: string, result: string) => {
-    return char === result || (char === '0' && result === 'O') || (char === 'O' && result === '0');
-  };
+    return char === result || 
+           (char === '0' && result === 'O') || 
+           (char === 'O' && result === '0') ||
+           (char === 'T' && result === '9') ||
+           (char === '9' && result === 'T') ||
+           (char === 'U' && result === 'R') ||
+           (char === 'R' && result === 'U');
+  }
 
   const handleVerification = async () => {
     setSubmit(false);
