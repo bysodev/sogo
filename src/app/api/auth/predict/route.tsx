@@ -3,9 +3,9 @@ import { config } from "../[...nextauth]/route";
 const url = process.env.NEXT_PUBLIC_API_BACKEND
 
 export async function POST(request: Request) {
-  const { username, password, email, category, image, char, token } = await request.json()
+  const {category, image, char } = await request.json()
   
-  if (!username || !password || !email || !category || !image || !char || !token) {
+  if (!category || !image || !char) {
     return new Response('No se logro la petición, faltan campos', {
       status: 401,
     })
