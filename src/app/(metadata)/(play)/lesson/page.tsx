@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { BsBookmarkStarFill } from 'react-icons/bs';
 import { FaCheck, FaExclamationTriangle, FaLock, FaQuestionCircle } from "react-icons/fa";
 import { FaCircleCheck, FaCircleXmark, FaLocationCrosshairs } from 'react-icons/fa6';
+import { HiX } from 'react-icons/hi';
 import useSWR from 'swr';
 
 const LevelStage = () => {
@@ -106,9 +107,12 @@ const LevelStage = () => {
 
       <ModalMUI width={{ xs: '90%', sm: 'auto' }} open={open} handleClose={() => { setOpen(false) }}>
         <article className={`${currentMessage?.blocked ? "text-gray-600" : "text-" + sectionColor(currentMessage?.section_id - 1)}`}>
-          <h3 className={`rounded-t-xl ${currentMessage?.blocked ? "bg-gray-400" : "bg-" + sectionColor(currentMessage?.section_id - 1)} p-4 font-bold text-white text-lg`}>
-            {currentMessage?.title}
-          </h3>
+          <div className={`flex justify-between rounded-t-xl ${currentMessage?.blocked ? "bg-gray-400" : "bg-" + sectionColor(currentMessage?.section_id - 1)} p-4 font-bold text-white text-lg`}>
+            <h3>
+              {currentMessage?.title}
+            </h3>
+            <button onClick={() => { setOpen(false) }} type='button' title='Cerrar ventana'><HiX /></button>
+          </div>
           <div className="text-md font-medium bg-white p-4 flex flex-col gap-2 rounded-b-xl">
             <p>
               Contenido:{" "}

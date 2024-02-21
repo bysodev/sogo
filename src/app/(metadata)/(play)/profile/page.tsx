@@ -190,8 +190,8 @@ export default function ProfilePage() {
                           {...register("username", {
                             required: { value: true, message: "Usuario requerido" },
                             minLength: {
-                              value: 5,
-                              message: "Requiere al menos 6 caracteres",
+                              value: 4,
+                              message: "Requiere al menos 4 caracteres",
                             },
                             maxLength: {
                               value: 15,
@@ -262,9 +262,13 @@ export default function ProfilePage() {
                               value: 8,
                               message: "Requiere al menos 8 caracteres",
                             },
+                            maxLength: {
+                              value: 15,
+                              message: "Máximo 15 caracteres",
+                            },
                             pattern: {
-                              value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-                              message: "La contraseña debe contener al menos una letra y un número"
+                              value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[A-Z]).{8,}$/,
+                              message: "La contraseña debe contener al menos una letra, un número y una letra mayúscula"
                             },
                           })}
                         />
@@ -297,8 +301,12 @@ export default function ProfilePage() {
                                 value: 8,
                                 message: "Requiere al menos 8 caracteres",
                               },
+                              maxLength: {
+                                value: 15,
+                                message: "Máximo 15 caracteres",
+                              },
                               pattern: {
-                                value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+                                value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[A-Z]).{8,}$/,
                                 message: "La contraseña debe contener al menos una letra y un número"
                               },
                             })}
@@ -326,11 +334,15 @@ export default function ProfilePage() {
                                 message: "Confirmación requerida",
                               },
                               minLength: {
-                                value: 6,
-                                message: "Requiere al menos 6 caracteres",
+                                value: 8,
+                                message: "Requiere al menos 8 caracteres",
+                              },
+                              maxLength: {
+                                value: 15,
+                                message: "Máximo 15 caracteres",
                               },
                               pattern: {
-                                value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+                                value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[A-Z]).{8,}$/,
                                 message: "La contraseña debe contener al menos una letra y un número"
                               },
                               validate: (value: string) => {

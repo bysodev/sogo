@@ -158,8 +158,8 @@ export default function Home() {
                 {...register("username", {
                   required: { value: true, message: "Usuario requerido" },
                   minLength: {
-                    value: 5,
-                    message: "Requiere al menos 5 caracteres",
+                    value: 4,
+                    message: "Requiere al menos 4 caracteres",
                   },
                   maxLength: {
                     value: 15,
@@ -214,10 +214,17 @@ export default function Home() {
                       value: true,
                       message: "Contraseña requerido",
                     },
-                    minLength: { value: 8, message: "La contraseña debe tener al menos 8 caracteres" },
+                    minLength: {
+                      value: 8,
+                      message: "Requiere al menos 8 caracteres",
+                    },
+                    maxLength: {
+                      value: 15,
+                      message: "Máximo 15 caracteres",
+                    },
                     pattern: {
-                        value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/,
-                        message: "La contraseña debe contener al menos una letra y un número"
+                      value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[A-Z]).{8,}$/,
+                      message: "La contraseña debe contener al menos una letra, un número y una letra mayúscula"
                     },
                   })}
                 />
@@ -241,10 +248,17 @@ export default function Home() {
                       value: true,
                       message: "Confirmación requerida",
                     },
-                    minLength: { value: 8, message: "La contraseña debe tener al menos 8 caracteres" },
+                    minLength: {
+                      value: 8,
+                      message: "Requiere al menos 8 caracteres",
+                    },
+                    maxLength: {
+                      value: 15,
+                      message: "Máximo 15 caracteres",
+                    },
                     pattern: {
-                        value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/,
-                        message: "La contraseña debe contener al menos una letra y un número"
+                      value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[A-Z]).{8,}$/,
+                      message: "La contraseña debe contener al menos una letra, un número y una letra mayúscula"
                     },
                     validate: (value: string) => {
                       if (value !== watch("password"))

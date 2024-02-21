@@ -1,6 +1,5 @@
 "use client";
 // import { Enunciados } from "@/components/cards/Enunciados";
-import { SignImageData } from "@/components/DiccionaryLesson";
 import DrawerBotton from "@/components/DrawerBotton";
 import Camara from '@/components/camara/Camara';
 import useScreenshot from "@/components/camara/useScreenshot";
@@ -318,21 +317,21 @@ export default function LessonVocales() {
   }, [totalTry, progres.char])
 
   const isValidResult = (char: string, result: string) => {
-    return char === result || 
-           (char === '0' && result === 'O') || 
-           (char === 'O' && result === '0') ||
-           (char === 'T' && result === '9') ||
-           (char === '9' && result === 'T') ||
-           (char === 'U' && result === 'R') ||
-           (char === 'R' && result === 'U') ||
-           (char === 'F' && result === '9');
+    return char === result ||
+      (char === '0' && result === 'O') ||
+      (char === 'O' && result === '0') ||
+      (char === 'T' && result === '9') ||
+      (char === '9' && result === 'T') ||
+      (char === 'U' && result === 'R') ||
+      (char === 'R' && result === 'U') ||
+      (char === 'F' && result === '9');
   }
-  
+
   const handleVerification = async () => {
     setSubmit(false);
     if (progres.porcentaje != 100) {
       if (typeof screenshotUrl === "string") {
-        PredictSign(lesson?.data.category_name, screenshotUrl, progres.char).then(async (response) => {
+        PredictSign(progres.tipo, screenshotUrl, progres.char).then(async (response) => {
           if (!response.ok) {
             return
           } else {
