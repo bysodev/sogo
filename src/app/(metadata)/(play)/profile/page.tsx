@@ -268,7 +268,7 @@ export default function ProfilePage() {
                             },
                             pattern: {
                               value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[A-Z]).{8,}$/,
-                              message: "La contraseña debe contener al menos una letra, un número y una letra mayúscula"
+                              message: "Debe contener al menos una letra mayúscula y un número"
                             },
                           })}
                         />
@@ -307,7 +307,7 @@ export default function ProfilePage() {
                               },
                               pattern: {
                                 value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[A-Z]).{8,}$/,
-                                message: "La contraseña debe contener al menos una letra y un número"
+                                message: "Debe contener al menos una letra mayúscula y un número"
                               },
                             })}
                           />
@@ -343,7 +343,7 @@ export default function ProfilePage() {
                               },
                               pattern: {
                                 value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[A-Z]).{8,}$/,
-                                message: "La contraseña debe contener al menos una letra y un número"
+                                message: "Debe contener al menos una letra mayúscula y un número"
                               },
                               validate: (value: string) => {
                                 if (value !== watch("password"))

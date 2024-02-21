@@ -9,6 +9,7 @@ import IconLogo from "@/components/icons/logo";
 import CompleteChallenge from "@/components/progress/CompleteChallenge";
 import { FooterChallenge, FooterEndChallenge } from "@/components/progress/FooterChallenge";
 import ModalDetallesChallenge, { ModalNotParameters, ModalOutsideTime } from "@/components/progress/ModalDetallesChallenge";
+import { isValidResult } from "@/lib/actions/globales";
 import { EnumCategory, EnumDifficulty } from "@/lib/types/challenge";
 import { WebVideoElementWithScreenshot } from "@/lib/types/lessons";
 import { Alert, Stack, ToggleButton, ToggleButtonGroup, Tooltip, toggleButtonGroupClasses } from "@mui/material";
@@ -413,29 +414,18 @@ export default function ChallengesPage() {
             setOperation(newDevices);
         }
     };
-
-    const isValidResult = (char: string, result: string) => {
-        return char === result || 
-               (char === '0' && result === 'O') || 
-               (char === 'O' && result === '0') ||
-               (char === 'T' && result === '9') ||
-               (char === '9' && result === 'T') ||
-               (char === 'U' && result === 'R') ||
-               (char === 'R' && result === 'U') ||
-               (char === 'F' && result === '9');
-      }
       
     const handleVerification = async () => {
         setSubmit(false);
         const raw = JSON.stringify({
-            category: 'palabras',
+            category: category,
             image: img,
             extension: 'jpeg',
             type: 'byte64',
             char: progres.objetivo,
         })
 
-        const respuesta = await fetch(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/challenge/`, {
+        const respuesta = await fetch(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/predict/`, {
             method: 'POST',
             body: raw
         })

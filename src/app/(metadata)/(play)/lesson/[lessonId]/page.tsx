@@ -6,6 +6,7 @@ import useScreenshot from "@/components/camara/useScreenshot";
 import CompleteLesson from "@/components/progress/CompleteLesson";
 import { FooterLesson } from "@/components/progress/FooterLesson";
 import { Progressbar } from "@/components/progress/Progressbar";
+import { isValidResult } from "@/lib/actions/globales";
 import { Fetcher, Progress, Times, WebVideoElementWithScreenshot } from '@/lib/types/lessons';
 import { CircularProgress, Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { useSession } from "next-auth/react";
@@ -315,17 +316,6 @@ export default function LessonVocales() {
       // logica para llenar el array de errores (valor máximo 3)
     }
   }, [totalTry, progres.char])
-
-  const isValidResult = (char: string, result: string) => {
-    return char === result ||
-      (char === '0' && result === 'O') ||
-      (char === 'O' && result === '0') ||
-      (char === 'T' && result === '9') ||
-      (char === '9' && result === 'T') ||
-      (char === 'U' && result === 'R') ||
-      (char === 'R' && result === 'U') ||
-      (char === 'F' && result === '9');
-  }
 
   const handleVerification = async () => {
     setSubmit(false);

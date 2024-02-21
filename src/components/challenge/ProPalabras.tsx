@@ -1,7 +1,8 @@
 'use client'
 
 import IconLogo from "@/components/icons/logo";
-import { ContentChallenge } from "@/lib/types/challenge";
+import { isValidResult } from "@/lib/actions/globales";
+import { ContentChallenge, EnumCategory } from "@/lib/types/challenge";
 import { WebVideoElementWithScreenshot } from "@/lib/types/lessons";
 import { Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import Image from "next/image";
@@ -219,28 +220,17 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
     }
   }, [challenge])
 
-  const isValidResult = (char: string, result: string) => {
-    return char === result || 
-           (char === '0' && result === 'O') || 
-           (char === 'O' && result === '0') ||
-           (char === 'T' && result === '9') ||
-           (char === '9' && result === 'T') ||
-           (char === 'U' && result === 'R') ||
-           (char === 'R' && result === 'U') ||
-           (char === 'F' && result === '9');
-  }
-
   const handleVerification = async () => {
     setSubmit(false);
     const raw = JSON.stringify({
-      category: 'palabras',
+      category: EnumCategory.PALABRAS,
       image: imagen,
       extension: 'jpeg',
       type: 'byte64',
       char: progres.objetivo,
     })
 
-    const respuesta = await fetch(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/challenge/`, {
+    const respuesta = await fetch(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/predict/`, { 
       method: 'POST',
       body: raw
     })
