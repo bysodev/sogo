@@ -1,5 +1,6 @@
 'use client'
 
+import DrawerBotton from "@/components/DrawerBotton";
 import IconLogo from "@/components/icons/logo";
 import { isValidResult } from "@/lib/actions/globales";
 import { ContentChallenge, EnumCategory } from "@/lib/types/challenge";
@@ -12,12 +13,11 @@ import Camara from "../camara/Camara";
 import CompleteChallenge from "../progress/CompleteChallenge";
 import { FooterChallenge, FooterEndChallenge } from "../progress/FooterChallenge";
 import ModalDetallesChallenge from "../progress/ModalDetallesChallenge";
-import DrawerBottonChall from "./DrawerBottonChall";
 import { ProgressbarChallenge } from "./ProgressbarChallenge";
 import { StackContent } from "./StackContent";
 
 const not_pass = ['J', 'Ñ', 'Z', ' ', ''];
-const defect_palabra = `/lesson/letters/letra_A.jpg`;
+const default_palabra = `/lesson/letters/letra_A.jpg`;
 
 type Times = {
   inicio: Date,
@@ -33,10 +33,6 @@ function getMinutesAndSeconds(totalMilliseconds: number) {
   const seconds = Math.floor(totalSeconds % 60);
 
   return { minutes, seconds };
-}
-
-const imageLoader = () => {
-  return `/lesson/default.jpg`
 }
 
 type res_challenge = {
@@ -59,20 +55,20 @@ function tomarElementosEnOrden(palabra: string, spelled: boolean, supplement: bo
   if (spelled == true) {
     if (operation == true) {
       for (let i = 1; i < palabra.length; i += 2) {
-        if (palabra[i] && !not_pass.includes(palabra[i])){
+        if (palabra[i] && !not_pass.includes(palabra[i])) {
           letrasSaltandoUna.push(palabra[i]);
           indicesSaltandoUna.push(i);
         }
       }
     } else {
       const prime_arr = palabra.split('');
-      return [prime_arr.filter(letra => !not_pass.includes(letra)), prime_arr.map((letra, index) => index).filter(index => !not_pass.includes(prime_arr[index])) ];
+      return [prime_arr.filter(letra => !not_pass.includes(letra)), prime_arr.map((letra, index) => index).filter(index => !not_pass.includes(prime_arr[index]))];
     }
   }
 
   if (supplement == true) {
     let indiceAleatorio = Math.floor(Math.random() * palabra.length);
-    if (palabra[indiceAleatorio] && !not_pass.includes(palabra[indiceAleatorio])){
+    if (palabra[indiceAleatorio] && !not_pass.includes(palabra[indiceAleatorio])) {
       letrasSaltandoUna.push(palabra[indiceAleatorio]);
       indicesSaltandoUna.push(indiceAleatorio);
 
@@ -164,6 +160,7 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
   const handleToogleTime = (event: React.MouseEvent<HTMLElement>, newTime: string) => {
     setToogleTime(newTime)
   }
+
   const foto = () => {
     var captura = webcamRef?.current?.getScreenshot();
     setImagen(captura);
@@ -204,7 +201,7 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
       let intentos = challenge.fails_max;
       let distancia = objetivos.length;
       // const img_principal = obtenerURLImagen(objetivo);
-      const img_principal = `/lesson/letters/letra_${objetivo}.jpg`; 
+      const img_principal = `/lesson/letters/letra_${objetivo}.jpg`;
       setCurrentImage(img_principal)
       setprogress((prev) => ({
         ...prev,
@@ -230,7 +227,7 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
       char: progres.objetivo,
     })
 
-    const respuesta = await fetch(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/predict/`, { 
+    const respuesta = await fetch(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/predict/`, {
       method: 'POST',
       body: raw
     })
@@ -238,45 +235,44 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
     if (respuesta.ok) {
       const predict = await (respuesta as Response).json();
 
-      if ( isValidResult( predict.data.result, progres.objetivo) ) { 
-        let index_trash = progres.objetivos.indexOf(progres.objetivo);
-        const img_principal = `/lesson/letters/letra_${progres.objetivos[1]}.jpg`;
+      if (isValidResult(predict.data.result, progres.objetivo)) {
         setCheck(true);
+        new Audio('/audio/sound-effect-current-win.wav').play();
         setprogress((pro) => ({
           ...pro,
           asiertos: pro.asiertos + 1,
-          porcentaje: ((pro.asiertos + 1) / pro.distancia) * 100,
-          // objetivo: pro.objetivos[1] as string,
-          // objetivos: pro.objetivos.splice(0,1),
-          objetivos: pro.objetivos.filter((obj, index) => index !== index_trash),
-          indices: pro.indices.filter((obj, index) => index !== index_trash),
-          objetivo: pro.objetivos.find((obj, index) => index !== index_trash) as string,
-          // objetivo: pro.objetivos.find((obj, index) => obj !== progres.objetivo) as string,
           continue: true
         }));
-        setCurrentImage(img_principal || defect_palabra)
       } else {
         setprogress((prev) => ({
           ...prev,
           intentos: prev.intentos - 1
         }));
         setCheck(false);
+        new Audio('/audio/sound-effect-current-lose.wav').play();
         setFoto();
       }
     }
 
     if (respuesta.status == 500) {
-      console.log('Error con el servidor')
+      console.error('Error con el servidor')
     }
 
     setSubmit(true);
   };
 
   const changeContinue = () => {
+    let index_trash = progres.objetivos.indexOf(progres.objetivo);
     setprogress((pro) => ({
       ...pro,
+      porcentaje: ((pro.asiertos) / pro.distancia) * 100,
+      objetivos: pro.objetivos.filter((obj, index) => index !== index_trash),
+      indices: pro.indices.filter((obj, index) => index !== index_trash),
+      objetivo: pro.objetivos.find((obj, index) => index !== index_trash) as string,
       continue: false,
     }));
+    const img_principal = `/lesson/letters/letra_${progres.objetivos[1]}.jpg`;
+    setCurrentImage(img_principal || default_palabra)
     setCheck(null)
     setFoto()
   };
@@ -309,6 +305,12 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
     }
   }, [progres.porcentaje])
 
+  useEffect(() => {
+    if (progres.intentos === 0 && progres.content !== '') {
+      new Audio('/audio/sound-effect-global-lose.wav').play();
+    }
+  }, [progres.intentos]);
+
   return (
     <>
       <ModalDetallesChallenge open={open} setOpen={handleModal} number={challenge.number} name={challenge.name} descripction={challenge.description} />
@@ -317,7 +319,7 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
       ) : (
         <div className="w-full h-full grid place-content-center">
           <div>
-            <IconLogo height={80} width={80} className="mx-auto mb-6" />
+            <IconLogo height={60} width={60} className="mx-auto mb-6" />
             <span className="font-mono text-2xl text-s" >Espere...</span>
           </div>
         </div>
@@ -328,21 +330,18 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
             <div className="flex flex-col gap-4 h-full">
               <ProgressbarChallenge porcentaje={progres.porcentaje} setDrawer={setDrawer} totalTry={progres.intentos} />
               <StackContent content={progres.arreglo} indices={progres.indices} objetivos={progres.objetivos} objetivo={progres.objetivo} operacion={['']} />
-
-              <div className="grid lg:grid-cols-2 justify-center items-center text-center h-full">
-                {
-                  (challenge.supplement == false) && (
-                    <Image
-                      // priority={true}
-                      className="shadow-lg border rounded-xl m-auto aspect-video object-contain"
-                      src={currentImage}
-                      height={480}
-                      width={480}
-                      alt="Defalt"
-                    />
-                  )
-
-                } 
+              <div className={`grid ${!challenge.supplement ? "lg:grid-cols-2" : "lg:grid-cols-1"} justify-center items-center text-center h-full`}>
+                {challenge.supplement == false && (
+                  <Image
+                    priority={true}
+                    className="shadow-lg border rounded-xl m-auto aspect-[12/9] object-contain"
+                    src={currentImage || default_palabra}
+                    height={480}
+                    width={480}
+                    alt="Default"
+                  />
+                )
+                }
                 <div className="relative mx-auto grid place-content-center">
                   <Stack className="bg-white/70 w-full absolute z-10" spacing={2} alignItems="center">
                     <ToggleButtonGroup
@@ -369,7 +368,7 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
                   />
                 </div>
               </div>
-              {drawer && <DrawerBottonChall drawer={drawer} setDrawer={setDrawer} />}
+              {drawer && <DrawerBotton drawer={drawer} setDrawer={setDrawer} />}
             </div>
 
             {

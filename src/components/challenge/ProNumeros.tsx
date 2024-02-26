@@ -1,5 +1,6 @@
 'use client'
 
+import DrawerBotton from "@/components/DrawerBotton";
 import IconLogo from "@/components/icons/logo";
 import { isValidResult } from "@/lib/actions/globales";
 import { ContentChallenge, EnumCategory } from "@/lib/types/challenge";
@@ -12,7 +13,6 @@ import Camara from "../camara/Camara";
 import CompleteChallenge from "../progress/CompleteChallenge";
 import { FooterChallenge, FooterEndChallenge } from "../progress/FooterChallenge";
 import ModalDetallesChallenge from "../progress/ModalDetallesChallenge";
-import DrawerBottonChall from "./DrawerBottonChall";
 import { ProgressbarChallenge } from "./ProgressbarChallenge";
 import { StackContent } from "./StackContent";
 
@@ -20,23 +20,11 @@ type Times = {
   inicio: Date,
   final: Date
 }
-const defect_numero = `/lesson/numbers/numero_0.jpg`;
+const default_numero = `/lesson/numbers/numero_0.jpg`;
 
 function obtenerURLImagen(name: string | number) {
   return `/lesson/numbers/numero_${name}.jpg`;
 }
-
-// function obtenerURLImagen(category: string, name: string) {
-//     if( category.toUpperCase() == EnumCategory.NUMEROS ){
-//       return  `/lesson/numbers/numero_${name}.jpg`;
-//     }
-
-//     if( category.toUpperCase() == EnumCategory.PALABRAS ){
-//       return  `/lesson/letters/letra_${name}.jpg`; 
-//     }
-
-//     return  `/lesson/default.jpg`; 
-// }
 
 function getMinutesAndSeconds(totalMilliseconds: number) {
   // Calcular los minutos
@@ -109,17 +97,17 @@ function tomarElementosEnOrden(content: string, spelled: boolean, supplement: bo
       if (cal) {
         let calculo = cal.toFixed(2)
         let tempo = String(calculo).split('')
-        let indices = tempo.map( (numt, index) => index );
+        let indices = tempo.map((numt, index) => index);
         if (!(parseFloat(calculo) % 1 !== 0)) {
           tempo = String(parseInt(calculo)).split('')
-          indices = tempo.map( (numt, index) => index );
+          indices = tempo.map((numt, index) => index);
         }
         return { operacion: [num1, operator, num2], resultado: tempo, indices, calculo: parseFloat(calculo) }
       }
     }
     if (supplement == true) {
       for (let i = 1; i < content.length; i += 2) {
-        if (content[i]){
+        if (content[i]) {
           numeros_salteados.push(content[i]);
           indices_salteados.push(i);
         }
@@ -216,7 +204,7 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
   }
   const foto = () => {
     var captura = webcamRef?.current?.getScreenshot();
-    setImagen(`${captura}`);
+    setImagen(captura);
   };
 
   const setFoto = () => {
@@ -260,7 +248,7 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
         arreglo = objetivo_temporal?.resultado;
         indices = objetivo_temporal?.indices;
         objetivos = objetivo_temporal?.resultado.filter((res) => !isNaN(Number(res)));
-      }else{
+      } else {
         const [objetiv, indic] = objetivo_temporal as [string[], number[]]
         objetivos = objetiv;
         indices = indic;
@@ -304,43 +292,44 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
     if (respuesta.ok) {
       const predict = await (respuesta as Response).json();
 
-      if ( isValidResult( predict.data.result, progres.objetivo )) {
-        let index_trash = progres.objetivos.indexOf(progres.objetivo);
+      if (isValidResult(predict.data.result, progres.objetivo)) {
         setCheck(true);
-        const img_principal = `/lesson/numbers/numero_${progres.objetivos[1]}.jpg`;
+        new Audio('/audio/sound-effect-current-win.wav').play();
         setprogress((pro) => ({
           ...pro,
           asiertos: pro.asiertos + 1,
-          porcentaje: ((pro.asiertos + 1) / pro.distancia) * 100,
-          // objetivos: pro.objetivos.filter((obj) => obj !== progres.objetivo),
-          objetivos: pro.objetivos.filter((obj, index) => index !== index_trash),
-          indices: pro.indices.filter((obj, index) => index !== index_trash),
-          objetivo: pro.objetivos.find((obj, index) => index !== index_trash) as string,
           continue: true
         }));
-        setCurrentImage(img_principal || defect_numero)
       } else {
         setprogress((prev) => ({
           ...prev,
           intentos: prev.intentos - 1
         }));
         setCheck(false);
+        new Audio('/audio/sound-effect-current-lose.wav').play();
         setFoto();
       }
     }
 
     if (respuesta.status == 500) {
-      console.log('Error en el servidor')
+      console.error('Error en el servidor')
     }
 
     setSubmit(true);
   };
 
   const changeContinue = () => {
+    let index_trash = progres.objetivos.indexOf(progres.objetivo);
     setprogress((pro) => ({
       ...pro,
+      porcentaje: ((pro.asiertos) / pro.distancia) * 100,
+      objetivos: pro.objetivos.filter((obj, index) => index !== index_trash),
+      indices: pro.indices.filter((obj, index) => index !== index_trash),
+      objetivo: pro.objetivos.find((obj, index) => index !== index_trash) as string,
       continue: false,
     }));
+    const img_principal = `/lesson/numbers/numero_${progres.objetivos[1]}.jpg`;
+    setCurrentImage(img_principal || default_numero)
     setCheck(null)
     setFoto()
   };
@@ -370,6 +359,12 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
     }
   }, [progres.porcentaje])
 
+  useEffect(() => {
+    if (progres.intentos === 0 && progres.content !== '') {
+      new Audio('/audio/sound-effect-global-lose.wav').play();
+    }
+  }, [progres.intentos]);
+
   return (
     <>
       <ModalDetallesChallenge open={open} setOpen={handleModal} number={challenge.number} name={challenge.name} descripction={challenge.description} />
@@ -377,8 +372,8 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
         <CompleteChallenge {...data} />
       ) : (
         <div className="w-screen h-screen grid place-content-center">
-            <IconLogo height={80} width={80} className="mx-auto mb-6" />
-            <span className="font-mono text-2xl text-s" >Espere...</span>
+          <IconLogo height={60} width={60} className="mx-auto mb-6" />
+          <span className="font-mono text-2xl text-s" >Espere...</span>
         </div>
       )
         : (
@@ -390,21 +385,21 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
 
               <div className="grid lg:grid-cols-2 justify-center items-center text-center h-full">
                 {
-                  (currentImage) &&
+                  currentImage &&
                   <Image
-                    className="shadow-lg border rounded-xl m-auto aspect-video object-contain"
-                    src={currentImage}
+                    className="shadow-lg border rounded-xl m-auto aspect-[12/9] object-contain"
+                    src={currentImage || default_numero}
                     // loader={imageLoader}
                     height={480}
                     width={480}
                     alt="Defalt"
+                    priority
                   />
                 }
                 <div className="relative mx-auto grid place-content-center">
                   <Stack className="bg-white/70 w-full absolute z-10" spacing={2} alignItems="center">
                     <ToggleButtonGroup
                       className="self-start"
-                      // orientation="vertical"
                       size="medium"
                       color="primary"
                       value={toggleTime}
@@ -426,7 +421,7 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
                   />
                 </div>
               </div>
-              {drawer && <DrawerBottonChall drawer={drawer} setDrawer={setDrawer} />}
+              {drawer && <DrawerBotton drawer={drawer} setDrawer={setDrawer} />}
             </div>
 
             {

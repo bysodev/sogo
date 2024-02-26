@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 type Times = {
     inicio: Date,
@@ -23,24 +24,11 @@ type res_challenge = {
     seconds: number
     streak?: number
     state?: string
-  }
+}
 
 export default function CompleteChallenge(
-{
-    bonus,
-    end_points,
-    fails,
-    id_challenge,
-    id_user,
-    minutes,
-    points,
-    seconds,
-    streak,
-    state,
-}: res_challenge
-) {
-
-    console.log({  bonus,
+    {
+        bonus,
         end_points,
         fails,
         id_challenge,
@@ -49,8 +37,15 @@ export default function CompleteChallenge(
         points,
         seconds,
         streak,
-        state})
+        state,
+    }: res_challenge
+) {
+
     const router = useRouter();
+
+    useEffect(() => {
+        new Audio('/audio/sound-effect-global-win.wav').play();
+    }, []);
 
     return (
         <div className="grid place-content-center gap-4 text-center pt-10 lg:pt-4 h-full">
@@ -94,7 +89,7 @@ export default function CompleteChallenge(
                     </div>
                 </div>
             </div>
-            <div className="mt-6" > 
+            <div className="mt-6" >
                 <button
                     type="button"
                     className={`p-2 px-8 h-12 bg-teal-500 font-bold shadow-teal-800 shadow-[0_6px_0px_#A94438] text-white border-none rounded-md text-lg hover:shadow-transparent hover:translate-y-1`}

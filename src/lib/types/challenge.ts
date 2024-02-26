@@ -27,8 +27,8 @@ export interface ChallengeCategoryByUser {
 }
 
 export enum EnumCategory {
-  PALABRAS = 'PALABRAS',
   NUMEROS = 'NUMEROS',
+  PALABRAS = 'PALABRAS',
 }
 
 export enum EnumDifficulty {
@@ -45,8 +45,8 @@ export interface DetailsChallengeApi {
 }
 
 export interface CardChallengesCategoryProps {
-  [EnumCategory.PALABRAS]: Array<DetailsChallengeApi>;
   [EnumCategory.NUMEROS]: Array<DetailsChallengeApi>;
+  [EnumCategory.PALABRAS]: Array<DetailsChallengeApi>;
 }
 
 export interface ContentChallenge {

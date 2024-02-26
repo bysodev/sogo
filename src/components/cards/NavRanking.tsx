@@ -2,9 +2,7 @@
 
 import { EnumDifficulty } from "@/lib/types/challenge";
 import { BottomNavigation, BottomNavigationAction, Box } from "@mui/material";
-import { BiHappy } from "react-icons/bi";
-import { HiOutlineEmojiHappy } from "react-icons/hi";
-import { RiEmotionUnhappyLine } from "react-icons/ri";
+import { MdOutlineSignalCellularAlt, MdOutlineSignalCellularAlt1Bar, MdOutlineSignalCellularAlt2Bar } from "react-icons/md";
 
 const actionStyles =
 {
@@ -37,6 +35,9 @@ const actionStyles =
   '& .MuiBottomNavigationAction-root:nth-of-type(3)': { // Estilos para el tercer BottomNavigationAction
     '&.Mui-selected': { color: '#ef4444', backgroundColor: '#efd7d7', border: '2px solid #ef4444' },
   },
+  '& .MuiButtonBase-root': {
+    gap: 1,
+  }
 }
 
 export default function NavRanking({ value, setValue }: { value: EnumDifficulty, setValue: Function }) {
@@ -59,13 +60,23 @@ export default function NavRanking({ value, setValue }: { value: EnumDifficulty,
 }
 
 const FacilIcon = () => {
-  return <> <BiHappy size={20} /> </>
+  return (
+    <div className="relative">
+      <MdOutlineSignalCellularAlt1Bar size={20} />
+      <MdOutlineSignalCellularAlt className="absolute top-0" size={20} style={{ opacity: 0.2 }} />
+    </div>
+  );
 }
 
 const MedioIcon = () => {
-  return <> <HiOutlineEmojiHappy size={20} /> </>
+  return (
+    <div className="relative">
+      <MdOutlineSignalCellularAlt2Bar size={20} />
+      <MdOutlineSignalCellularAlt className="absolute top-0" size={20} style={{ opacity: 0.2 }} />
+    </div>
+  );
 }
 
 const DificilIcon = () => {
-  return <> <RiEmotionUnhappyLine size={20} /> </>
+  return <> <MdOutlineSignalCellularAlt size={20} /> </>
 }

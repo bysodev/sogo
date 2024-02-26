@@ -11,28 +11,27 @@ import useSWR from "swr";
 
 export default function Page({ params }: { params: { categoria: EnumCategory, dificultad: EnumDifficulty } }) {
   const { categoria, dificultad } = params;
-  const { data: challenge, isLoading, error } = useSWR<ContentChallenge | null>(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/challenge/user/start?category=${categoria}&difficulty=${dificultad}`, Fetcher, {revalidateOnFocus: false })
+  const { data: challenge, isLoading, error } = useSWR<ContentChallenge | null>(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/challenge/user/start?category=${categoria}&difficulty=${dificultad}`, Fetcher, { revalidateOnFocus: false })
   const router = useRouter();
   const handleRouter = () => router.back();
 
-  if(error){
+  if (error) {
     return <div className="w-full h-full grid place-content-center">
-        <Link href={'/challenge'}>
-          <IconLogo height={80} width={80} className="mx-auto mb-6" />
-        </Link>
-        <span className="font-mono text-2xl text-s" >Errores con los retos...</span>
+      <Link href={'/challenge'}>
+        <IconLogo height={60} width={60} className="mx-auto mb-6" />
+      </Link>
+      <span className="font-mono text-2xl text-s" >Errores con los retos...</span>
     </div>
   }
 
-  if( isLoading ){
+  if (isLoading) {
     return <div className="w-full h-full grid place-content-center">
-        <IconLogo height={80} width={80} className="mx-auto mb-6" />
-        <span className="font-mono text-2xl text-s" >Espere...</span>
-    </div> 
-    // return <p>Seguimos cargando los datos</p>
+      <IconLogo height={60} width={60} className="mx-auto mb-6" />
+      <span className="font-mono text-2xl text-s" >Espere...</span>
+    </div>
   }
 
-  if( !challenge ){
+  if (!challenge) {
     return <ModalNotChallenge open={true} setRouter={handleRouter} />
   }
 
@@ -43,7 +42,7 @@ export default function Page({ params }: { params: { categoria: EnumCategory, di
         challenge && categoria.toUpperCase() == EnumCategory.PALABRAS && <ProPalabras challenge={challenge} dificultad={dificultad} />
       }
       {
-        challenge && categoria.toUpperCase() == EnumCategory.NUMEROS && <ProNumeros challenge={challenge} dificultad={dificultad}/>
+        challenge && categoria.toUpperCase() == EnumCategory.NUMEROS && <ProNumeros challenge={challenge} dificultad={dificultad} />
       }
     </>
   );

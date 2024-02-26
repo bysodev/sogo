@@ -23,7 +23,9 @@
     direction: rtl;
   }
 }
-
+.MuiFormControl-root {
+  align-self: baseline;
+}
 .swal2-container .swal2-close {
   position: absolute;
   top: 0;

@@ -39,8 +39,8 @@ export default function ChallengesPage() {
                 </span>
                 <button className="text-gray-700" onClick={handleClose}><IoClose size={20} /></button>
               </div>
-              <p className="mt-2 text-gray-500">
-                Los desafíos siguientes están clasificados por categorías, tanto de números como letras. Las cada cateogría contiene diferentes retos con la finalidad de poner en práctica todo lo aprendido, desafiando tu conocimiento para resolver operaciones matemáticas basica, deletreo de palabras simples hasta complejas  y realizar las señas resultantes.
+              <p className="mt-2 text-gray-500 text-balance">
+                Los siguientes desafíos están clasificados por categorías, incluyendo números y letras. Cada categoría contiene diferentes retos con el objetivo de poner en práctica todo lo aprendido, desafiando tu conocimiento para resolver operaciones matemáticas básicas, deletrear palabras desde simples hasta complejas y realizar las señas correspondientes.
               </p>
               <div className="flex justify-around my-4 gap-2 flex-col lg:flex-row">
                 <div className="w-full bg-gray-100 rounded-2xl p-4 flex flex-col justify-center gap-2">
@@ -91,8 +91,8 @@ export default function ChallengesPage() {
         ) : !challenge ? (
           <div className="m-auto p-10"><CircularProgress /></div>
         ) : (
-          Object.entries(challenge).map(([category, details]) => (
-            <ChallengeCard key={category} category={category as EnumCategory} details={details} title={category.toUpperCase()} />
+          Object.entries(challenge).map(([category, details], index: number) => (
+            <ChallengeCard key={category} category={category as EnumCategory} details={details} title={category.toUpperCase()} index={index} />
           ))
         )}
       </div>

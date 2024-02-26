@@ -1,9 +1,10 @@
 "use client";
 
-import TooltipMessage from "@/components/TooltipMessage";
 import IconLoading from "@/components/icons/IconLoading";
 import IconLogo from "@/components/icons/logo";
+import textFieldStyles from "@/utilities/stylesMUI";
 import { showErrorToast, showSuccessToast } from "@/utilities/sweet-alert";
+import { TextField } from "@mui/material";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -21,6 +22,7 @@ export default function LoginPage() {
     username: string;
     password: string;
   }
+
 
   const {
     register,
@@ -72,7 +74,7 @@ export default function LoginPage() {
         </div>
         <div className="flex justify-center">
           <Link href={"/"}>
-            <IconLogo height={80} width={80} className="mx-auto mb-6" />
+            <IconLogo height={60} width={60} className="mx-auto mb-6" />
           </Link>
         </div>
         <p className="mb-8 whitespace-normal text-3xl text-center font-bold text-gray-950 dark:text-white">
@@ -86,70 +88,63 @@ export default function LoginPage() {
           }}
         >
           <div className="grid gap-4">
-            <div
-              className={`relative flex flex-wrap text-sm ${errors.username
+            <TextField
+              autoComplete="usuario"
+              disabled={isLoading}
+              sx={textFieldStyles}
+              className={`focus:outline-none w-full bg-transparent focus:bg-transparent btn border shadow-none border-gray-400  dark:text-gray-200 ${errors.username
                 ? "text-red-600 border-red-400"
                 : "text-gray-600 border-gray-400"
-                } container-fluid`}
-            >
-              <input
-                disabled={isLoading}
-                autoComplete="username"
-                className="flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
-                type="text"
-                placeholder="Nombre de usuario"
-                {...register("username", {
-                  required: { value: true, message: "Usuario requerido" },
-                  minLength: {
-                    value: 4,
-                    message: "Requiere al menos 4 caracteres",
-                  },
-                  maxLength: {
-                    value: 15,
-                    message: "Máximo 15 caracteres",
-                  },
-                })}
-              />
-              {errors.username && (
-                <TooltipMessage message={errors.username.message!} />
-              )}
-            </div>
-
-            <div
-              className={`relative flex flex-wrap text-sm ${errors.password
+                }`}
+              type="text"
+              label="Nombre de usuario"
+              size="small"
+              {...register("username", {
+                required: { value: true, message: "Usuario requerido" },
+                minLength: {
+                  value: 4,
+                  message: "Requiere al menos 4 caracteres",
+                },
+                maxLength: {
+                  value: 15,
+                  message: "Máximo 15 caracteres",
+                },
+              })}
+              error={Boolean(errors.username)}
+              helperText={errors.username && errors.username.message}
+            />
+            <TextField
+              autoComplete="password"
+              disabled={isLoading}
+              sx={textFieldStyles}
+              className={`focus:outline-none w-full bg-transparent focus:bg-transparent btn border shadow-none border-gray-400  dark:text-gray-200 ${errors.password
                 ? "text-red-600 border-red-400"
                 : "text-gray-600 border-gray-400"
-                } container-fluid`}
-            >
-              <input
-                autoComplete="password"
-                disabled={isLoading}
-                className="flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
-                type="password"
-                placeholder="Contraseña"
-                {...register("password", {
-                  required: {
-                    value: true,
-                    message: "Contraseña requerida",
-                  },
-                  minLength: {
-                    value: 8,
-                    message: "Requiere al menos 8 caracteres",
-                  },
-                  maxLength: {
-                    value: 15,
-                    message: "Máximo 15 caracteres",
-                  },
-                  pattern: {
-                    value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[A-Z]).{8,}$/,
-                    message: "Debe contener al menos una letra mayúscula y un número"
-                  },
-                })}
-              />
-              {errors.password && (
-                <TooltipMessage message={errors.password.message!} />
-              )}
-            </div>
+                }`}
+              type="password"
+              label="Contraseña"
+              size="small"
+              {...register("password", {
+                required: {
+                  value: true,
+                  message: "Contraseña requerida",
+                },
+                minLength: {
+                  value: 8,
+                  message: "Requiere al menos 8 caracteres",
+                },
+                maxLength: {
+                  value: 15,
+                  message: "Máximo 15 caracteres",
+                },
+                pattern: {
+                  value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[A-Z]).{8,}$/,
+                  message: "Debe contener al menos una letra mayúscula y un número"
+                },
+              })}
+              error={Boolean(errors.password)}
+              helperText={errors.password && errors.password.message}
+            />
           </div>
           <div className="p-2 text-end">
             <Link

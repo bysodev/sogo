@@ -1,14 +1,16 @@
 "use client";
-import TooltipMessage from "@/components/TooltipMessage";
 import IconLoading from "@/components/icons/IconLoading";
 import IconLogo from "@/components/icons/logo";
+import textFieldStyles from "@/utilities/stylesMUI";
 import { showErrorMessage, showSuccessMessage, updateSuccessMessage } from "@/utilities/sweet-alert";
 import { rgxEmail } from "@/validators/auth-validators";
+import { TextField } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoArrowBackOutline } from "react-icons/io5";
+
 const url_app = process.env.NEXT_PUBLIC_ROUTE_APP
 const myHeaders = new Headers({
   'Accept': 'application/json',
@@ -129,7 +131,7 @@ export default function Home() {
         </div>
         <div className="flex justify-center">
           <Link href={"/"}>
-            <IconLogo height={80} width={80} className="mx-auto mb-6" />
+            <IconLogo height={60} width={60} className="mx-auto mb-4" />
           </Link>
         </div>
         <p className="mb-8 whitespace-normal text-3xl text-center font-bold text-gray-950 dark:text-white">
@@ -143,133 +145,122 @@ export default function Home() {
           }}
         >
           <div className="grid gap-4">
-            <div
-              className={`relative flex flex-wrap text-sm ${errors.username
+            <TextField
+              autoComplete="usuario"
+              disabled={isLoading}
+              sx={textFieldStyles}
+              className={`focus:outline-none w-full bg-transparent focus:bg-transparent btn border shadow-none border-gray-400  dark:text-gray-200 ${errors.username
                 ? "text-red-600 border-red-400"
-                : "text-gray-600 border-gray-400 dark:text-gray-400"
-                } container-fluid`}
-            >
-              <input
+                : "text-gray-600 border-gray-400"
+                }`}
+              type="text"
+              label="Nombre de usuario"
+              size="small"
+              {...register("username", {
+                required: { value: true, message: "Usuario requerido" },
+                minLength: {
+                  value: 4,
+                  message: "Requiere al menos 4 caracteres",
+                },
+                maxLength: {
+                  value: 15,
+                  message: "Máximo 15 caracteres",
+                },
+              })}
+              error={Boolean(errors.username)}
+              helperText={errors.username && errors.username.message}
+            />
+            <TextField
+              autoComplete="correo"
+              disabled={isLoading}
+              sx={textFieldStyles}
+              className={`focus:outline-none w-full bg-transparent focus:bg-transparent btn border shadow-none border-gray-400  dark:text-gray-200 ${errors.email
+                ? "text-red-600 border-red-400"
+                : "text-gray-600 border-gray-400"
+                }`}
+              type="email"
+              label="Correo electrónico"
+              size="small"
+              {...register("email", {
+                required: { value: true, message: "Correo requerido" },
+                pattern: {
+                  value: rgxEmail,
+                  message: "Correo electrónico no válido",
+                },
+              })}
+              error={Boolean(errors.email)}
+              helperText={errors.email && errors.email.message}
+            />
+
+            <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2">
+              <TextField
+                autoComplete="contraseña"
                 disabled={isLoading}
-                autoComplete="username"
-                className="flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
-                type="text"
-                placeholder="Nombre de usuario"
-                {...register("username", {
-                  required: { value: true, message: "Usuario requerido" },
+                sx={textFieldStyles}
+                className={`focus:outline-none w-full bg-transparent focus:bg-transparent btn border shadow-none border-gray-400  dark:text-gray-200 ${errors.password
+                  ? "text-red-600 border-red-400"
+                  : "text-gray-600 border-gray-400"
+                  }`}
+                type="password"
+                label="Contraseña"
+                size="small"
+                {...register("password", {
+                  required: {
+                    value: true,
+                    message: "Contraseña requerido",
+                  },
                   minLength: {
-                    value: 4,
-                    message: "Requiere al menos 4 caracteres",
+                    value: 8,
+                    message: "Requiere al menos 8 caracteres",
                   },
                   maxLength: {
                     value: 15,
                     message: "Máximo 15 caracteres",
                   },
-                })}
-              />
-              {errors.username && (
-                <TooltipMessage message={errors.username.message!} />
-              )}
-            </div>
-
-            <div
-              className={`relative flex flex-wrap text-sm ${errors.email
-                ? "text-red-600 border-red-400"
-                : "text-gray-600 border-gray-400 dark:text-gray-400"
-                } container-fluid`}
-            >
-              <input
-                disabled={isLoading}
-                autoComplete="email"
-                className="flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
-                type="text"
-                placeholder="Correo electrónico"
-                {...register("email", {
-                  required: { value: true, message: "Correo requerido" },
                   pattern: {
-                    value: rgxEmail,
-                    message: "Correo electrónico no válido",
+                    value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[A-Z]).{8,}$/,
+                    message: "Debe contener al menos una letra mayúscula y un número"
                   },
                 })}
+                error={Boolean(errors.password)}
+                helperText={errors.password && errors.password.message}
               />
-              {errors.email && (
-                <TooltipMessage message={errors.email.message!} />
-              )}
-            </div>
-
-            <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2">
-              <div
-                className={`relative flex flex-wrap text-sm ${errors.password
+              <TextField
+                autoComplete="contraseña"
+                disabled={isLoading}
+                sx={textFieldStyles}
+                className={`focus:outline-none w-full bg-transparent focus:bg-transparent btn border shadow-none border-gray-400  dark:text-gray-200 ${errors.repass
                   ? "text-red-600 border-red-400"
-                  : "text-gray-600 border-gray-400 dark:text-gray-400"
-                  } container-fluid`}
-              >
-                <input
-                  disabled={isLoading}
-                  className="flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
-                  type="password"
-                  placeholder="Contraseña"
-                  {...register("password", {
-                    required: {
-                      value: true,
-                      message: "Contraseña requerido",
-                    },
-                    minLength: {
-                      value: 8,
-                      message: "Requiere al menos 8 caracteres",
-                    },
-                    maxLength: {
-                      value: 15,
-                      message: "Máximo 15 caracteres",
-                    },
-                    pattern: {
-                      value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[A-Z]).{8,}$/,
-                      message: "Debe contener al menos una letra mayúscula y un número"
-                    },
-                  })}
-                />
-                {errors.password && (
-                  <TooltipMessage message={errors.password.message!} />
-                )}
-              </div>
-              <div
-                className={`relative flex flex-wrap text-sm ${errors.repass
-                  ? "text-red-600 border-red-400"
-                  : "text-gray-600 border-gray-400 dark:text-gray-400"
-                  } container-fluid`}
-              >
-                <input
-                  disabled={isLoading}
-                  className="flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
-                  type="password"
-                  placeholder="Confirmar contraseña"
-                  {...register("repass", {
-                    required: {
-                      value: true,
-                      message: "Confirmación requerida",
-                    },
-                    minLength: {
-                      value: 8,
-                      message: "Requiere al menos 8 caracteres",
-                    },
-                    maxLength: {
-                      value: 15,
-                      message: "Máximo 15 caracteres",
-                    },
-                    pattern: {
-                      value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[A-Z]).{8,}$/,
-                      message: "Debe contener al menos una letra mayúscula y un número"
-                    },
-                    validate: (value: string) => {
-                      if (value !== watch("password"))
-                        return "Las contraseñas no coinciden";
-                    },
-                  })}
-                />
-                {errors.repass && (
-                  <TooltipMessage message={errors.repass.message!} />
-                )}
-              </div>
+                  : "text-gray-600 border-gray-400"
+                  }`}
+                type="password"
+                label="Confirmar contraseña"
+                size="small"
+                {...register("repass", {
+                  required: {
+                    value: true,
+                    message: "Confirmación requerida",
+                  },
+                  minLength: {
+                    value: 8,
+                    message: "Requiere al menos 8 caracteres",
+                  },
+                  maxLength: {
+                    value: 15,
+                    message: "Máximo 15 caracteres",
+                  },
+                  pattern: {
+                    value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[A-Z]).{8,}$/,
+                    message: "Debe contener al menos una letra mayúscula y un número"
+                  },
+                  validate: (value: string) => {
+                    if (value !== watch("password"))
+                      return "Las contraseñas no coinciden";
+                  },
+                })}
+                error={Boolean(errors.repass)}
+                helperText={errors.repass && errors.repass.message}
+              />
             </section>
           </div>
           <button

@@ -21,12 +21,12 @@ export default function ChallengesPage() {
         }
       )()
     }
-
   }, [session?.user.accessToken])
+
   return <>
     <div className="flex flex-wrap gap-10 tems-center justify-center h-screen">
-      {challenge && <ChallengeCard key={EnumCategory.PALABRAS} category={EnumCategory.PALABRAS} details={challenge[EnumCategory.PALABRAS]} title={'PALABRAS'} />}
-      {challenge && <ChallengeCard key={EnumCategory.NUMEROS} category={EnumCategory.NUMEROS} details={challenge[EnumCategory.NUMEROS]} title={'NUMEROS'} />}
+      {challenge && <ChallengeCard index={0} key={EnumCategory.PALABRAS} category={EnumCategory.PALABRAS} details={challenge[EnumCategory.PALABRAS]} title={'PALABRAS'} />}
+      {challenge && <ChallengeCard index={0} key={EnumCategory.NUMEROS} category={EnumCategory.NUMEROS} details={challenge[EnumCategory.NUMEROS]} title={'NUMEROS'} />}
     </div>
   </>
 }

@@ -16,6 +16,7 @@ type StatusLessonType = {
 
 export default function CompleteLesson({ startime, errors, messageLesson, statusLesson }: { startime: Times, errors: { [key: string]: number }, messageLesson: string, statusLesson: StatusLessonType }) {
     const [tiempo, setTiempo] = useState({ hora: 0, minuto: 0, segundo: 0 });
+    const [isFirstRender, setIsFirstRender] = useState(true);
 
     useEffect(() => {
         const milisegundos = (startime.final.getTime() - startime.inicio.getTime());
@@ -35,6 +36,18 @@ export default function CompleteLesson({ startime, errors, messageLesson, status
         // Redondear a un número entero
         return Math.round(precision);
     }
+
+    useEffect(() => {
+        if (!isFirstRender) {
+            if (messageLesson === "") {
+                new Audio('/audio/sound-effect-global-win.wav').play();
+            } else {
+                new Audio('/audio/sound-effect-global-lose.wav').play();
+            }
+        } else {
+            setIsFirstRender(false);
+        }
+    }, [messageLesson, isFirstRender]);
 
     return (
         <div className="grid place-content-center gap-4 text-center pt-10 lg:pt-4 h-full">
