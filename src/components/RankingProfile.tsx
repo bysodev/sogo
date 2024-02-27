@@ -63,7 +63,7 @@ export default function RankingProfile() {
 export const ContenidoRanking = ({ rank }: { rank: DetailsRankingProfile }) => {
   return (
     <div className="text-center flex gap-4 justify-center items-center">
-      {rank['puntos'] !== 0 ? (
+      {rank['puntos'] === 0 ? (
         <List dense={true}>
           <Alert variant="outlined" severity="info">
             Aún no tienes un puntaje registrado. Animate a intentarlo.
@@ -83,36 +83,3 @@ export const ContenidoRanking = ({ rank }: { rank: DetailsRankingProfile }) => {
     </div>
   )
 }
-
-// export const CampoMedio = ({ rank }: { rank: DetailsRankingProfile }) => {
-//   return (
-//     <div className="border w-auto border-violet-400 text-violet-400 rounded-lg text-center font-bold">
-//       <div className="p-6">
-//         <Typography fontSize={10} fontWeight={600} textAlign={"center"} className={"rounded-lg bg-purple-100 border-2 border-purple-500 text-purple-600 w-min !mx-auto whitespace-nowrap p-1 px-4 flex gap-2 flex-nowrap items-center"}>
-//           {rank['puntos']} pts <Tooltip title={`Lecciones: ${rank['lecciones']} | Retos: ${rank['retos']}`} placement="top" arrow>
-//             <div>
-//               <FaQuestionCircle />
-//             </div>
-//           </Tooltip>
-//         </Typography>
-//       </div>
-//     </div>
-//   )
-// }
-
-// export const CampoDificil = ({ rank }: { rank: DetailsRankingProfile }) => {
-
-//   return (
-//     <div className="border w-auto border-red-400 text-red-400 rounded-lg text-center font-bold">
-//       <div className="p-6">
-//         <Typography fontSize={10} fontWeight={600} textAlign={"center"} className={"rounded-lg bg-purple-100 border-2 border-purple-500 text-purple-600 w-min !mx-auto whitespace-nowrap p-1 px-4 flex gap-2 flex-nowrap items-center"}>
-//           {rank['puntos']} pts <Tooltip title={`Lecciones: ${rank['lecciones']} | Retos: ${rank['retos']}`} placement="top" arrow>
-//             <div>
-//               <FaQuestionCircle />
-//             </div>
-//           </Tooltip>
-//         </Typography>
-//       </div>
-//     </div>
-//   )
-// }
