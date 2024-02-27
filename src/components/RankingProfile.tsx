@@ -34,7 +34,7 @@ export default function RankingProfile() {
     <section className="w-full dark:bg-gray-900 duration-300 pt-5">
       <h1 className="lg:rounded-xl border-2 p-1 font-bold text-xl text-center text-gray-500 mb-3">Puntuación Personal</h1>
       <div className="border-2 mt-3 p-4 rounded-lg text-center">
-        <h4><strong>Categoría:</strong> Palabras</h4>
+        <h4 className="text-center"><strong>Categoría:</strong> Palabras</h4>
         <NavRanking value={palabras} setValue={setPalabras} key='PALABRAS' />
         {errorPalabras ? (
           <p>Error al cargar los datos</p>
@@ -46,7 +46,7 @@ export default function RankingProfile() {
       </div>
       <br />
       <div className="border-2 p-4 rounded-lg text-center">
-        <h4><strong>Categoría:</strong> Números</h4>
+        <h4 className="text-center"><strong>Categoría:</strong> Números</h4>
         <NavRanking value={numeros} setValue={setNumeros} key='Números' />
         {errorNumeros ? (
           <p>Error al cargar los datos</p>
