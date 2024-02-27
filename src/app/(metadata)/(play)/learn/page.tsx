@@ -62,32 +62,38 @@ export default function Learn() {
             onChange={(e: any) => setSearchTerm(prev => ({ ...prev, number: e.target.value }))}
           />
         </div>
-        <div className="grid p-4 lg:px-0 gap-4 grid-cols-2 2xl:grid-cols-3">
-          {filteredNumbers.map((item, index) => (
-            <div key={index} className="relative flex flex-col bg-gray-300 p-6 rounded-lg h-64 justify-between">
-              <div className='z-10 absolute h-full w-full top-0 start-0 bg-gradient-to-b from-gray-950 from-10% via-gray-800 via-30% to-transparent to-90% opacity-70 rounded-lg'></div>
-              <Image height={100} width={100} placeholder="blur" blurDataURL={'/images/learn/numbers/preload-number-0.webp'} className='z-0 absolute h-full w-full top-0 start-0 rounded-lg object-cover object-top' src={`/images/learn${item.preaload}.webp`} alt={`Imagen de precarga para la lección ${item.title}`} />
-              <div className="grid gap-4 z-20">
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <h2 className="font-bold text-gray-700 w-min bg-gray-200 p-2 text-sm lg:text-base leading-none rounded-lg">{(index + 1).toString().padStart(2, '0')}</h2>
-                  <h2 className="w-min font-bold text-sm lg:text-base p-2 bg-transparent text-white border-white leading-none border-2 rounded-lg">{item.level}</h2>
+        {filteredNumbers.length > 0 ? (
+          <div className="grid p-4 lg:px-0 gap-4 grid-cols-2 2xl:grid-cols-3">
+            {filteredNumbers.map((item, index) => (
+              <div key={index} className="relative flex flex-col bg-gray-300 p-6 rounded-lg h-72 justify-between">
+                <div className='z-10 absolute h-full w-full top-0 start-0 bg-gradient-to-b from-gray-950/80 from-10% via-gray-800/60 via-30% to-transparent to-90% opacity-70 rounded-lg'></div>
+                <Image height={100} width={100} placeholder="blur" blurDataURL={'/images/learn/numbers/preload-number-0.webp'} className='z-0 absolute h-full w-full top-0 start-0 rounded-lg object-cover object-top' src={`/images/learn${item.preaload}.webp`} alt={`Imagen de precarga para la lección ${item.title}`} />
+                <div className="grid gap-4 z-20">
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <h2 className="font-bold text-gray-700 w-min bg-gray-200 p-2 text-sm lg:text-base leading-none rounded-lg">{(index + 1).toString().padStart(2, '0')}</h2>
+                    <h2 className="w-min font-bold text-sm lg:text-base p-2 bg-transparent text-white border-white leading-none border-2 rounded-lg">{item.level}</h2>
+                  </div>
+                  <div className="flex gap-4">
+                    <h1 className="text-base lg:text-lg text-white font-bold whitespace-nowrap">{item.title}</h1>
+                    <button className="bg-gray-200 p-2 rounded-lg" onClick={() => handlePlayPause(index)}>
+                      {isPlaying[index] ? <FaPause className="w-2 h-2 lg:w-4 lg:h-4" /> : <FaPlay className="w-2 h-2 lg:w-4 lg:h-4" />}
+                    </button>
+                    <audio
+                      ref={el => audioRefs.current[index] = el!}
+                      src={"/audio" + item.audioPath + ".mp3"}
+                      onEnded={() => handleAudioEnd(index)}
+                    />
+                  </div>
                 </div>
-                <div className="flex gap-4">
-                  <h1 className="text-base lg:text-lg text-white font-bold whitespace-nowrap">{item.title}</h1>
-                  <button className="bg-gray-200 p-2 rounded-lg" onClick={() => handlePlayPause(index)}>
-                    {isPlaying[index] ? <FaPause className="w-2 h-2 lg:w-8 lg:h-8" /> : <FaPlay className="w-2 h-2 lg:w-8 lg:h-8" />}
-                  </button>
-                  <audio
-                    ref={el => audioRefs.current[index] = el!}
-                    src={"/audio" + item.audioPath + ".mp3"}
-                    onEnded={() => handleAudioEnd(index)}
-                  />
-                </div>
+                <button type="button" onClick={() => push("/learn/course?search=number&char=" + item.title.slice(-1))} title="Iniciar etapa" className="block z-10 bg-purple-600 font-bold text-white rounded-lg py-2 text-base hover:bg-purple-800 hover:scale-105">Iniciar</button>
               </div>
-              <button type="button" onClick={() => push("/learn/course?search=number&char=" + item.title.slice(-1))} title="Iniciar etapa" className="block z-10 bg-purple-600 font-bold text-white rounded-lg py-2 text-base hover:bg-purple-800 hover:scale-105">Iniciar</button>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="w-full text-center py-6">
+            <p>No se encontraron resultados para tu búsqueda.</p>
+          </div>
+        )}
       </div >
       <div className="grid gap-4">
         <section className={`bg-indigo-500 text-white text-center sm:text-start sm:flex lg:rounded-xl p-4 w-full gap-4`} id='letter-section'>
@@ -110,32 +116,38 @@ export default function Learn() {
             onChange={(e: any) => setSearchTerm(prev => ({ ...prev, letter: e.target.value }))}
           />
         </div>
-        <div className="grid p-4 gap-4 grid-cols-2 2xl:grid-cols-3">
-          {filteredletters.map((item, index) => (
-            <div key={index} className="relative flex flex-col bg-gray-300 p-6 rounded-lg h-64 justify-between">
-              <div className='z-10 absolute h-full w-full top-0 start-0 bg-gradient-to-b from-gray-950 from-10% via-gray-800 via-30% to-transparent to-90% opacity-70 rounded-lg'></div>
-              <Image height={100} width={100} placeholder="blur" blurDataURL={'/images/learn/numbers/preload-letter-A.webp'} className='z-0 absolute h-full w-full top-0 start-0 rounded-lg object-cover object-top' src={`/images/learn${item.preaload}.webp`} alt={`Imagen de precarga para la lección ${item.title}`} />
-              <div className="grid gap-4 z-20">
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <h2 className="font-bold text-gray-700 w-min bg-gray-200 p-2 text-sm lg:text-base leading-none rounded-lg">{(index + 1).toString().padStart(2, '0')}</h2>
-                  <h2 className="w-min font-bold text-sm lg:text-base p-2 bg-transparent text-white border-white leading-none border-2 rounded-lg">{item.level}</h2>
+        {filteredletters.length > 0 ? (
+          <div className="grid p-4 gap-4 grid-cols-2 2xl:grid-cols-3">
+            {filteredletters.map((item, index) => (
+              <div key={index} className="relative flex flex-col bg-gray-300 p-6 rounded-lg h-72 justify-between">
+                <div className='z-10 absolute h-full w-full top-0 start-0 bg-gradient-to-b from-gray-950/80 from-10% via-gray-800/60 via-30% to-transparent to-90% opacity-70 rounded-lg'></div>
+                <Image height={100} width={100} placeholder="blur" blurDataURL={'/images/learn/numbers/preload-letter-A.webp'} className='z-0 absolute h-full w-full top-0 start-0 rounded-lg object-cover object-top' src={`/images/learn${item.preaload}.webp`} alt={`Imagen de precarga para la lección ${item.title}`} />
+                <div className="grid gap-4 z-20">
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <h2 className="font-bold text-gray-700 w-min bg-gray-200 p-2 text-sm lg:text-base leading-none rounded-lg">{(index + 1).toString().padStart(2, '0')}</h2>
+                    <h2 className="w-min font-bold text-sm lg:text-base p-2 bg-transparent text-white border-white leading-none border-2 rounded-lg">{item.level}</h2>
+                  </div>
+                  <div className="flex gap-4">
+                    <h1 className="text-base lg:text-lg text-white font-bold whitespace-nowrap">{item.title}</h1>
+                    <button className="bg-gray-200 p-2 rounded-lg" onClick={() => handlePlayPause(index + filteredNumbers.length)}>
+                      {isPlaying[index + filteredNumbers.length] ? <FaPause className="w-2 h-2 lg:w-4 lg:h-4" /> : <FaPlay className="w-2 h-2 lg:w-4 lg:h-4" />}
+                    </button>
+                    <audio
+                      ref={el => audioRefs.current[index + filteredNumbers.length] = el!}
+                      src={"/audio" + item.audioPath + ".mp3"}
+                      onEnded={() => handleAudioEnd(index + filteredNumbers.length)}
+                    />
+                  </div>
                 </div>
-                <div className="flex gap-4">
-                  <h1 className="text-base lg:text-lg text-white font-bold whitespace-nowrap">{item.title}</h1>
-                  <button className="bg-gray-200 p-2 rounded-lg" onClick={() => handlePlayPause(index + filteredNumbers.length)}>
-                    {isPlaying[index + filteredNumbers.length] ? <FaPause className="w-2 h-2 lg:w-8 lg:h-8" /> : <FaPlay className="w-2 h-2 lg:w-8 lg:h-8" />}
-                  </button>
-                  <audio
-                    ref={el => audioRefs.current[index + filteredNumbers.length] = el!}
-                    src={"/audio" + item.audioPath + ".mp3"}
-                    onEnded={() => handleAudioEnd(index + filteredNumbers.length)}
-                  />
-                </div>
+                <button type="button" onClick={() => push("/learn/course?search=letter&char=" + item.title.slice(-1))} title="Iniciar etapa" className="block z-10 bg-indigo-600 font-bold text-white rounded-lg py-2 text-base hover:bg-indigo-800 hover:scale-105">Iniciar</button>
               </div>
-              <button type="button" onClick={() => push("/learn/course?search=letter&char=" + item.title.slice(-1))} title="Iniciar etapa" className="block z-10 bg-indigo-600 font-bold text-white rounded-lg py-2 text-base hover:bg-indigo-800 hover:scale-105">Iniciar</button>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="w-full text-center py-6">
+            <p>No se encontraron resultados para tu búsqueda.</p>
+          </div>
+        )}
       </div>
     </div >
   );

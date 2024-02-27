@@ -13,9 +13,9 @@ const DrawerBotton = ({ drawer, setDrawer }: { drawer: boolean, setDrawer: Dispa
                 <div className="flex items-center justify-center h-28">
                     <div className="flex justify-around w-full">
                         <div className="gap-3 flex-col">
-                            <span className="text-xl font-semibold">¿Estas seguro de salir?</span>
+                            <span className="text-xl font-semibold">¿Estás seguro de salir?</span>
                             <br />
-                            <span className="text-lg">Se perdera tu progreso en esta lección.</span>
+                            <span className="text-lg">Se perderá tu progreso en esta lección.</span>
                         </div>
                         <div className="flex gap-4">
                             <div className="">

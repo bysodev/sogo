@@ -61,3 +61,30 @@ export async function PUT(request: Request) {
     })
   }
 }
+
+
+export async function POST(request: Request) {
+  const body = await request.json();
+  const myHeaders = new Headers({
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
+  })
+
+  try {
+    const response = await fetch(`${url}/user/refreshToken?name=${body.name}&email=${body.email}`, {
+      method: "POST",
+      headers: myHeaders,
+      credentials: "include",
+      redirect: "follow",
+    });
+    const status = await response.json()
+    // Return a new Response with status as the body
+    return new Response(JSON.stringify(status), {
+      status: response.status,
+    });
+  } catch (error) {
+    return new Response('No se logro la petición', {
+      status: 501,
+    })
+  }
+}

@@ -145,14 +145,13 @@ export default function ProfilePage() {
     <div className="w-full lg:p-4">
       <br />
       <h1 className="lg:rounded-xl border-2 p-1 font-bold text-xl text-center text-gray-500">Perfil</h1>
-      <hr className="mt-4" />
       <div className="p-4 grid place-items-center gap-4">
         {!selectedAvatar || !selectedAvatar?.url ? (
           <CircularProgress />
         ) : (
           <div className="relative text-center">
             <Image
-              className="rounded-full ounded-full border-[6px] border-gray-300"
+              className="rounded-full ounded-full border-[6px] border-gray-300 mt-6"
               src={selectedAvatar?.url}
               alt=""
               height={150}
@@ -384,7 +383,7 @@ export default function ProfilePage() {
       <ModalMUI width={{ xs: '100%', lg: '80%', xl: 'auto' }} open={modalOpen} handleClose={handleClose}>
         <div className="relative bg-white p-10 rounded-xl">
           <div className="text-gray-800">
-            <h1 className="font-bold text-xl md:text-3xl xl:text-4xl mb-4 text-center">Selecciona el avatar que quieras</h1>
+            <h1 className="font-bold text-xl md:text-xl xl:text-2xl mb-4 text-center">Selecciona el avatar que quieras</h1>
             <button className="absolute top-0 right-0 p-10" onClick={handleClose}><HiX size={25} /></button>
           </div>
           <div className="max-h-[calc(100vh-10rem)] overflow-y-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
@@ -395,7 +394,7 @@ export default function ProfilePage() {
             ) : (
               Array.isArray(avatars) ? avatars.map((avatar, index) => {
                 return (
-                  <div className="grid rounded-lg overflow-hidden" key={index}>
+                  <div className="flex flex-col rounded-lg overflow-hidden" key={index}>
                     <Image src={avatar.src} className="h-auto w-full" width={125} height={125} alt={avatar.label} />
                     <button type="button" title="Seleccionar avatar" className="text-base bg-purple-600 text-white font-bold p-2" disabled={avatar.label === selectedAvatar?.id} onClick={() => handleImageClick(avatar.label)}>{avatar.label === selectedAvatar?.id ? "Actual" : "Seleccionar"}</button>
                   </div>

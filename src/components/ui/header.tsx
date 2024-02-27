@@ -1,5 +1,7 @@
 'use client'
 import Logo from "@/components/icons/logo";
+import useScreenSize from '@/utilities/useScreenSize';
+import { useSession } from 'next-auth/react';
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -7,10 +9,10 @@ import { BsFillMoonStarsFill, BsSunFill } from "react-icons/bs";
 
 export default function NavBar({ toggleDarkMode, theme }: any) {
   const pathname = usePathname()
-
+  const { data: session, status } = useSession()
   const [navbar, setNavbar] = useState(false);
-
   const [top, setTop] = useState(false);
+  const isMdScreen = useScreenSize('md');
 
   // detect whether user has scrolled the page down by 10px
   const scrollHandler = () => {
@@ -35,6 +37,12 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
     return () => window.removeEventListener('scroll', scrollHandler)
   }, [top])
 
+  useEffect(() => {
+    if (isMdScreen) {
+      setNavbar(false);
+    }
+  }, [isMdScreen]);
+
   return (
     pathname === '' || pathname === '/' && (
       <header className={`fixed w-full z-30 md:bg-opacity-90 transition duration-300 ease-in-out ${!top ? 'bg-white backdrop-blur-sm shadow-lg dark:bg-black/80' : ''}`}>
@@ -55,7 +63,7 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
                 }`}
             >
 
-              <ul className="text-gray-800 dark:text-white items-center justify-center space-y-4 md:flex md:space-x-6 md:space-y-0 font-medium text-xl md:text-base">
+              <ul className="text-gray-800 dark:text-white items-center justify-center space-y-4 md:flex md:space-x-6 md:space-y-0 font-medium text-sm lg:text-base">
                 <li>
                   <a className="hover:text-purple-600 dark:hover:text-purple-400" onClick={() => setNavbar(false)} href="#features">
                     Características
@@ -73,7 +81,7 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
                 </li>
                 <li>
                   <a className="hover:text-purple-600 dark:hover:text-purple-400" onClick={() => setNavbar(false)} href="#faq">
-                    FAQ
+                    P.F
                   </a>
                 </li>
               </ul>
@@ -84,33 +92,67 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
                     className="hover:text-purple-600  cursor-pointer"
                   />
                 </div>
-                <Link
-                  className="text-gray-800 border-2 border-gray-950 hover:text-purple-600 dark:text-white dark:border-white dark:hover:text-purple-400 rounded-full p-2 sm:flex-1 w-full"
-                  href={`auth/login`}
-                  rel="preload"
-                >
-                  Iniciar Sesión
-                </Link>
-                <Link
-                  href={'auth/register'}
-                  className="btn-sm text-white bg-gray-900 hover:bg-gray-950 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
-                  aria-current="page"
-                >
-                  Unirse
-                </Link>
+                {status === 'authenticated' ? (
+                  <>
+                    <div className="whitespace-nowrap font-semibold"><span className="hidden xl:inline font-normal">Bienvenido,</span> {session.user.name}</div>
+                    <Link
+                      href={'/learn'}
+                      className="btn-sm text-white bg-gray-900 hover:bg-gray-950 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
+                      aria-current="page"
+                    >
+                      Ingresar
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      className="text-gray-800 border-2 border-gray-950 hover:text-purple-600 dark:text-white dark:border-white dark:hover:text-purple-400 rounded-full p-2 sm:flex-1 w-full"
+                      href={`auth/login`}
+                      rel="preload"
+                    >
+                      Iniciar Sesión
+                    </Link>
+                    <Link
+                      href={'auth/register'}
+                      className="btn-sm text-white bg-gray-900 hover:bg-gray-950 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
+                      aria-current="page"
+                    >
+                      Unirse
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
             <div className="font-medium hidden gap-4 dark:text-white md:flex items-center">
-              <Link className="text-gray-800 hover:text-purple-600 dark:text-white dark:hover:text-purple-400" href={`auth/login`} rel="preload">
-                Iniciar Sesión
-              </Link>
-              <Link
-                className="btn-sm text-white bg-gray-900 hover:bg-gray-950 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
-                href={`auth/register`}
-                rel="preload"
-              >
-                Unirse
-              </Link>
+              {status === 'authenticated' ? (
+                <>
+                  <div className="whitespace-nowrap font-semibold"><span className="hidden xl:inline font-normal">Bienvenido,</span> {session.user.name}</div>
+                  <Link
+                    className="btn-sm text-white bg-gray-900 hover:bg-gray-950 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
+                    href={'/learn'}
+                    rel="preload"
+                  >
+                    Ingresar
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    className="text-gray-800 hover:text-purple-600 dark:text-white dark:hover:text-purple-400"
+                    href={`auth/login`}
+                    rel="preload"
+                  >
+                    Iniciar Sesión
+                  </Link>
+                  <Link
+                    className="btn-sm text-white bg-gray-900 hover:bg-gray-950 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
+                    href={`auth/register`}
+                    rel="preload"
+                  >
+                    Unirse
+                  </Link>
+                </>
+              )}
               <span className="hidden md:inline">
                 {
                   theme === "light" ?

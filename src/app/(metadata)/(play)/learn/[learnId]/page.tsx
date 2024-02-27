@@ -1,10 +1,14 @@
 "use client";
+import ModalMUI from '@/components/ModalMUI';
+import VideoPlayer from '@/components/ui/VideoPlayer';
 import data from '@/store/learnData.json';
 import { CircularProgress } from "@mui/material";
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import Image from 'next/image';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from "react";
-import { FaAngleRight, FaPlay } from "react-icons/fa";
+import { FaAngleRight, FaPlay, FaQuestion } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
+import { HiX } from 'react-icons/hi';
 import Webcam from "react-webcam";
 
 export default function LessonVocales() {
@@ -13,23 +17,33 @@ export default function LessonVocales() {
     const [webcamMounted, setWebcamMounted] = useState(false);
     const webcamRef = useRef<Webcam | null>(null);
     const { push } = useRouter();
-    const pathname = usePathname()
     const [contentData, setContentData] = useState<any>([]);
     const char = useMemo(() => searchParams.get('char'), [searchParams]);
     const [selectedChar, setSelectedChar] = useState<any>(null);
-    const videoRef = useRef<HTMLVideoElement | null>(null);
-
     const [isDivVisible, setIsDivVisible] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
+
+
+    useEffect(() => {
+        const modalPreference = localStorage.getItem('modalLearn');
+        if (!modalPreference) {
+            setModalOpen(true);
+        }
+    }, []);
+
+    const handleClose = () => {
+        localStorage.setItem('modalLearn', 'closed');
+        setModalOpen(false);
+    };
+    const handleOpen = () => {
+        localStorage.removeItem('modalPreference');
+        setModalOpen(true);
+    };
 
     function handleButtonClick() {
         setIsDivVisible(prevIsDivVisible => !prevIsDivVisible);
     }
 
-    useEffect(() => {
-        if (videoRef.current) {
-            videoRef.current.load();
-        }
-    }, [pathname, char, category_learn]);
 
     useEffect(() => {
         if (data.numbers && data.letters) {
@@ -51,6 +65,7 @@ export default function LessonVocales() {
         }
     }, [category_learn, char]);
 
+
     function handleClick() {
         setWebcamMounted(true);
     }
@@ -65,11 +80,16 @@ export default function LessonVocales() {
                 </div>
                 <div className="block leading-none my-auto text-purple-800">
                     <h1>{category_learn === "number" ? "Números del 0 al 9" : "Letras del abecedario"}</h1>
-                    <p className="text-xs sm:text-sm font-normal">Lección actual: {category_learn === "number" ? "Número" : "Letra"} {" " + selectedChar ?? 0}</p>
+                    <p className="text-xs sm:text-sm font-normal">
+                        Lección actual: {category_learn === "number" ? "Número" : "Letra"} {" " + (selectedChar || "A")}
+                    </p>
                 </div>
                 <div className="p-1 bg-white rounded-lg ms-auto">
                     <button onClick={() => { push('/learn') }} type="button" title="Salir" className="bg-purple-400 p-2 rounded-lg"><FaXmark className="text-lg font-bold text-purple-800" /></button>
                 </div>
+            </div>
+            <div className="absolute bottom-0 right-0 m-6 p-1 bg-white rounded-lg ms-auto">
+                <button onClick={handleOpen} className="bg-purple-400 p-2 rounded-lg" type="button" title="Mostrar información"><FaQuestion className="animate-pulse text-lg font-bold text-purple-800" /></button>
             </div>
             <div className="flex flex-col gap-4 h-full">
                 {(!webcamMounted && selectedChar) && (
@@ -89,18 +109,10 @@ export default function LessonVocales() {
                             </div>
                         ))}
                     </div>
-                    <div className={`${(!webcamMounted && selectedChar) && "hidden"} grid gap-20 w-full h-min p-4 lg:p-20 bg-gray-100 rounded-lg lg:grid-cols-2 justify-center items-center text-center max-xl:gap-10 px-4`}>
-                        <video
-                            key={pathname}
-                            ref={videoRef}
-                            className="rounded-xl m-auto aspect-[12/9] object-contain w-full h-full"
-                            height="500"
-                            width="500"
-                            controls
-                        >
-                            <source src={videoPath} type="video/mp4" />
-                            Your browser does not support the video tag.
-                        </video>
+                    <div className={`${(!webcamMounted && selectedChar) && "hidden"} grid gap-20 w-full h-min p-4 lg:p-14 bg-gray-100 rounded-lg lg:grid-cols-2 justify-center items-center text-center max-xl:gap-10 px-4`}>
+                        <div className='block'>
+                            <VideoPlayer src={videoPath} />
+                        </div>
                         <div className="w-full h-auto relative overflow-hidden rounded-xl">
                             <Webcam
                                 width={500}
@@ -113,7 +125,6 @@ export default function LessonVocales() {
                                 minScreenshotWidth={1920}
                                 minScreenshotHeight={1080}
                                 screenshotFormat="image/jpeg"
-                                mirrored={true}
                                 onUserMedia={() => {
                                     handleClick();
                                 }}
@@ -122,6 +133,17 @@ export default function LessonVocales() {
                     </div>
                 </div>
             </div>
+            <ModalMUI width={{ xs: '100%', lg: 'auto', xl: 'auto' }} open={modalOpen} handleClose={handleClose}>
+                <div className="relative bg-white p-6 rounded-xl">
+                    <div className="text-gray-800">
+                        <h1 className="font-bold text-2xl md:text-2xl xl:text-3xl mb-6 text-center text-purple-400">Bienvenido a Sogo Sign</h1>
+                        <button className="absolute top-0 right-0 m-4" onClick={handleClose}><HiX size={25} /></button>
+                    </div>
+                    <h2 className="font-bold text-lg mb-4">Inidicaciones Generales:</h2>
+                    <p className="mb-6">En este apartado, la cámara actúa como un espejo, permitiéndote practicar y repasar las señas estáticas de la LSE. No evaluamos tu desempeño en tiempo real, por lo que puedes practicar a tu propio ritmo.</p>
+                    <Image priority src={"/images/how2learn.webp"} width={500} height={500} alt="Imagen introductoria al módulo de aprendizaje" className="h-auto mb-6 w-full mx-auto object-contain" />
+                </div>
+            </ModalMUI>
         </div>
     )
 }

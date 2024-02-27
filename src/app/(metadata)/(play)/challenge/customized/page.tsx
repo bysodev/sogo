@@ -1,7 +1,6 @@
 'use client'
-import TooltipMessage from "@/components/TooltipMessage";
+import DrawerBotton from "@/components/DrawerBotton";
 import Camara from "@/components/camara/Camara";
-import DrawerBottonChall from "@/components/challenge/DrawerBottonChall";
 import { ProgressbarChallenge } from "@/components/challenge/ProgressbarChallenge";
 import { StackContent } from "@/components/challenge/StackContent";
 import IconLoading from "@/components/icons/IconLoading";
@@ -12,7 +11,8 @@ import ModalDetallesChallenge, { ModalNotParameters, ModalOutsideTime } from "@/
 import { isValidResult } from "@/lib/actions/globales";
 import { EnumCategory, EnumDifficulty } from "@/lib/types/challenge";
 import { WebVideoElementWithScreenshot } from "@/lib/types/lessons";
-import { Alert, Stack, ToggleButton, ToggleButtonGroup, Tooltip, toggleButtonGroupClasses } from "@mui/material";
+import textFieldStyles from "@/utilities/stylesMUI";
+import { Alert, Stack, TextField, ToggleButton, ToggleButtonGroup, Tooltip, toggleButtonGroupClasses } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -20,12 +20,13 @@ import { useEffect, useRef, useState } from "react";
 import Confetti from 'react-confetti';
 import { useForm } from "react-hook-form";
 import { FaQuestionCircle } from "react-icons/fa";
+import { IoMdArrowRoundBack } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
 
-const not_pass = ['E', 'J', 'Ñ', 'Z'];
+const not_pass = ['J', 'Ñ', 'Z', ' ', ''];
 
-const defect_palabra = `/lesson/letters/letra_A.jpg`;
-const defect_numero = `/lesson/numbers/numero_0.jpg`;
+const default_palabra = `/lesson/letters/letra_A.jpg`;
+const default_numero = `/lesson/numbers/numero_0.jpg`;
 
 type ElementOperation = {
     operacion: any[],
@@ -94,21 +95,21 @@ function ordenamientoContent(category: string, content: string, supplement: bool
     if (category == EnumCategory.PALABRAS) {
         if (operation == true) {
             for (let i = 1; i < content.length; i += 2) {
-                if (content[i] && !not_pass.includes(content[i])){
+                if (content[i] && !not_pass.includes(content[i])) {
                     letrasSaltandoUna.push(content[i]);
                     indicesSaltandoUna.push(i);
                 }
             }
         } else {
             const prime_arr = content.split('');
-            return [prime_arr.filter(letra => !not_pass.includes(letra)), prime_arr.map((letra, index) => index).filter(index => !not_pass.includes(prime_arr[index])) ];
+            return [prime_arr.filter(letra => !not_pass.includes(letra)), prime_arr.map((letra, index) => index).filter(index => !not_pass.includes(prime_arr[index]))];
         }
 
         if (supplement == true) {
             let indiceAleatorio = Math.floor(Math.random() * content.length);
-            if (content[indiceAleatorio] && !not_pass.includes(content[indiceAleatorio])){
-                letrasSaltandoUna.push(content[indiceAleatorio]); 
-                indicesSaltandoUna.push(indiceAleatorio); 
+            if (content[indiceAleatorio] && !not_pass.includes(content[indiceAleatorio])) {
+                letrasSaltandoUna.push(content[indiceAleatorio]);
+                indicesSaltandoUna.push(indiceAleatorio);
             }
         }
         return [letrasSaltandoUna, indicesSaltandoUna];
@@ -129,17 +130,17 @@ function ordenamientoContent(category: string, content: string, supplement: bool
             if (cal) {
                 let calculo = cal.toFixed(2)
                 let tempo = String(calculo).split('')
-                let indices = tempo.map( (numt, index) => index );
+                let indices = tempo.map((numt, index) => index);
                 if (!(parseFloat(calculo) % 1 !== 0)) {
                     tempo = String(parseInt(calculo)).split('')
-                    indices = tempo.map( (numt, index) => index );
+                    indices = tempo.map((numt, index) => index);
                 }
                 return { operacion: [num1, operator, num2], resultado: tempo, indices, calculo: parseFloat(calculo) }
             }
         }
         if (supplement == true) {
             for (let i = 1; i < content.length; i += 2) {
-                if (content[i]){
+                if (content[i]) {
                     numeros_salteados.push(content[i]);
                     indicesSaltandoUna.push(i);
                 }
@@ -214,13 +215,12 @@ export default function ChallengesPage() {
     const [completed, setCompleted] = useState(false);
     const [drawer, setDrawer] = useState(false);
     const [toggleTime, setToogleTime] = useState("3");
-    const [img, setImagen] = useState<string>('');
+    const [img, setImagen] = useState<any>();
     const [counter, setCounter] = useState(0);
     const [startime, setTime] = useState<Times>({ inicio: new Date(), final: new Date() });
     const [submit, setSubmit] = useState(true);
     const [check, setCheck] = useState<boolean | null>(null);
     const [reto, setReto] = useState<res_challenge>();
-
     // IMAGENES
     const webcamRef = useRef<WebVideoElementWithScreenshot>(null);
     const webcamCanva = useRef<WebVideoElementWithScreenshot>(null);
@@ -255,6 +255,7 @@ export default function ChallengesPage() {
         seconds: 0,
         fails_max: 0
     });
+    const [originalObjetivosLength, setOriginalObjetivosLength] = useState(0);
 
     interface UseFormInputs {
         content?: string;
@@ -273,7 +274,7 @@ export default function ChallengesPage() {
     }
     const foto = () => {
         var captura = webcamRef?.current?.getScreenshot();
-        setImagen(`${captura}`);
+        setImagen(captura);
     };
 
     const setFoto = () => {
@@ -339,7 +340,7 @@ export default function ChallengesPage() {
             arreglo = objetivo_temporal?.resultado;
             indices = objetivo_temporal?.indices;
             objetivos = objetivo_temporal?.resultado.filter((res) => !isNaN(Number(res)));
-        }else{
+        } else {
             const [objetiv, indic] = objetivo_temporal as [string[], number[]]
             objetivos = objetiv;
             indices = indic;
@@ -358,9 +359,7 @@ export default function ChallengesPage() {
 
         // VALIDACIONES
         if (operation == true) {
-            if (operaciones.length == 0) {
-                console.log('Esto no procede')
-            } else {
+            if (operaciones.length !== 0) {
                 setprogress((prev) => ({
                     ...prev,
                     distancia,
@@ -376,8 +375,8 @@ export default function ChallengesPage() {
                     minutes,
                     seconds,
                     fails_max: intentos
-
                 }))
+                setOriginalObjetivosLength(objetivos.length)
                 setIsLoading(false);
                 setPrimeData(false);
                 reset();
@@ -400,6 +399,7 @@ export default function ChallengesPage() {
                 seconds,
                 fails_max: intentos
             }))
+            setOriginalObjetivosLength(objetivos.length)
             setIsLoading(false);
             setPrimeData(false);
             reset();
@@ -414,7 +414,7 @@ export default function ChallengesPage() {
             setOperation(newDevices);
         }
     };
-      
+
     const handleVerification = async () => {
         setSubmit(false);
         const raw = JSON.stringify({
@@ -424,58 +424,55 @@ export default function ChallengesPage() {
             type: 'byte64',
             char: progres.objetivo,
         })
-
         const respuesta = await fetch(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/predict/`, {
             method: 'POST',
             body: raw
         })
-
         if (respuesta.ok) {
             const predict = await (respuesta as Response).json();
 
             if (isValidResult(predict.data.result, progres.objetivo)) {
-                const urlPalabraImg = `/lesson/letters/letra_${progres.objetivos[1]}.jpg`;
-                const urlNumeroImg = `/lesson/numbers/numero_${progres.objetivos[1]}.jpg`;
-                const urlImg = category === EnumCategory.PALABRAS ? (urlPalabraImg || defect_palabra) : (category === EnumCategory.NUMEROS ? (urlNumeroImg || defect_numero) : '/lesson/default.jpg')
-                let index_trash = progres.objetivos.indexOf(progres.objetivo);
                 setCheck(true);
+                new Audio('/audio/sound-effect-current-win.wav').play();
                 setprogress((pro) => ({
                     ...pro,
                     asiertos: pro.asiertos + 1,
-                    porcentaje: ((pro.asiertos + 1) / pro.distancia) * 100,
-                    // objetivos: pro.objetivos.filter((obj) => obj !== progres.objetivo),
-                    objetivos: pro.objetivos.filter((obj, index) => index !== index_trash),
-                    indices: pro.indices.filter((obj, index) => index !== index_trash),
-                    objetivo: pro.objetivos.find((obj, index) => index !== index_trash) as string,
                     continue: true
                 }));
-                setCurrentImage(urlImg)
             } else {
                 setprogress((prev) => ({
                     ...prev,
                     intentos: prev.intentos - 1
                 }));
                 setCheck(false);
+                new Audio('/audio/sound-effect-current-lose.wav').play();
                 setFoto();
             }
         }
-
         if (respuesta.status == 500) {
-            console.log('Error en el servidor')
+            console.error('Error en el servidor')
         }
-
         setSubmit(true);
     };
 
     const changeContinue = () => {
+        console.log(progres.asiertos)
+        const urlPalabraImg = `/lesson/letters/letra_${progres.objetivos[1]}.jpg`;
+        const urlNumeroImg = `/lesson/numbers/numero_${progres.objetivos[1]}.jpg`;
+        let index_trash = progres.objetivos.indexOf(progres.objetivo);
+        const urlImg = category === EnumCategory.PALABRAS ? (urlPalabraImg || default_palabra) : (category === EnumCategory.NUMEROS ? (urlNumeroImg || default_numero) : '/lesson/default.jpg')
         setprogress((pro) => ({
             ...pro,
+            porcentaje: ((pro.asiertos) / Number(originalObjetivosLength)) * 100,
+            objetivos: pro.objetivos.filter((obj, index) => index !== index_trash),
+            indices: pro.indices.filter((obj, index) => index !== index_trash),
+            objetivo: pro.objetivos.find((obj, index) => index !== index_trash) as string,
             continue: false,
         }));
+        setCurrentImage(urlImg)
         setCheck(null)
         setFoto()
     };
-
     const handleSubmitChall = () => {
         const tiempo_finzalizacion = new Date();
         const totalTime = (tiempo_finzalizacion.getTime() - startime.inicio.getTime());
@@ -499,10 +496,17 @@ export default function ChallengesPage() {
         }
     }
     useEffect(() => {
+        console.log(progres)
         if (progres.porcentaje === 100) {
             handleSubmitChall()
         }
     }, [progres.porcentaje])
+
+    useEffect(() => {
+        if (progres.intentos === 0 && progres.content !== '') {
+            new Audio('/audio/sound-effect-global-lose.wav').play();
+        }
+    }, [progres.intentos]);
 
     if (!procced) {
         return <ModalNotParameters open={true} setRouter={handleRouter} />
@@ -520,9 +524,12 @@ export default function ChallengesPage() {
 
     if (prime) {
         return <>
-            <div className="h-screen w-full max-h-screen grid justify-center content-around">
-                <div className="grid gap-4 lg:py-4 px-4">
-                    <h1 className="rounded-xl border-2 p-1 font-bold text-2xl text-center text-gray-500">Retos Personalizados</h1>
+            <div className="h-auto w-full lg:w-1/2 grid justify-center mx-auto">
+                <div className="flex flex-col gap-4 lg:py-4 lg:px-4">
+                    <div className="relative lg:rounded-xl border-2 p-1">
+                        <h1 className="font-bold text-xl text-center text-gray-500">Retos Personalizados</h1>
+                        <button className="absolute start-0 top-0 m-3 text-gray-500" onClick={() => { router.push('/challenge') }} type='button' title='Retroceder'><IoMdArrowRoundBack /></button>
+                    </div>
                     {!showDialog && (
                         <button className="flex gap-4 items-center justify-end" onClick={handleOpen}><span>Volver a mostrar</span> <Tooltip title={'Volver a mostrar las indicaciones de la sección de retos'} placement="top" arrow>
                             <div>
@@ -534,15 +541,15 @@ export default function ChallengesPage() {
                     {showDialog && (
                         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
                             <div className="md:flex">
-                                <div className="p-2">
+                                <div className="p-4">
                                     <div className="tracking-wide text-sm text-indigo-500 font-semibold flex justify-between">
                                         <span className="text-gray-900 dark:text-white font-extrabold text-xl">
                                             ¿Cómo funciona?
                                         </span>
                                         <button className="text-gray-700" onClick={handleClose}><IoClose size={20} /></button>
                                     </div>
-                                    <p className="mt-2 text-gray-500">
-                                        En el formulario de abajo puede seleccionar el contenido que quiera predecir por su cuenta, <br /> como es la mismo logica de los retos usted podra personalizar todos los parametros
+                                    <p className="my-2 text-gray-500">
+                                        En el formulario de abajo, puede seleccionar el contenido que desee predecir por su cuenta. Dado que utiliza la misma lógica que los retos, podrá personalizar todos los parámetros.
                                     </p>
                                 </div>
                             </div>
@@ -559,41 +566,35 @@ export default function ChallengesPage() {
                             }}
                         >
                             <div className="grid gap-4">
-                                <div className="flex flex-wrap justify-between gap-2">
-                                    <label htmlFor="content" className="font-mono font-bold text-2xl">Contenido:</label>
-                                    <div
-                                        className={`relative w-3/4 flex flex-wrap gap-2 text-sm ${errors.content
-                                            ? "text-red-600 border-red-400"
-                                            : "text-gray-600 border-gray-400 dark:text-gray-400"
-                                            } container-fluid`}
-                                    >
-                                        <input
-                                            disabled={isLoading}
-                                            autoComplete="hola"
-                                            className="flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
-                                            type="text"
-                                            placeholder="Contenido de la lección"
-                                            {...register("content", {
-                                                required: { value: true, message: "Contenido requerido" },
-                                                pattern: {
-                                                    value: patterms[category as EnumCategory],
-                                                    message: description[category as EnumCategory],
-                                                },
-                                                minLength: {
-                                                    value: 1,
-                                                    message: "Requiere al menos 1 caracteres",
-                                                }
-                                            })}
-                                        />
-                                        {errors.content && (
-                                            <TooltipMessage message={errors.content.message!} />
-                                        )}
-                                    </div>
-                                </div>
+                                <TextField
+                                    autoComplete="abc"
+                                    disabled={isLoading}
+                                    sx={textFieldStyles}
+                                    className={`focus:outline-none w-full bg-transparent focus:bg-transparent btn border shadow-none border-gray-400  dark:text-gray-200 ${errors.content
+                                        ? "text-red-600 border-red-400"
+                                        : "text-gray-600 border-gray-400"
+                                        }`}
+                                    type="text"
+                                    label="Contenido de la lección"
+                                    size="small"
+                                    {...register("content", {
+                                        required: { value: true, message: "Contenido requerido" },
+                                        pattern: {
+                                            value: patterms[category as EnumCategory],
+                                            message: description[category as EnumCategory],
+                                        },
+                                        minLength: {
+                                            value: 1,
+                                            message: "Requiere al menos 1 caracteres",
+                                        }
+                                    })}
+                                    error={Boolean(errors.content)}
+                                    helperText={errors.content && errors.content.message}
+                                />
                                 {
                                     category == EnumCategory.NUMEROS && (
-                                        <div className="flex flex-wrap justify-between gap-2">
-                                            <label htmlFor="operators" className="font-mono font-bold text-2xl">Operadores:</label>
+                                        <div className="flex flex-wrap justify-between gap-2 shadow-md border-2 rounded-md border-gray-300">
+                                            <label htmlFor="operators" className="my-auto ms-4 tracking-wider font-light text-sm text-gray-900">Operadores</label>
                                             <StyledToggleButtonGroup
                                                 size="small"
                                                 value={operaciones}
@@ -616,22 +617,21 @@ export default function ChallengesPage() {
                                         </div>
                                     )
                                 }
-                                <div className="flex flex-wrap gap-2">
-                                    <label htmlFor="time" className="font-mono font-bold text-2xl">Tiempo:</label>
-                                    <div
-                                        className={`relative flex flex-wrap gap-2 text-sm ${errors.minutes
-                                            ? "text-red-600 border-red-400"
-                                            : "text-gray-600 border-gray-400 dark:text-gray-400"
-                                            } container-fluid`}
-                                    >
-                                        <input
+                                <div className="flex flex-col lg:flex-row gap-4 lg:gap-2">
+                                    <div className="flex gap-2">
+                                        <TextField
+                                            autoComplete="5"
                                             disabled={isLoading}
-                                            autoComplete="0"
-                                            className="flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
+                                            sx={textFieldStyles}
+                                            className={`focus:outline-none w-full bg-transparent focus:bg-transparent btn border shadow-none border-gray-400  dark:text-gray-200 ${errors.minutes
+                                                ? "text-red-600 border-red-400"
+                                                : "text-gray-600 border-gray-400"
+                                                }`}
                                             type="number"
-                                            placeholder="00"
+                                            label="Tiempo minutos"
+                                            size="small"
                                             {...register("minutes", {
-                                                required: { value: true, message: "Contenido requerido" },
+                                                required: { value: true, message: "Minutos requeridos" },
                                                 pattern: {
                                                     value: /^[0-7]$/,
                                                     message: "Maximo 7 minutos",
@@ -641,29 +641,25 @@ export default function ChallengesPage() {
                                                     message: "Requiere al menos 1 minuto",
                                                 }
                                             })}
+                                            error={Boolean(errors.minutes)}
+                                            helperText={errors.minutes && errors.minutes.message}
                                         />
-                                        {errors.minutes && (
-                                            <TooltipMessage message={errors.minutes.message!} />
-                                        )}
-                                    </div>
-                                    <span>:</span>
-                                    <div
-                                        className={`relative flex flex-wrap gap-2 text-sm ${errors.seconds
-                                            ? "text-red-600 border-red-400"
-                                            : "text-gray-600 border-gray-400 dark:text-gray-400"
-                                            } container-fluid`}
-                                    >
-                                        <input
+
+                                        <span className="m-auto">:</span>
+                                        <TextField
+                                            autoComplete="00"
                                             disabled={isLoading}
-                                            autoComplete="0"
-                                            className="flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
+                                            sx={textFieldStyles}
+                                            className={`focus:outline-none w-full bg-transparent focus:bg-transparent btn border shadow-none border-gray-400  dark:text-gray-200 ${errors.seconds
+                                                ? "text-red-600 border-red-400"
+                                                : "text-gray-600 border-gray-400"
+                                                }`}
                                             type="number"
-                                            placeholder="00"
+                                            label="Tiempo segunados"
+                                            size="small"
                                             {...register("seconds", {
-                                                required: { value: true, message: "Contenido requerido" },
+                                                required: { value: true, message: "Segundos requeridos" },
                                                 pattern: {
-                                                    // value: /^[0-9]+$/,
-                                                    // message: "Solo se permiten numeros",
                                                     value: /^(0|[1-5]\d?|60)$/,
                                                     message: "Maximo 60 segundos",
                                                 },
@@ -672,43 +668,35 @@ export default function ChallengesPage() {
                                                     message: "Requiere al menos 1 caracter",
                                                 }
                                             })}
+                                            error={Boolean(errors.seconds)}
+                                            helperText={errors.seconds && errors.seconds.message}
                                         />
-                                        {errors.seconds && (
-                                            <TooltipMessage message={errors.seconds.message!} />
-                                        )}
                                     </div>
-                                </div>
-
-                                <div className="flex flex-wrap justify-between gap-2">
-                                    <label htmlFor="intentos" className="font-mono font-bold text-2xl">Vidas:</label>
-                                    <div
-                                        className={`relative w-3/4 flex flex-wrap gap-2 text-sm ${errors.intentos
+                                    <TextField
+                                        autoComplete="3"
+                                        disabled={isLoading}
+                                        sx={textFieldStyles}
+                                        className={`focus:outline-none w-full lg:w-2/5 bg-transparent focus:bg-transparent btn border shadow-none border-gray-400  dark:text-gray-200 ${errors.intentos
                                             ? "text-red-600 border-red-400"
-                                            : "text-gray-600 border-gray-400 dark:text-gray-400"
-                                            } container-fluid`}
-                                    >
-                                        <input
-                                            disabled={isLoading}
-                                            autoComplete=""
-                                            className="flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
-                                            type="text"
-                                            placeholder="Contenido de la lección"
-                                            {...register("intentos", {
-                                                required: { value: true, message: "Contenido requerido" },
-                                                pattern: {
-                                                    value: /^[0-7]$/,
-                                                    message: "Maximo 7 vidas",
-                                                },
-                                            })}
-                                        />
-                                        {errors.intentos && (
-                                            <TooltipMessage message={errors.intentos?.message || ''} />
-                                        )}
-                                    </div>
+                                            : "text-gray-600 border-gray-400"
+                                            }`}
+                                        type="number"
+                                        label="Vidas o intentos"
+                                        size="small"
+                                        {...register("intentos", {
+                                            required: { value: true, message: "Vidas máximas requeridas" },
+                                            pattern: {
+                                                value: /^[0-7]$/,
+                                                message: "Máximo 7 vidas",
+                                            },
+                                        })}
+                                        error={Boolean(errors.intentos)}
+                                        helperText={errors.intentos && errors.intentos.message}
+                                    />
                                 </div>
                                 {
                                     category == EnumCategory.NUMEROS && (
-                                        <Alert severity="info">Selecciona Operation y se consideraran solo los operadores</Alert>
+                                        <Alert severity="info">Selecciona Operación y se consideraran solo los operadores</Alert>
                                     )
                                 }
 
@@ -722,7 +710,7 @@ export default function ChallengesPage() {
                                                     : "text-gray-600 border-gray-400 dark:text-gray-400"
                                                     } container-fluid`}
                                             >
-                                                <label htmlFor="supplement" className="font-semibold text-xl">Uno aleatorio</label>
+                                                <label htmlFor="supplement" className="font-semibold text-lg">Aleatorio</label>
                                                 <input
                                                     disabled={isLoading}
                                                     className="w-8"
@@ -734,14 +722,13 @@ export default function ChallengesPage() {
                                             </div>
                                         )
                                     }
-
                                     <div
                                         className={`relative flex flex-wrap gap-2 text-sm ${errors.supplement
                                             ? "text-red-600 border-red-400"
                                             : "text-gray-600 border-gray-400 dark:text-gray-400"
                                             } container-fluid`}
                                     >
-                                        <label htmlFor="operation" className="font-semibold text-xl"> {category == EnumCategory.PALABRAS ? 'Salteadas' : 'Operaciones'}</label>
+                                        <label htmlFor="operation" className="font-semibold text-lg"> {category == EnumCategory.PALABRAS ? 'Salteadas' : 'Operaciones'}</label>
                                         <input
                                             disabled={isLoading}
                                             className="w-8"
@@ -768,6 +755,7 @@ export default function ChallengesPage() {
         </>
     }
 
+
     return <>
         <ModalDetallesChallenge open={detail} setOpen={handleDetailsModal} number={1} name={'Reto Personalizado'} descripction={'Considere que se trata de un reto personalizado a medidad por usted, cumpla con los requisitos y se registrara su progreso.'} />
         <ModalOutsideTime open={outside} setRouter={handleRouter} />
@@ -776,7 +764,7 @@ export default function ChallengesPage() {
         ) : (
             <div className="w-full h-full grid place-content-center">
                 <div>
-                    <IconLogo height={80} width={80} className="mx-auto mb-6" />
+                    <IconLogo height={60} width={60} className="mx-auto mb-6" />
                     <span className="font-mono text-2xl text-s" >Espere...</span>
                 </div>
             </div>
@@ -790,12 +778,10 @@ export default function ChallengesPage() {
 
                     <div className="grid lg:grid-cols-2 justify-center items-center text-center h-full">
                         {
-                            // (progres.supplement == false) && (
-                            // currentImage != '' &&  
                             <Image
                                 priority={true}
-                                className="shadow-lg border rounded-xl m-auto aspect-video object-contain"
-                                src={currentImage}
+                                className="shadow-lg border rounded-xl m-auto aspect-[12/9] object-contain"
+                                src={currentImage || default_palabra}
                                 height={480}
                                 width={480}
                                 alt="Defalt"
@@ -827,7 +813,7 @@ export default function ChallengesPage() {
                             />
                         </div>
                     </div>
-                    {drawer && <DrawerBottonChall drawer={drawer} setDrawer={setDrawer} />}
+                    {drawer && <DrawerBotton drawer={drawer} setDrawer={setDrawer} />}
                 </div>
 
                 {

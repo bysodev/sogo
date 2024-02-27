@@ -18,11 +18,11 @@ interface ModalVideoProps {
 
 const style = {
   position: 'absolute',
-  top: { xs: 0, sm: '50%' },
-  left: { xs: 0, sm: '50%' },
-  transform: { sm: 'translate(-50%, -50%)' },
-  width: { xs: '80%', md: '60%' },
-  height: { xs: '80%', md: '60%' },
+  top: { xs: '50%' },
+  left: { xs: '50%' },
+  transform: { xs: 'translate(-50%, -50%)' },
+  width: { xs: '90%', md: 'auto' },
+  height: { xs: 'auto', md: 'auto' },
   overflow: 'auto',
   background: 'white',
 };
@@ -76,14 +76,24 @@ export default function ModalVideo({
       >
         <Fade in={open}>
           <Box sx={style}>
-            <video ref={videoRef} className='h-full w-full object-cover' loop controls autoPlay>
+            <video ref={videoRef} className='h-full w-full object-contain' loop controls autoPlay>
               <source src={video} type="video/mp4" />
+              <source src={video + ".mp4"} type="video/mp4" />
+              <source
+                src={video + "-tablet.mp4"}
+                type="video/mp4"
+                media="(max-width:768px)"
+              />
+              <source
+                src={video + "-movil.mp4"}
+                type="video/mp4"
+                media="(max-width:480px)"
+              />
               Your browser does not support the video tag.
             </video>
           </Box>
         </Fade>
       </Modal>
-
       {/* End: Modal dialog */}
 
     </div>

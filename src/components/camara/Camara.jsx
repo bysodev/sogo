@@ -35,7 +35,6 @@ export default function Camara({
           minScreenshotWidth={1920}
           minScreenshotHeight={1080}
           screenshotFormat="image/jpeg"
-          mirrored={true}
           onUserMedia={() => {
             handleClick();
           }}
@@ -112,7 +111,7 @@ export default function Camara({
             {counter === 0 ? (
               <p className="text-3xl lg:text-2xl whitespace-nowrap flex gap-4 items-center justify-center text-white">
                 <IconTouch className="h-6 w-6 lg:h-8 lg:w-8" />
-                <span>Tomar otra foto</span>
+                <span>Reiniciar contador</span>
               </p>
             ) : (
               counter

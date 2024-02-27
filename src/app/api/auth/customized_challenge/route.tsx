@@ -16,7 +16,6 @@ export async function POST(request: Request) {
     const raw = JSON.stringify(
         dataChall
     )
-    console.log(raw)
     try {
         const response = await fetch(`${url}/reach_challenge/customized/register`, {
             method: 'POST',
@@ -26,7 +25,7 @@ export async function POST(request: Request) {
             redirect: 'follow',
         })
         const dic_data = await response.json()
-            
+
         if (response.status === 201) {
             return new Response(JSON.stringify(dic_data), {
                 status: 200,

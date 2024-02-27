@@ -9,8 +9,9 @@ export async function GET() {
     const session = await getServerSession(config)
     const myHeaders = new Headers({
         Accept: 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded'
+        // 'Content-Type': 'application/x-www-form-urlencoded'
     })
+    myHeaders.append("Content-Type", "application/json");
     myHeaders.append('Authorization', `Bearer ${session?.user.accessToken}`)
     try {
         const response = await fetch(`${url}/section/get/levelstage`, {

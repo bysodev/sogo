@@ -15,7 +15,6 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from "react";
 import Confetti from 'react-confetti';
 import useSWR from "swr";
-
 const handlePostLesson = async (token: string, id_lesson: number, points_reached: number, state_id: number, fails: number, detail_fails: number[]) => {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/lesson`, {
@@ -137,7 +136,7 @@ export default function LessonVocales() {
   const [imagen, setImagen] = useState<any>("");
   const [currentImage, setCurrentImage] = useState(defaultImage);
   const [drawer, setDrawer] = useState(false);
-  const [toggleTime, setToogleTime] = useState("3");
+  const [toggleTime, setToogleTime] = useState("5");
   const [startime, setTime] = useState<Times>({ inicio: new Date(), final: new Date() });
   const [charResults, setCharResults] = useState<{ [key: string]: number }>({});
   const [errors, setErrors] = useState(charResults)
@@ -223,16 +222,11 @@ export default function LessonVocales() {
 
   useEffect(() => {
     const updateImage = () => {
-      // const letter = progres.char;
-      // const imagen = SignImageData.find((imagen) => imagen.name === letter);
-      // if (imagen) {
-      //   setCurrentImage(imagen.url);
-      // }
       const URL_BASE = progres.tipo === "NUMEROS" ? `/lesson/numbers/numero_${progres.char}.jpg` : `/lesson/letters/letra_${progres.char}.jpg`;
       setCurrentImage(URL_BASE || defaultImage)
     };
     updateImage();
-  }, [progres.char]); // Actualiza la imagen cuando progres.char cambia
+  }, [progres.char]);
 
   const foto = () => {
     var captura = webcamRef?.current?.getScreenshot();
@@ -329,6 +323,7 @@ export default function LessonVocales() {
             const predict = await (response as Response).json();
             if (isValidResult(progres.char, predict.data.result)) {
               setCheck(true);
+              new Audio('/audio/sound-effect-current-win.wav').play();
               setprogress((pro) => ({
                 ...pro,
                 asiertos: pro.asiertos + 1,
@@ -337,6 +332,7 @@ export default function LessonVocales() {
             } else {
               //logical to  handdle error predic with setErrrosArrow equals 3
               setCheck(false);
+              new Audio('/audio/sound-effect-current-lose.wav').play();
               setErrosArrow(errosArrow - 1)
               if (errosArrow === 1) {
                 setTotalTry(totalTry - 1)
@@ -400,6 +396,7 @@ export default function LessonVocales() {
                     height={500}
                     width={500}
                     alt="Letra A"
+                    priority
                   />
                   <div className="relative mx-auto grid place-content-center">
                     <Stack className="bg-white/90 w-full absolute z-30" spacing={2} alignItems="start">

@@ -1,10 +1,11 @@
 "use client";
 
-import TooltipMessage from "@/components/TooltipMessage";
 import IconLoading from "@/components/icons/IconLoading";
 import IconLogo from "@/components/icons/logo";
+import textFieldStyles from "@/utilities/stylesMUI";
 import { showErrorMessage, showErrorToast, showSuccessMessage } from "@/utilities/sweet-alert";
 import { rgxEmail } from "@/validators/auth-validators";
+import { TextField } from "@mui/material";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -87,7 +88,7 @@ export default function PasswordRecoveryPage() {
 
   const params = useSearchParams();
   const token = params.get('token');
-  const [isTokenValid, setIsTokenValid] = useState(false);
+  const [isTokenValid, setIsTokenValid] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const { push } = useRouter();
   const { data, error, isValidating } = useSWR(token ? `${url_app}/api/auth/user/recovery?token=${token}` : null, fetch, { revalidateOnFocus: false });
@@ -146,7 +147,7 @@ export default function PasswordRecoveryPage() {
         </div>
         <div className="flex justify-center">
           <Link href={"/"}>
-            <IconLogo height={80} width={80} className="mx-auto mb-6" />
+            <IconLogo height={60} width={60} className="mx-auto mb-6" />
           </Link>
         </div>
         {isValidating ? (
@@ -166,71 +167,66 @@ export default function PasswordRecoveryPage() {
               }}
             >
               <div className="grid gap-4">
-                <div
-                  className={`relative flex flex-wrap text-sm ${errors.password
+
+                <TextField
+                  autoComplete="newPassword"
+                  disabled={isLoading}
+                  sx={textFieldStyles}
+                  className={`focus:outline-none w-full bg-transparent focus:bg-transparent btn border shadow-none border-gray-400  dark:text-gray-200 ${errors.password
                     ? "text-red-600 border-red-400"
                     : "text-gray-600 border-gray-400"
-                    } container-fluid`}
-                >
-                  <input
-                    disabled={isLoading}
-                    autoComplete="new-password"
-                    className="flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
-                    type="password"
-                    placeholder="Nueva contraseña"
-                    {...register("password", {
-                      required: { value: true, message: "Contraseña requerida" },
-                      minLength: {
-                        value: 8,
-                        message: "Requiere al menos 8 caracteres",
-                      },
-                      maxLength: {
-                        value: 15,
-                        message: "Máximo 15 caracteres",
-                      },
-                      pattern: {
-                        value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[A-Z]).{8,}$/,
-                        message: "Debe contener al menos una letra mayúscula y un número"
-                      },
-                    })}
-                  />
-                  {errors.password && (
-                    <TooltipMessage message={errors.password.message!} />
-                  )}
-                </div>
-                <div
-                  className={`relative flex flex-wrap text-sm ${errors.confirmPassword
+                    }`}
+                  type="password"
+                  label="Nueva contraseña"
+                  size="small"
+                  {...register("password", {
+                    required: { value: true, message: "Contraseña requerida" },
+                    minLength: {
+                      value: 8,
+                      message: "Requiere al menos 8 caracteres",
+                    },
+                    maxLength: {
+                      value: 15,
+                      message: "Máximo 15 caracteres",
+                    },
+                    pattern: {
+                      value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[A-Z]).{8,}$/,
+                      message: "Debe contener al menos una letra mayúscula y un número"
+                    },
+                  })}
+                  error={Boolean(errors.password)}
+                  helperText={errors.password && errors.password.message}
+                />
+                <TextField
+                  autoComplete="newRePassword"
+                  disabled={isLoading}
+                  sx={textFieldStyles}
+                  className={`focus:outline-none w-full bg-transparent focus:bg-transparent btn border shadow-none border-gray-400  dark:text-gray-200 ${errors.confirmPassword
                     ? "text-red-600 border-red-400"
                     : "text-gray-600 border-gray-400"
-                    } container-fluid`}
-                >
-                  <input
-                    disabled={isLoading}
-                    autoComplete="new-password"
-                    className="flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
-                    type="password"
-                    placeholder="Confirmar contraseña"
-                    {...register("confirmPassword", {
-                      required: { value: true, message: "Confirmación de contraseña requerida" },
-                      minLength: {
-                        value: 8,
-                        message: "Requiere al menos 8 caracteres",
-                      },
-                      maxLength: {
-                        value: 15,
-                        message: "Máximo 15 caracteres",
-                      },
-                      pattern: {
-                        value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[A-Z]).{8,}$/,
-                        message: "Debe contener al menos una letra mayúscula y un número"
-                      },
-                      validate: value => value === getValues().password || "Las contraseñas no coinciden"
-                    })}
-                  />
-                  {errors.confirmPassword && (
-                    <TooltipMessage message={errors.confirmPassword.message!} />
-                  )}
-                </div>
+                    }`}
+                  type="password"
+                  label="Confirmar contraseña"
+                  size="small"
+                  {...register("confirmPassword", {
+                    required: { value: true, message: "Confirmación de contraseña requerida" },
+                    minLength: {
+                      value: 8,
+                      message: "Requiere al menos 8 caracteres",
+                    },
+                    maxLength: {
+                      value: 15,
+                      message: "Máximo 15 caracteres",
+                    },
+                    pattern: {
+                      value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[A-Z]).{8,}$/,
+                      message: "Debe contener al menos una letra mayúscula y un número"
+                    },
+                    validate: value => value === getValues().password || "Las contraseñas no coinciden"
+                  })}
+                  error={Boolean(errors.confirmPassword)}
+                  helperText={errors.confirmPassword && errors.confirmPassword.message}
+                />
                 <button
                   disabled={isLoading}
                   className="mt-2 py-3 px-4 w-full font-bold text-white bg-gray-900 btn hover:bg-gray-950 dark:bg-purple-500 dark:hover:bg-purple-600"
@@ -265,37 +261,34 @@ export default function PasswordRecoveryPage() {
               }}
             >
               <div className="grid gap-4">
-                <div
-                  className={`relative flex flex-wrap text-sm ${errors.email
+                <TextField
+                  autoComplete="email"
+                  disabled={isLoading}
+                  sx={textFieldStyles}
+                  className={`focus:outline-none w-full bg-transparent focus:bg-transparent btn border shadow-none border-gray-400  dark:text-gray-200 ${errors.email
                     ? "text-red-600 border-red-400"
                     : "text-gray-600 border-gray-400"
-                    } container-fluid`}
-                >
-                  <input
-                    disabled={isLoading}
-                    autoComplete="email"
-                    className="flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
-                    type="email"
-                    placeholder="Correo electrónico"
-                    {...register("email", {
-                      required: { value: true, message: "Correo electrónico requerido" },
-                      pattern: {
-                        value: rgxEmail,
-                        message: "Correo electrónico inválido",
-                      },
-                    })}
-                  />
-                  {errors.email && (
-                    <TooltipMessage message={errors.email.message!} />
-                  )}
-                </div>
+                    }`}
+                  type="text"
+                  label="Correo electrónico"
+                  size="small"
+                  {...register("email", {
+                    required: { value: true, message: "Correo electrónico requerido" },
+                    pattern: {
+                      value: rgxEmail,
+                      message: "Correo electrónico inválido",
+                    },
+                  })}
+                  error={Boolean(errors.email)}
+                  helperText={errors.email && errors.email.message}
+                />
                 <button
                   disabled={isLoading}
                   className="mt-2 py-3 px-4 w-full font-bold text-white bg-gray-900 btn hover:bg-gray-950 dark:bg-purple-500 dark:hover:bg-purple-600"
                   type="submit"
                   id="submit-recovery"
                 >
-                  {isLoading ? <IconLoading height={20} className="text-white" /> : 'Actualizar contraseña'}
+                  {isLoading ? <IconLoading height={20} className="text-white" /> : 'Obtener código'}
                 </button>
                 <div className="text-center mt-4 text-sm font-semibold text-gray-400 align-baseline dark:text-gray-300">
                   <p>¿Tienes una cuenta?</p>

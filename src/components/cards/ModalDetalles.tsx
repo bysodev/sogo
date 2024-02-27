@@ -1,7 +1,8 @@
 'use client'
 
 import { EnumCategory } from "@/lib/types/challenge";
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Dialog, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { HiX } from "react-icons/hi";
 
 export default function ModalDetalles({ open, handleClose, category }: { open: boolean, handleClose: () => void, category: EnumCategory }) {
     return (
@@ -11,17 +12,20 @@ export default function ModalDetalles({ open, handleClose, category }: { open: b
             onClose={handleClose}
         >
             <DialogTitle>
-                <span className="text-zinc-900 dark:text-white font-extrabold text-xl">
-                    {EnumCategory.PALABRAS == category && palabras.title}
-                    {EnumCategory.NUMEROS == category && numeros.title}
-                </span>
+                <div className="flex justify-between">
+                    <span className="text-zinc-900 dark:text-white font-extrabold text-xl">
+                        {EnumCategory.PALABRAS == category && palabras.title}
+                        {EnumCategory.NUMEROS == category && numeros.title}
+                    </span>
+                    <button className="text-gray-400" onClick={handleClose} type='button' title='Cerrar ventana'><HiX /></button>
+                </div>
             </DialogTitle>
             <DialogContent>
-                <DialogContentText>
+                <DialogContentText sx={{ textAlign: 'balance' }}>
                     {EnumCategory.PALABRAS == category && palabras.contentCategory}
                     {EnumCategory.NUMEROS == category && numeros.contentCategory}
                 </DialogContentText>
-                <div className="flex justify-around my-2 gap-2">
+                <div className="flex flex-col sm:flex-row justify-around my-2 gap-2">
                     <div className="w-full bg-slate-100 rounded-2xl p-4 flex flex-col justify-center gap-2">
                         <span className="text-center font-mono font-bold">Tipos de retos</span>
                         <div className="grid grid-cols-2 gap-3">
@@ -35,8 +39,6 @@ export default function ModalDetalles({ open, handleClose, category }: { open: b
                                             <p className="whitespace-nowrap text-sm">{cat}</p>
                                         </span>
                                     ))
-
-
                                 )
                             }
                             {
@@ -53,7 +55,7 @@ export default function ModalDetalles({ open, handleClose, category }: { open: b
                             }
                         </div>
                     </div>
-                    <div className="w-1/3 bg-sky-100 rounded-2xl p-4 flex flex-col justify-center gap-2">
+                    <div className="w-full sm:w-1/3 bg-sky-100 rounded-2xl p-4 flex flex-col justify-center gap-2">
                         <span className="text-center font-mono font-bold">Dificultades</span>
                         <div className="grid grid-cols-1 gap-3 font-medium">
                             <div className="flex justify-around">
@@ -73,9 +75,6 @@ export default function ModalDetalles({ open, handleClose, category }: { open: b
                     </div>
                 </div>
             </DialogContent>
-            <DialogActions>
-                <Button onClick={handleClose}>Cerrar</Button>
-            </DialogActions>
         </Dialog>
     )
 }
