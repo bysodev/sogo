@@ -71,7 +71,7 @@ export const ContenidoRanking = ({ rank }: { rank: DetailsRankingProfile }) => {
         </List>
       ) : (
         <>
-{/*           <h1 className="text-3xl text-gray-400 font-bold">#{rank['ranking']}</h1> */}
+          <h1 className="text-3xl text-gray-400 font-bold">#{rank['ranking']}</h1>
           <h2 className="text-xl text-gray-600">{rank['puntos']} pts </h2>
           <Tooltip title={`Lecciones: ${rank['lecciones']} | Retos: ${rank['retos']}`} placement="top" arrow>
             <div className="text-purple-500">
