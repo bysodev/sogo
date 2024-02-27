@@ -45,7 +45,7 @@ export default function RankingProfile() {
         )}
       </div>
       <br />
-      <div className="border-2 p-4 rounded-lg">
+      <div className="border-2 p-4 rounded-lg text-center">
         <h4><strong>Categoría:</strong> Números</h4>
         <NavRanking value={numeros} setValue={setNumeros} key='Números' />
         {errorNumeros ? (
