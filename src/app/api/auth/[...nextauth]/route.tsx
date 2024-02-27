@@ -67,7 +67,6 @@ const authOptions = {
 
       // Comprueba si el token está a punto de caducar
       if (token.expires && Date.now() > token.expires - 1) {
-        console.log("caducó")
         const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/user/profile`, {
           method: 'POST',
           headers: {
