@@ -350,7 +350,7 @@ export const templateConfirmUser = (signin_url: string, username: string) => {
               >
                 <tr>
                   <td class="email-masthead">
-                    <a href="{{base_url}}" class="f-fallback email-masthead_name">
+                    <a class="f-fallback email-masthead_name">
                       Plataforma de Lenguaje de Señas Ecuatoriano - SoGo Sign
                     </a>
                   </td>
