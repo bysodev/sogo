@@ -59,7 +59,6 @@ const authOptions = {
         token.accessToken = session.user.accessToken;
         return token;
       }
-
       if (user) {
         token.name = user.username;
         token.image = user.image;
@@ -67,7 +66,8 @@ const authOptions = {
       }
 
       // Comprueba si el token está a punto de caducar
-      if (token.expires && Date.now() > token.expires - 25000) {
+      if (token.expires && Date.now() > token.expires - 1) {
+        console.log("caducó")
         const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/user/profile`, {
           method: 'POST',
           headers: {
@@ -78,14 +78,9 @@ const authOptions = {
             email: token.email
           })
         });
-
         if (res.ok) {
           const data = await res.json();
-          token = {
-            ...token,
-            ...data,
-            expires: Date.now() + 30 * 60 * 1000
-          };
+          token.accessToken = data.refreshToken;
         }
       }
 
@@ -121,16 +116,18 @@ const authOptions = {
           }
         );
         const userData = await response.json();
-
         if (response.status === 201) {
           user.accessToken = userData.accessToken;
-          return true;
+          user.username = userData.username;
+          return {
+            ...user,
+          };
         } else {
           return false;
         }
       } else if (account.provider === 'credentials') {
         if (user) {
-          return true;
+          return user;
         }
       }
       return false;

@@ -143,7 +143,6 @@ export default function ProfilePage() {
 
   return (
     <div className="w-full lg:p-4">
-      <br />
       <h1 className="lg:rounded-xl border-2 p-1 font-bold text-xl text-center text-gray-500">Perfil</h1>
       <div className="p-4 grid place-items-center gap-4">
         {!selectedAvatar || !selectedAvatar?.url ? (

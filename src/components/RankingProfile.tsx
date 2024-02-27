@@ -1,116 +1,118 @@
-import { EnumCategory } from "@/lib/types/challenge";
+import { EnumCategory, EnumDifficulty } from "@/lib/types/challenge";
 import { DetailsRankingProfile } from "@/lib/types/rankings";
-import { CircularProgress, Tooltip, Typography } from "@mui/material";
+import { Alert, CircularProgress, List, Tooltip } from "@mui/material";
+import { useState } from "react";
 import { FaQuestionCircle } from "react-icons/fa";
 import useSWR from "swr";
+import NavRanking from "./cards/NavRanking";
 
-type impro = {
+type defaultInterface = {
   EnumDifficulty: DetailsRankingProfile
 }
-
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 export default function RankingProfile() {
   const { data: rankPalabras, error: errorPalabras } = useSWR(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/user/ranking?category=${EnumCategory.PALABRAS}`, fetcher);
   const { data: rankNumeros, error: errorNumeros } = useSWR(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/user/ranking?category=${EnumCategory.NUMEROS}`, fetcher);
+  const [palabras, setPalabras] = useState(EnumDifficulty.FACIL);
+  const [numeros, setNumeros] = useState(EnumDifficulty.FACIL);
+
+  const renderComponent = (difficulty: any, rank: any) => {
+    switch (difficulty) {
+      case EnumDifficulty.FACIL:
+        return <ContenidoRanking rank={rank.FACIL} />;
+      case EnumDifficulty.MEDIO:
+        return <ContenidoRanking rank={rank.MEDIO} />;
+      case EnumDifficulty.DIFICIL:
+        return <ContenidoRanking rank={rank.DIFICIL} />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <section className="w-full dark:bg-gray-900 duration-300 pt-5">
       <h1 className="lg:rounded-xl border-2 p-1 font-bold text-xl text-center text-gray-500 mb-3">Puntuación Personal</h1>
-      <hr />
       <div className="border-2 mt-3 p-4 rounded-lg">
-        <h4>CATEGORIA: PALABRAS</h4>
-        <br />
-        <div className="grid sm:grid-cols-3 justify-center gap-2">
-          {errorPalabras ? (
-            <p>Error al cargar los datos</p>
-          ) : !rankPalabras? (
-            <CircularProgress />
-          ) : (
-            <>
-              <CampoFacil rank={rankPalabras.FACIL} />
-              <CampoMedio rank={rankPalabras.MEDIO} />
-              <CampoDificil rank={rankPalabras.DIFICIL} />
-            </>
-          )}
-        </div>
+        <h4><strong>Categoría:</strong> Palabras</h4>
+        <NavRanking value={palabras} setValue={setPalabras} key='PALABRAS' />
+        {errorPalabras ? (
+          <p>Error al cargar los datos</p>
+        ) : !rankPalabras ? (
+          <CircularProgress />
+        ) : (
+          renderComponent(palabras, rankPalabras)
+        )}
       </div>
       <br />
       <div className="border-2 p-4 rounded-lg">
-        <h4>CATEGORIA: NUMEROS</h4>
-        <br />
-        <div className="grid sm:grid-cols-3 justify-center gap-2">
-          {errorNumeros ? (
-            <p>Error al cargar los datos</p>
-          ) : !rankNumeros ? (
-            <CircularProgress />
-          ) : (
-            <>
-              <CampoFacil rank={rankNumeros.FACIL} />
-              <CampoMedio rank={rankNumeros.MEDIO} />
-              <CampoDificil rank={rankNumeros.DIFICIL} />
-            </>
-          )}
-        </div>
+        <h4><strong>Categoría:</strong> Números</h4>
+        <NavRanking value={numeros} setValue={setNumeros} key='Números' />
+        {errorNumeros ? (
+          <p>Error al cargar los datos</p>
+        ) : !rankNumeros ? (
+          <CircularProgress />
+        ) : (
+          renderComponent(numeros, rankNumeros)
+        )}
       </div>
     </section>
   )
 }
 
-
-export const CampoFacil = ({ rank }: { rank: DetailsRankingProfile }) => {
+export const ContenidoRanking = ({ rank }: { rank: DetailsRankingProfile }) => {
   return (
-    <div className="border w-auto border-green-400 text-green-400 rounded-lg text-center font-bold">
-          <div className="bg-green-400 p-2">
-              <h2 className="text-white ">🎈 Facil  </h2>
-          </div>
-          <div className="p-6">
-            <Typography fontSize={10} fontWeight={600} textAlign={"center"} className={"rounded-lg bg-purple-100 border-2 border-purple-500 text-purple-600 w-min !mx-auto whitespace-nowrap p-1 px-4 flex gap-2 flex-nowrap items-center"}>
-              {rank['puntos']} pts <Tooltip title={`Lecciones: ${rank['lecciones']} | Retos: ${rank['retos']}`} placement="top" arrow>
-                <div>
-                  <FaQuestionCircle />
-                </div>
-              </Tooltip>
-            </Typography>
-          </div>
-      </div>
+    <div className="text-center flex gap-4 justify-center items-center">
+      {rank['puntos'] !== 0 ? (
+        <List dense={true}>
+          <Alert variant="outlined" severity="info">
+            Aún no tienes un puntaje registrado. Animate a intentarlo.
+          </Alert>
+        </List>
+      ) : (
+        <>
+          <h1 className="text-3xl text-gray-400 font-bold">#{rank['ranking']}</h1>
+          <h2 className="text-xl text-gray-600">{rank['puntos']} pts </h2>
+          <Tooltip title={`Lecciones: ${rank['lecciones']} | Retos: ${rank['retos']}`} placement="top" arrow>
+            <div className="text-purple-500">
+              <FaQuestionCircle />
+            </div>
+          </Tooltip>
+        </>
+      )}
+    </div>
   )
 }
 
-export const CampoMedio = ({ rank }: { rank: DetailsRankingProfile }) => {
-  return (
-    <div className="border w-auto border-violet-400 text-violet-400 rounded-lg text-center font-bold">
-          <div className="bg-violet-400 p-2">
-              <h2 className="text-white ">🏹 Medio</h2>
-          </div>
-          <div className="p-6">
-            <Typography fontSize={10} fontWeight={600} textAlign={"center"} className={"rounded-lg bg-purple-100 border-2 border-purple-500 text-purple-600 w-min !mx-auto whitespace-nowrap p-1 px-4 flex gap-2 flex-nowrap items-center"}>
-              {rank['puntos']} pts <Tooltip title={`Lecciones: ${rank['lecciones']} | Retos: ${rank['retos']}`} placement="top" arrow>
-                <div>
-                  <FaQuestionCircle />
-                </div>
-              </Tooltip>
-            </Typography>
-          </div>
-      </div>
-  )
-}
+// export const CampoMedio = ({ rank }: { rank: DetailsRankingProfile }) => {
+//   return (
+//     <div className="border w-auto border-violet-400 text-violet-400 rounded-lg text-center font-bold">
+//       <div className="p-6">
+//         <Typography fontSize={10} fontWeight={600} textAlign={"center"} className={"rounded-lg bg-purple-100 border-2 border-purple-500 text-purple-600 w-min !mx-auto whitespace-nowrap p-1 px-4 flex gap-2 flex-nowrap items-center"}>
+//           {rank['puntos']} pts <Tooltip title={`Lecciones: ${rank['lecciones']} | Retos: ${rank['retos']}`} placement="top" arrow>
+//             <div>
+//               <FaQuestionCircle />
+//             </div>
+//           </Tooltip>
+//         </Typography>
+//       </div>
+//     </div>
+//   )
+// }
 
-export const CampoDificil = ({ rank }: { rank: DetailsRankingProfile }) => {
-  return (
-    <div className="border w-auto border-red-400 text-red-400 rounded-lg text-center font-bold">
-          <div className="bg-red-400 p-2">
-              <h2 className="text-white ">🎃 Dificil</h2>
-          </div>
-          <div className="p-6">
-            <Typography fontSize={10} fontWeight={600} textAlign={"center"} className={"rounded-lg bg-purple-100 border-2 border-purple-500 text-purple-600 w-min !mx-auto whitespace-nowrap p-1 px-4 flex gap-2 flex-nowrap items-center"}>
-              {rank['puntos']} pts <Tooltip title={`Lecciones: ${rank['lecciones']} | Retos: ${rank['retos']}`} placement="top" arrow>
-                <div>
-                  <FaQuestionCircle />
-                </div>
-              </Tooltip>
-            </Typography>
-          </div>
-      </div>
-  )
-}
+// export const CampoDificil = ({ rank }: { rank: DetailsRankingProfile }) => {
+
+//   return (
+//     <div className="border w-auto border-red-400 text-red-400 rounded-lg text-center font-bold">
+//       <div className="p-6">
+//         <Typography fontSize={10} fontWeight={600} textAlign={"center"} className={"rounded-lg bg-purple-100 border-2 border-purple-500 text-purple-600 w-min !mx-auto whitespace-nowrap p-1 px-4 flex gap-2 flex-nowrap items-center"}>
+//           {rank['puntos']} pts <Tooltip title={`Lecciones: ${rank['lecciones']} | Retos: ${rank['retos']}`} placement="top" arrow>
+//             <div>
+//               <FaQuestionCircle />
+//             </div>
+//           </Tooltip>
+//         </Typography>
+//       </div>
+//     </div>
+//   )
+// }
