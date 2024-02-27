@@ -33,7 +33,7 @@ export default function RankingProfile() {
   return (
     <section className="w-full dark:bg-gray-900 duration-300 pt-5">
       <h1 className="lg:rounded-xl border-2 p-1 font-bold text-xl text-center text-gray-500 mb-3">Puntuación Personal</h1>
-      <div className="border-2 mt-3 p-4 rounded-lg">
+      <div className="border-2 mt-3 p-4 rounded-lg text-center">
         <h4><strong>Categoría:</strong> Palabras</h4>
         <NavRanking value={palabras} setValue={setPalabras} key='PALABRAS' />
         {errorPalabras ? (
@@ -71,7 +71,7 @@ export const ContenidoRanking = ({ rank }: { rank: DetailsRankingProfile }) => {
         </List>
       ) : (
         <>
-          <h1 className="text-3xl text-gray-400 font-bold">#{rank['ranking']}</h1>
+{/*           <h1 className="text-3xl text-gray-400 font-bold">#{rank['ranking']}</h1> */}
           <h2 className="text-xl text-gray-600">{rank['puntos']} pts </h2>
           <Tooltip title={`Lecciones: ${rank['lecciones']} | Retos: ${rank['retos']}`} placement="top" arrow>
             <div className="text-purple-500">
