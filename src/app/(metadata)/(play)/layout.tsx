@@ -48,7 +48,7 @@ export default function PlayLayout({
         </>
       )}
       <div className={`w-full transition-all duration-300 flex flex-col lg:flex-row ${render ? "max-w-screen-2xl lg:columns-2" : "lg:columns-1"} xl:mx-auto`}>
-        <section className={`h-full flex flex-col gap-10 w-full ${render && "lg:w-2/3"}`}>{children}</section>
+        <section className={`h-full flex flex-col gap-10 w-full ${render && "lg:w-[80%]"}`}>{children}</section>
         {render && (
           <>
             {RankUser && <RankUser />}

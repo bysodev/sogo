@@ -81,7 +81,7 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
                 </li>
                 <li>
                   <a className="hover:text-purple-600 dark:hover:text-purple-400" onClick={() => setNavbar(false)} href="#faq">
-                    P.F
+                    F.A.Q
                   </a>
                 </li>
               </ul>

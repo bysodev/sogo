@@ -10,10 +10,10 @@ export default function FaqSection() {
         <div className="py-12 md:py-20">
           {/* Section header */}
           <div className="max-w-3xl mx-auto text-center pb-6 md:pb-10">
-            <div className="inline-flex text-sm font-semibold py-1 px-3 m-2 text-purple-600 bg-purple-200 rounded-full mb-4">P.F</div>
+            <div className="inline-flex text-sm font-semibold py-1 px-3 m-2 text-purple-600 bg-purple-200 rounded-full mb-4">F.A.Q</div>
             <h1 className="h2 mb-4">Preguntas frecuentes</h1>
           </div>
-          <div className='grid gap-4'>
+          <div className='grid gap-4 text-balance'>
             <Accordion className='shadow-lg btn block p-1 dark:text-white dark:bg-gray-800'>
               <AccordionSummary
                 expandIcon={<MdExpandMore className='dark:text-white' size={25} />}

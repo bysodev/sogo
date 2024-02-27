@@ -32,7 +32,7 @@ export const FooterLesson: React.FC<FooterLessonProps> = ({
     const [modalOpen, setModalOpen] = useState(false);
     useEffect(() => {
         const modalPreference = localStorage.getItem('modalLesson');
-        if (!modalPreference) {
+        if (modalPreference) {
             setModalOpen(true);
         }
     }, []);
@@ -105,16 +105,16 @@ export const FooterLesson: React.FC<FooterLessonProps> = ({
                         <h1 className="font-bold text-2xl md:text-2xl xl:text-3xl mb-6 text-center text-purple-400">Indicaciones Generales</h1>
                         <button className="absolute top-0 right-0 m-4" onClick={handleClose}><HiX size={25} /></button>
                     </div>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mx-8">
                         <div>
-                            <h2 className="font-bold text-lg mb-2">Cómo colocar la imagen frente a la pantalla:</h2>
-                            <p className="mb-4">Asegúrate de que tu mano esté centrada y completamente visible en el recuadro de la cámara. Asegúrate de que la imagen esté clara, nítida y con buena iluminación. Si las condiciones no se cumplen puedes adaptar tu entorno y tomar nuevamente la foto presionando sobre el texto &apos;Reiniciar Temporizador&apos;.</p>
+                            <h2 className="font-bold text-lg mb-2">¿Cómo colocar la imagen frente a la pantalla?</h2>
+                            <p className="mb-4 text-balance">Debe garantizar que la mano esté centrada y visible en el cuadro de la cámara, de forma nítida y bien iluminada. Puede tomar la foto nuevamente al presionar sobre &apos;Reiniciar Temporizador&apos; si lo requiere.</p>
                             <Image priority src={"/images/how2lesson.webp"} height={100} width={500} alt="Imagen correcta" className="h-auto w-auto mt-auto mx-auto object-contain" />
                         </div>
                         <div className="flex flex-col justify-between">
                             <div>
-                                <h2 className="font-bold text-lg mb-2">Cómo NO colocar la imagen frente a la pantalla:</h2>
-                                <p className="mb-4">Evita que existan otros objetos que abstaculicen tu mano dentro del recuadro. Evita colocar tu rostro detrás de tu manu, se recomienda un fondo prolijo. Evita lugares con poca luz o escasa ilumnación.</p>
+                                <h2 className="font-bold text-lg mb-2">¿Cómo NO colocar la imagen frente a la pantalla?</h2>
+                                <p className="mb-4 text-balance">Se deben evitar objetos que obstruyan la mano en el cuadro, así como colocar el rostro detrás de la mano; se sugiere un fondo ordenado. Además, no se recomienda lugares con poca iluminación.</p>
                             </div>
                             <Image priority src={"/images/how2Notlesson.webp"} height={300} width={500} alt="Imagen correcta" className="h-auto mt-auto w-auto mx-auto object-contain" />
                         </div>

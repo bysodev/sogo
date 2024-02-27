@@ -63,9 +63,9 @@ export default function Learn() {
           />
         </div>
         {filteredNumbers.length > 0 ? (
-          <div className="grid p-4 lg:px-0 gap-4 grid-cols-2 2xl:grid-cols-3">
+          <div className="grid p-4 lg:px-0 gap-4 grid-cols-2 xl:grid-cols-3">
             {filteredNumbers.map((item, index) => (
-              <div key={index} className="relative flex flex-col bg-gray-300 p-6 rounded-lg h-72 justify-between">
+              <div key={index} className="relative flex flex-col bg-gray-300 p-6 rounded-lg h-72 xl:h-52 justify-between">
                 <div className='z-10 absolute h-full w-full top-0 start-0 bg-gradient-to-b from-gray-950/80 from-10% via-gray-800/60 via-30% to-transparent to-90% opacity-70 rounded-lg'></div>
                 <Image height={100} width={100} placeholder="blur" blurDataURL={'/images/learn/numbers/preload-number-0.webp'} className='z-0 absolute h-full w-full top-0 start-0 rounded-lg object-cover object-top' src={`/images/learn${item.preaload}.webp`} alt={`Imagen de precarga para la lección ${item.title}`} />
                 <div className="grid gap-4 z-20">
@@ -117,9 +117,9 @@ export default function Learn() {
           />
         </div>
         {filteredletters.length > 0 ? (
-          <div className="grid p-4 gap-4 grid-cols-2 2xl:grid-cols-3">
+          <div className="grid p-4 lg:px-0 gap-4 grid-cols-2 xl:grid-cols-3">
             {filteredletters.map((item, index) => (
-              <div key={index} className="relative flex flex-col bg-gray-300 p-6 rounded-lg h-72 justify-between">
+              <div key={index} className="relative flex flex-col bg-gray-300 p-6 rounded-lg h-72 xl:h-52 justify-between">
                 <div className='z-10 absolute h-full w-full top-0 start-0 bg-gradient-to-b from-gray-950/80 from-10% via-gray-800/60 via-30% to-transparent to-90% opacity-70 rounded-lg'></div>
                 <Image height={100} width={100} placeholder="blur" blurDataURL={'/images/learn/numbers/preload-letter-A.webp'} className='z-0 absolute h-full w-full top-0 start-0 rounded-lg object-cover object-top' src={`/images/learn${item.preaload}.webp`} alt={`Imagen de precarga para la lección ${item.title}`} />
                 <div className="grid gap-4 z-20">

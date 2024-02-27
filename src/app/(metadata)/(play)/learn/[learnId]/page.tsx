@@ -134,13 +134,13 @@ export default function LessonVocales() {
                 </div>
             </div>
             <ModalMUI width={{ xs: '100%', lg: 'auto', xl: 'auto' }} open={modalOpen} handleClose={handleClose}>
-                <div className="relative bg-white p-6 rounded-xl">
+                <div className="relative bg-white p-8 rounded-xl">
                     <div className="text-gray-800">
                         <h1 className="font-bold text-2xl md:text-2xl xl:text-3xl mb-6 text-center text-purple-400">Bienvenido a Sogo Sign</h1>
                         <button className="absolute top-0 right-0 m-4" onClick={handleClose}><HiX size={25} /></button>
                     </div>
                     <h2 className="font-bold text-lg mb-4">Inidicaciones Generales:</h2>
-                    <p className="mb-6">En este apartado, la cámara actúa como un espejo, permitiéndote practicar y repasar las señas estáticas de la LSE. No evaluamos tu desempeño en tiempo real, por lo que puedes practicar a tu propio ritmo.</p>
+                    <p className="mb-6 text-justify">En esta sección, la cámara funciona como un espejo que permite practicar y repasar las señas estáticas de la LSE. No se realiza una evaluación en tiempo real, lo que permite practicar a un ritmo propio.</p>
                     <Image priority src={"/images/how2learn.webp"} width={500} height={500} alt="Imagen introductoria al módulo de aprendizaje" className="h-auto mb-6 w-full mx-auto object-contain" />
                 </div>
             </ModalMUI>

@@ -53,7 +53,7 @@ export default function RankingChallengePage() {
   const { data: rankNumeros, error: errorNumeros } = useSWR(`${process.env.NEXT_PUBLIC_ROUTE_APP}/api/auth/ranking?category=${EnumCategory.NUMEROS}`, fetcher);
 
   return (
-    <section className="relative dark:bg-gray-900 lg:w-[38rem] h-full duration-300 pt-5 lg:pt-0">
+    <section className="relative dark:bg-gray-900 lg:w-[30rem] h-full duration-300 pt-5 lg:pt-0">
       <div className="mb-32 lg:mb-0 lg:fixed overflow-y-auto h-full lg:border-l-4 ">
         <div className="h-auto text-center text-gray-900 dark:text-gray-100 lg:py-4 px-4 pt-10 lg:p-4 grid gap-4 border-t-4 lg:border-t-0 ">
           <h1 className="lg:rounded-xl border-2 p-1 font-bold text-xl text-center text-gray-500">Tabla de clasificación</h1>
@@ -121,13 +121,13 @@ export const RankItem = ({ rank, rankNumber }: { rank: DetailsRankingApi, rankNu
             ) : (
               <Image className={`rounded-full border-[4px] ${rankColors[rankNumber]} w-auto ${rankNumber === 1 ? "h-24" : "h-[5.5rem]"} ${marginTopClass}`} src={avatar || ''} height={100} width={100} alt={`Imagen del usuario ${rank.username}`} />
             )}
-            {rankNumber === 1 && <FaCrown size={75} className={`absolute -top-11 rotate-[35deg] -right-6 text-4xl text-yellow-300`} />}
+            {rankNumber === 1 && <FaCrown size={75} className={`absolute -top-11 rotate-[35deg] -right-7 text-4xl text-yellow-300`} />}
             <span className={`absolute grid place-content-center bottom-0 leading-none rounded-full border-[4px] h-8 w-8 text-center text-base font-bold ${rankColors[rankNumber]}`}>{rankNumber}</span>
           </ListItemAvatar>
           <ListItemText
             className={rankColors[rankNumber] + " w-full py-4 rounded-t-lg"}
             primary={
-              <Typography component="p" variant="body1" fontSize={16} fontWeight={600} color="text.primary" textAlign={"center"}>
+              <Typography component="p" variant="body1" fontSize={14} fontWeight={600} color="text.primary" textAlign={"center"}>
                 {rank.username}
               </Typography>
             }
@@ -157,12 +157,12 @@ export const RankItem = ({ rank, rankNumber }: { rank: DetailsRankingApi, rankNu
               className="justify-between items-center px-4"
               sx={{ fontSize: 20, display: 'inline-flex', justifyContent: 'around' }}
               primary={
-                <Typography component="p" variant="body1" fontSize={16} fontWeight={600} color="text.primary" textAlign={"center"}>
+                <Typography component="p" variant="body1" fontSize={14} fontWeight={600} color="text.primary" textAlign={"center"}>
                   {rank.username}
                 </Typography>
               }
               secondary={
-                <Typography fontSize={16} fontWeight={600} color="text.secondary" textAlign={"center"}>
+                <Typography fontSize={14} fontWeight={600} color="text.secondary" textAlign={"center"}>
                   {rank.puntos} pts
                 </Typography>
               }
@@ -221,7 +221,7 @@ export const ListRankings = ({ ranks }: { ranks: DetailsRankingApi[] }) => {
                   className={rankColors[rankNumber] + " w-full py-4 rounded-t-lg"}
                   sx={{ fontSize: 20 }}
                   primary={
-                    <Typography component="p" variant="body1" fontSize={16} fontWeight={600} color="text.primary" textAlign={"center"}>
+                    <Typography component="p" variant="body1" fontSize={14} fontWeight={600} color="text.primary" textAlign={"center"}>
                       Vacante
                     </Typography>
                   }
@@ -250,12 +250,12 @@ export const ListRankings = ({ ranks }: { ranks: DetailsRankingApi[] }) => {
               className="justify-between items-center px-4"
               sx={{ fontSize: 20, display: 'inline-flex', justifyContent: 'around' }}
               primary={
-                <Typography component="p" variant="body1" fontSize={16} fontWeight={600} color="text.primary" textAlign={"center"}>
+                <Typography component="p" variant="body1" fontSize={14} fontWeight={600} color="text.primary" textAlign={"center"}>
                   Vacante
                 </Typography>
               }
               secondary={
-                <Typography fontSize={16} fontWeight={600} color="text.secondary" textAlign={"center"}>
+                <Typography fontSize={14} fontWeight={600} color="text.secondary" textAlign={"center"}>
                   ? pts
                 </Typography>
               }

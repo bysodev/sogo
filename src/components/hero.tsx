@@ -32,7 +32,7 @@ export default function Hero() {
           <div className="text-center pb-12 md:pb-16">
             <h1 className="text-5xl md:text-6xl font-extrabold leading-tighter tracking-tighter mb-4" data-aos="zoom-y-out">Lengua de Señas Ecuatoriana con <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-800 to-fuchsia-400">Inteligencia Artificial</span></h1>
             <div className="max-w-3xl mx-auto">
-              <p className="text-xl text-gray-600 dark:text-gray-300 mb-8" data-aos="zoom-y-out" data-aos-delay="150"><strong>SogoSign</strong> la mejor plataforma para aprendizaje de lengua de señas ecuatoriana (LSE) con integración de inteligencia artificial (IA).</p>
+              <p className="text-xl text-gray-600 dark:text-gray-300 mb-8" data-aos="zoom-y-out" data-aos-delay="150"><strong>SogoSign</strong> la mejor plataforma para aprendizaje de Lengua de Señas Ecuatoriana (LSE) con integración de Inteligencia Artificial (IA).</p>
               <div className="max-w-xs mx-auto sm:max-w-none" data-aos="zoom-y-out" data-aos-delay="300">
                 <button
                   onClick={() => { router.push('/learn') }}
