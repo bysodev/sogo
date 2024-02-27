@@ -69,7 +69,7 @@ export default function CompleteChallenge(
                     </div>
                     <div className="p-6">
                         <span>
-                            {formatoDosDigitos(minutes)}:{formatoDosDigitos(seconds)} m:s
+                            ⏱{" "}{formatoDosDigitos(minutes)}:{formatoDosDigitos(seconds)} m:s
                         </span>
                     </div>
                 </div>
@@ -79,7 +79,7 @@ export default function CompleteChallenge(
                     </div>
                     <div className="p-6">
                         <span>
-                            + {points}
+                            🏆{" "}{points} puntos
                         </span>
                     </div>
                 </div>
@@ -89,7 +89,7 @@ export default function CompleteChallenge(
                     </div>
                     <div className="p-6">
                         <span>
-                            + {bonus}
+                            🎯{" "}{bonus}
                         </span>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 import IconTouch from '@/components/icons/IconTouch';
+import Image from 'next/image';
 import Webcam from 'react-webcam';
-import Image from 'next/image'
 /**
  * Componente de la cámara.
  * @param {object} props - Propiedades del componente.

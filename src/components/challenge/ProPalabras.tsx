@@ -283,7 +283,8 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
 
 
   const handleSubmit = () => {
-    const totalTime = (startime.final.getTime() - startime.inicio.getTime());
+    const tiempo_finzalizacion = new Date();
+    const totalTime = (tiempo_finzalizacion.getTime() - startime.inicio.getTime());
     const { minutes, seconds } = getMinutesAndSeconds(totalTime);
     // Ingualar a milisegundos (mm:ss)
     const segundos = (challenge.minutes_max * 60) + challenge.seconds_max;

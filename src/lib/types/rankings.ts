@@ -10,6 +10,14 @@ export interface DetailsRankingApi {
   ranking: number;
 }
 
+export interface DetailsRankingProfile {
+  dificultad: EnumDifficulty;
+  retos: number;
+  lecciones: number;
+  puntos: number;
+  ranking: number;
+}
+
 export type ListRankingProps = {
   [key in EnumDifficulty]: DetailsRankingApi[];
 };

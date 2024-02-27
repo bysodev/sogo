@@ -477,7 +477,9 @@ export default function ChallengesPage() {
     };
 
     const handleSubmitChall = () => {
-        const totalTime = (startime.final.getTime() - startime.inicio.getTime());
+        const tiempo_finzalizacion = new Date();
+        const totalTime = (tiempo_finzalizacion.getTime() - startime.inicio.getTime());
+        // const totalTime = (startime.final.getTime() - startime.inicio.getTime());
         const maxTime = ((progres.minutes * 60) + progres.seconds) * 1000;
         const { minutes, seconds, outside } = getMinutesAndSeconds(totalTime, maxTime);
 

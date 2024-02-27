@@ -45,7 +45,7 @@ function getMinutesAndSeconds(totalMilliseconds: number) {
 
   // Calcular los segundos restantes
   const seconds = Math.floor(totalSeconds % 60);
-
+  console.log( minutes, seconds )
   return { minutes, seconds };
 }
 
@@ -346,12 +346,15 @@ export default function ProNumeros({ challenge, dificultad }: { challenge: Conte
   };
 
   const handleSubmit = () => {
-    const totalTime = (startime.final.getTime() - startime.inicio.getTime());
+    const tiempo_finzalizacion = new Date();
+    const totalTime = (tiempo_finzalizacion.getTime() - startime.inicio.getTime());
+    // const totalTime = (startime.final.getTime() - startime.inicio.getTime());new Date()
     const { minutes, seconds } = getMinutesAndSeconds(totalTime);
     // Ingualar a milisegundos (mm:ss)
     const segundos = (challenge.minutes_max * 60) + challenge.seconds_max;
     const milisegundos = segundos * 1000;
     const fails = challenge.fails_max - progres.intentos
+    console.log( {totalTime, milisegundos} )
     const score = calculateScore(challenge.points, fails, challenge.fails_max, totalTime, milisegundos)
     handlePostChallenge(challenge.id, score, minutes, seconds, fails).then((response) => {
       setCompleted(true)

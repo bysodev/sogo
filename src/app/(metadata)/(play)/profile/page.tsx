@@ -11,6 +11,7 @@ import { MdEdit } from "react-icons/md";
 import useSWR from 'swr';
 
 // Dynamically import components that are not critical for initial render
+const RankingProfile = dynamic(() => import("@/components/RankingProfile"));
 const ModalMUI = dynamic(() => import("@/components/ModalMUI"));
 const TooltipMessage = dynamic(() => import("@/components/TooltipMessage"));
 const IconLoading = dynamic(() => import("@/components/icons/IconLoading"));
@@ -142,6 +143,7 @@ export default function ProfilePage() {
 
   return (
     <div className="w-full lg:p-4">
+      <br />
       <h1 className="lg:rounded-xl border-2 p-1 font-bold text-xl text-center text-gray-500">Perfil</h1>
       <hr className="mt-4" />
       <div className="p-4 grid place-items-center gap-4">
@@ -403,6 +405,7 @@ export default function ProfilePage() {
           </div>
         </div>
       </ModalMUI>
+      <RankingProfile />
     </div>
   );
 }
