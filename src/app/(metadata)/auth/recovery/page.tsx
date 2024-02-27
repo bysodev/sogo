@@ -88,7 +88,7 @@ export default function PasswordRecoveryPage() {
 
   const params = useSearchParams();
   const token = params.get('token');
-  const [isTokenValid, setIsTokenValid] = useState(true);
+  const [isTokenValid, setIsTokenValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { push } = useRouter();
   const { data, error, isValidating } = useSWR(token ? `${url_app}/api/auth/user/recovery?token=${token}` : null, fetch, { revalidateOnFocus: false });
