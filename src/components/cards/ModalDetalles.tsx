@@ -28,13 +28,13 @@ export default function ModalDetalles({ open, handleClose, category }: { open: b
                 <div className="flex flex-col sm:flex-row justify-around my-2 gap-2">
                     <div className="w-full bg-slate-100 rounded-2xl p-4 flex flex-col justify-center gap-2">
                         <span className="text-center font-mono font-bold">Tipos de retos</span>
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="flex justify-center flex-wrap gap-3">
                             {
                                 EnumCategory.PALABRAS == category && (
                                     palabras.itemsCategory.map((cat, index) => (
                                         <span
                                             key={index}
-                                            className={`inline-flex font-semibold items-center justify-center rounded-full px-2.5 py-0.5 ${colores_tipos.get(index)}`}
+                                            className={`inline-flex font-semibold items-center justify-center rounded-full px-2.5 py-0.5 bg-violet-200 text-violet-700`}
                                         >
                                             <p className="whitespace-nowrap text-sm">{cat}</p>
                                         </span>
@@ -46,7 +46,7 @@ export default function ModalDetalles({ open, handleClose, category }: { open: b
                                     numeros.itemsCategory.map((cat, index) => (
                                         <span
                                             key={index}
-                                            className={`inline-flex font-semibold items-center justify-center rounded-full px-2.5 py-0.5 ${colores_tipos.get(index)}`}
+                                            className={`inline-flex font-semibold items-center justify-center rounded-full px-2.5 py-0.5 bg-violet-200 text-violet-700`}
                                         >
                                             <p className="whitespace-nowrap text-sm">{cat}</p>
                                         </span>
@@ -81,14 +81,14 @@ export default function ModalDetalles({ open, handleClose, category }: { open: b
 
 const palabras = {
     title: 'Retos con Palabras',
-    contentCategory: "Los desafíos estarán centrados en las vocales, palabras y objetos, los cuales se utilizarán para llevar a cabo diversas actividades.",
-    itemsCategory: ['Deletreo', 'Autocompletado', 'Selección', 'Un intento']
+    contentCategory: "Los desafíos estarán centrados en temas de interés, en donde encontrarás nombres de comidas, países, volcanes, entre otras cosas ya que esta sección está dedicada a las letras y palabras.",
+    itemsCategory: ['Deletreo', 'Autocompletado', 'Un intento']
 }
 
 const numeros = {
     title: 'Retos con Numeros',
-    contentCategory: "En esta cateogría encontrarás retos que te lleven a pensar el resultado de una operación matematica basica y realizar la señas del resultadeasPuede ser por deletreo o en algunos casos solo de una unica imagen deducir los numeros o el resultado por escrito",
-    itemsCategory: ['Deletreo', 'Autocompletado', 'Selección', 'Operaciones', 'Un intento']
+    contentCategory: "De igual forma se manejan temas de interés dedicado a fechas o secuencias de números, y en el mejor de los casos retos con operaciones aritméticas que predecir.",
+    itemsCategory: ['Deletreo', 'Autocompletado', 'Operaciones', 'Un intento']
 }
 
 const colores_tipos = new Map<number, string>([

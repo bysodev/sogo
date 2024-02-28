@@ -52,22 +52,34 @@ export default function ProfilePage() {
   async function handleUpdate(data: any) {
     setFetching(true);
     const { username, image, currentPassword, password } = data
-    if (!username || !image) {
-      setFetching(false);
-      showErrorToast('Campos vacíos')
-      return;
-    }
     const updatedUser: any = {
       username: username,
       image: image,
+      only: false
     };
 
-    if (currentPassword) {
-      updatedUser.currentPassword = currentPassword;
-    }
+    if( user?.data.image !== image && (user?.data.username == username && !isChecked ) ){
+      updatedUser.only = true;
+    }else{
+      if (!username || !image) {
+        setFetching(false);
+        showErrorToast('Campos vacíos')
+        return;
+      }
 
-    if (password) {
-      updatedUser.password = password;
+      if (currentPassword == '') {
+        setFetching(false);
+        showErrorToast('En este caso la contraseña actual se necesita')
+        return;
+      }
+  
+      if (currentPassword) {
+        updatedUser.currentPassword = currentPassword;
+      }
+  
+      if (password) {
+        updatedUser.password = password;
+      }
     }
 
     try {
@@ -254,10 +266,10 @@ export default function ProfilePage() {
                           className="flex-1 focus:outline-none bg-transparent focus:bg-transparent btn border border-gray-400 p-3 ps-6 dark:text-gray-200"
                           type="password"
                           {...register("currentPassword", {
-                            required: {
-                              value: true,
-                              message: "Contraseña requerida",
-                            },
+                            // required: {
+                            //   value: true,
+                            //   message: "Contraseña requerida",
+                            // },
                             minLength: {
                               value: 8,
                               message: "Requiere al menos 8 caracteres",

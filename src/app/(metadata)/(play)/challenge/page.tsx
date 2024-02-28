@@ -46,19 +46,16 @@ export default function ChallengesPage() {
                 <div className="w-full bg-gray-100 rounded-2xl p-4 flex flex-col justify-center gap-2">
                   <span className="text-center font-mono font-bold">Tipos de retos</span>
                   <div className="grid grid-cols-2 gap-3">
-                    <span className="inline-flex font-semibold items-center justify-center rounded-full px-2.5 py-0.5 bg-emerald-100 text-emerald-700">
+                    <span className="inline-flex font-semibold items-center justify-center rounded-full px-2.5 py-0.5 bg-violet-200 text-violet-700">
                       <p className="whitespace-nowrap text-sm">Deletreo</p>
                     </span>
                     <span className="inline-flex font-semibold items-center justify-center rounded-full px-2.5 py-0.5 bg-violet-200 text-violet-700">
                       <p className="whitespace-nowrap text-sm">Autocompletado</p>
                     </span>
-                    <span className="inline-flex font-semibold items-center justify-center rounded-full px-2.5 py-0.5 bg-rose-100 text-rose-700">
-                      <p className="whitespace-nowrap text-sm">Selección</p>
-                    </span>
-                    <span className="inline-flex font-semibold items-center justify-center rounded-full px-2.5 py-0.5 bg-yellow-100 text-yellow-700">
+                    <span className="inline-flex font-semibold items-center justify-center rounded-full px-2.5 py-0.5 bg-violet-200 text-violet-700">
                       <p className="whitespace-nowrap text-sm">Un intento</p>
                     </span>
-                    <span className="inline-flex font-semibold items-center justify-center rounded-full px-2.5 py-0.5 bg-red-100 text-red-700">
+                    <span className="inline-flex font-semibold items-center justify-center rounded-full px-2.5 py-0.5 bg-violet-200 text-violet-700">
                       <p className="whitespace-nowrap text-sm">Operaciones</p>
                     </span>
                   </div>
