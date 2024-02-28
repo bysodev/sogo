@@ -2,12 +2,15 @@
 
 
 export const StackContent = ({ content, indices, objetivos, objetivo, operacion }: { content: any[], indices: number[], objetivos: any[], objetivo: any, operacion: string[] }) => {
-    return <div className="grid place-content-center w-full gap-6">
+    return <div className={` ${operacion?.length > 1 && ''} flex justify-center w-full gap-6`}>
         {operacion?.length > 1 && (
-            <div className="flex gap-2 justify-center">
-                {operacion.map((op, index) => (
-                    <div key={index} className="opacity-65 p-4 w-14 h-14 flex items-center justify-center shadow-lg rounded-lg bg-gradient-to-tl bg-slate-500 text-white font-bold text-2xl">{op}</div>
-                ))}
+            <div className="flex gap-4">
+                <div className="flex gap-2 justify-center">
+                    {operacion.map((op, index) => (
+                        <div key={index} className="opacity-65 p-4 w-14 h-14 flex items-center justify-center shadow-lg rounded-lg bg-gradient-to-tl bg-slate-500 text-white font-bold text-2xl">{op}</div>
+                    ))}
+                </div>
+                <div className="opacity-65 p-4 w-14 h-14 flex items-center justify-center shadow-lg rounded-lg bg-gradient-to-tl bg-slate-500 text-white font-bold text-2xl">=</div>
             </div>
         )}
         <div className="flex gap-3 justify-center">
