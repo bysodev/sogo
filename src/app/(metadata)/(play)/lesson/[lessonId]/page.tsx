@@ -136,7 +136,7 @@ export default function LessonVocales() {
   const [imagen, setImagen] = useState<any>("");
   const [currentImage, setCurrentImage] = useState(defaultImage);
   const [drawer, setDrawer] = useState(false);
-  const [toggleTime, setToogleTime] = useState("5");
+  const [toggleTime, setToggleTime] = useState("5");
   const [startime, setTime] = useState<Times>({ inicio: new Date(), final: new Date() });
   const [charResults, setCharResults] = useState<{ [key: string]: number }>({});
   const [errors, setErrors] = useState(charResults)
@@ -216,8 +216,10 @@ export default function LessonVocales() {
     return array;
   };
 
-  const handleToogleTime = (event: React.MouseEvent<HTMLElement>, newTime: string) => {
-    setToogleTime(newTime)
+  const handleToggleTime = (event: React.MouseEvent<HTMLElement>, newTime: string) => {
+    if (newTime !== null) {
+      setToggleTime(newTime);
+    }
   }
 
   useEffect(() => {
@@ -406,7 +408,7 @@ export default function LessonVocales() {
                         color="primary"
                         value={toggleTime}
                         exclusive
-                        onChange={handleToogleTime}
+                        onChange={handleToggleTime}
                         aria-label="Platform"
                       >
                         <ToggleButton className="border-none text-bold px-4" color="secondary" value="3">3 Sec</ToggleButton>
