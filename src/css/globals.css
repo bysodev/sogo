@@ -23,6 +23,9 @@
     direction: rtl;
   }
 }
+.MuiStack-root {
+  z-index: 999;
+}
 .MuiFormControl-root {
   align-self: baseline;
 }
