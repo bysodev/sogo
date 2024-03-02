@@ -136,7 +136,7 @@ export default function LessonVocales() {
   const [imagen, setImagen] = useState<any>("");
   const [currentImage, setCurrentImage] = useState(defaultImage);
   const [drawer, setDrawer] = useState(false);
-  const [toggleTime, setToogleTime] = useState("5");
+  const [toggleTime, setToggleTime] = useState("5");
   const [startime, setTime] = useState<Times>({ inicio: new Date(), final: new Date() });
   const [charResults, setCharResults] = useState<{ [key: string]: number }>({});
   const [errors, setErrors] = useState(charResults)
@@ -216,8 +216,10 @@ export default function LessonVocales() {
     return array;
   };
 
-  const handleToogleTime = (event: React.MouseEvent<HTMLElement>, newTime: string) => {
-    setToogleTime(newTime)
+  const handleToggleTime = (event: React.MouseEvent<HTMLElement>, newTime: string) => {
+    if (newTime !== null) {
+      setToggleTime(newTime);
+    }
   }
 
   useEffect(() => {
@@ -399,14 +401,14 @@ export default function LessonVocales() {
                     priority
                   />
                   <div className="relative mx-auto grid place-content-center">
-                    <Stack className="bg-white/90 w-full absolute z-30" spacing={2} alignItems="start">
+                    <Stack className="bg-white/90 w-full absolute z-50" spacing={2} alignItems="start">
                       <ToggleButtonGroup
                         // orientation="vertical"
                         size="medium"
                         color="primary"
                         value={toggleTime}
                         exclusive
-                        onChange={handleToogleTime}
+                        onChange={handleToggleTime}
                         aria-label="Platform"
                       >
                         <ToggleButton className="border-none text-bold px-4" color="secondary" value="3">3 Sec</ToggleButton>
