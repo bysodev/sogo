@@ -89,7 +89,7 @@ export default function LessonVocales() {
                 </div>
             </div>
             <div className="absolute bottom-0 right-0 m-6 p-1 bg-white rounded-lg ms-auto">
-                <button onClick={handleOpen} className="bg-purple-400 p-2 rounded-lg" type="button" title="Mostrar información"><FaQuestion className="animate-pulse text-lg font-bold text-purple-800" /></button>
+                <button onClick={handleOpen} className="animate-bounce bg-purple-400 p-2 rounded-lg" type="button" title="Mostrar información"><FaQuestion className="animate-pulse text-lg font-bold text-purple-800" /></button>
             </div>
             <div className="flex flex-col gap-4 h-full">
                 {(!webcamMounted && selectedChar) && (

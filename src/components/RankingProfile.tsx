@@ -35,7 +35,7 @@ export default function RankingProfile() {
       <h1 className="lg:rounded-xl border-2 p-1 font-bold text-xl text-center text-gray-500 mb-3">Puntuación Personal</h1>
       <div className="border-2 mt-3 p-4 rounded-lg text-center">
         <h4 className="text-start"><strong>Categoría:</strong> Palabras</h4>
-        <NavRanking value={palabras} setValue={setPalabras} key='PALABRAS' />
+        <NavRanking value={palabras} setValue={setPalabras} key='Palabras' />
         {errorPalabras ? (
           <p>Error al cargar los datos</p>
         ) : !rankPalabras ? (

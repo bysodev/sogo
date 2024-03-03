@@ -51,9 +51,9 @@ export default function NavRanking({ value, setValue }: { value: EnumDifficulty,
         }}
         sx={actionStyles}
       >
-        <BottomNavigationAction value={EnumDifficulty.FACIL} label="Facil" icon={<FacilIcon />} />
+        <BottomNavigationAction value={EnumDifficulty.FACIL} label="Fácil" icon={<FacilIcon />} />
         <BottomNavigationAction value={EnumDifficulty.MEDIO} label="Medio" icon={<MedioIcon />} />
-        <BottomNavigationAction value={EnumDifficulty.DIFICIL} label="Dificil" icon={<DificilIcon />} />
+        <BottomNavigationAction value={EnumDifficulty.DIFICIL} label="Difícil" icon={<DificilIcon />} />
       </BottomNavigation>
     </Box>
   )
