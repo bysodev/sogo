@@ -47,7 +47,7 @@ export default function Learn() {
             <header className="w-fit text-purple-500 bg-white p-2 px-4 text-center rounded-md text-base">
               <h5>Números</h5>
             </header>
-            <p className="text-xs font-medium 2xl:text-sm">Aprende como realizar correctamente los números del 0 al 9 con videotutoriales de personas certificadas</p>
+            <p className="font-medium">Aprende como realizar correctamente las señas estáticas de los números del 0 al 9 con videotutoriales de personas certificadas</p>
           </article>
           <aside className={`w-auto grid place-items-center text-white`}>
             <button onClick={() => push("/learn/course?search=number")} className="bg-purple-700 p-2 px-4 font-bold text-base rounded-lg hover:bg-purple-800 hover:scale-105">Comenzar</button>
@@ -101,7 +101,7 @@ export default function Learn() {
             <header className="w-fit text-indigo-500 bg-white p-2 px-4 text-center rounded-md text-base">
               <h5>Abecedario</h5>
             </header>
-            <p className="text-xs font-medium 2xl:text-sm">Aprende como realizar correctamente las señas estáticas del abecedario con videotutoriales de personas certificadas</p>
+            <p className="font-medium">Aprende como realizar correctamente las señas estáticas del abecedario con videotutoriales de personas certificadas</p>
           </article>
           <aside className={`w-auto grid place-items-center text-white`}>
             <button onClick={() => push("/learn/course?search=letter")} className="bg-indigo-700 p-2 px-4 font-bold text-base rounded-lg hover:bg-indigo-800 hover:scale-110">Comenzar</button>

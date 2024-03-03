@@ -328,7 +328,7 @@ export default function ProPalabras({ challenge, dificultad }: { challenge: Cont
         : (
           <>
             {check && <Confetti className="!z-50 !h-full !w-full" />}
-            <div className="flex flex-col gap-4 h-full">
+            <div className="flex flex-col gap-2 h-full">
               <ProgressbarChallenge porcentaje={progres.porcentaje} setDrawer={setDrawer} totalTry={progres.intentos} />
               <StackContent content={progres.arreglo} indices={progres.indices} objetivos={progres.objetivos} objetivo={progres.objetivo} operacion={['']} />
               <div className={`grid ${!challenge.supplement ? "lg:grid-cols-2" : "lg:grid-cols-1"} justify-center items-center text-center h-full`}>

@@ -1,7 +1,7 @@
 'use client'
 import Logo from "@/components/icons/logo";
 import useScreenSize from '@/utilities/useScreenSize';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -79,7 +79,7 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
                     Contacto
                   </a>
                 </li>
-                <li>
+                <li> 
                   <a className="hover:text-purple-600 dark:hover:text-purple-400" onClick={() => setNavbar(false)} href="#faq">
                     F.A.Q
                   </a>
@@ -133,6 +133,16 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
                     rel="preload"
                   >
                     Ingresar
+                  </Link>
+                  <Link
+                    onClick={
+                      () => {
+                        signOut()
+                      }
+                    }
+                    href={'/'}
+                    className="text-gray-800 hover:text-purple-600 dark:text-white dark:hover:text-purple-400">
+                      <h2 className="text-lg whitespace-pre duration-100 leading-none">Cerras Sesión</h2>
                   </Link>
                 </>
               ) : (

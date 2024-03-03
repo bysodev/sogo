@@ -75,7 +75,7 @@ export function ChallengeCard({ details, title, category, index }: { details: Ar
         <div className={`${category === "PALABRAS" ? "bg-purple-500" : "bg-indigo-500"} gap-4 flex flex-col sm:flex-row justify-between h-full w-full lg:rounded-2xl transition-all duration-700 ease-out p-8 px-6`}>
             <div className='w-full grid items-center gap-4'>
                 <div className='block'>
-                    <p className='text-xl lg:text-2xl font-bold text-white'>Categoría: {title.charAt(0).toUpperCase() + title.slice(1).toLowerCase()}</p>
+                    <p className='text-xl lg:text-2xl font-bold text-white'>Categoría: {title == 'NUMEROS' ? 'Números' : title.charAt(0).toUpperCase() + title.slice(1).toLowerCase()} </p>
                     <Striped gradientColor1={category === "PALABRAS" ? '#e6b4ff' : '#bbbcf1'} gradientColor2={category === "PALABRAS" ? '#caa6ea' : '#8a8cf1'} progreso={obtenerProgreso()} puntos={detalle?.progreso} total={detalle?.total} />
                 </div>
                 <div className="flex gap-4 w-auto">
@@ -89,9 +89,9 @@ export function ChallengeCard({ details, title, category, index }: { details: Ar
                                 displayEmpty
                                 inputProps={{ 'aria-label': 'Without label' }}
                             >
-                                <StyledMenuItem value={EnumDifficulty.FACIL}>Facil</StyledMenuItem>
+                                <StyledMenuItem value={EnumDifficulty.FACIL}>Fácil</StyledMenuItem>
                                 <StyledMenuItem value={EnumDifficulty.MEDIO}>Medio</StyledMenuItem>
-                                <StyledMenuItem value={EnumDifficulty.DIFICIL}>Dificil</StyledMenuItem>
+                                <StyledMenuItem value={EnumDifficulty.DIFICIL}>Difícil</StyledMenuItem>
                             </Select>
                         </FormControl>
                     </ThemeProvider>

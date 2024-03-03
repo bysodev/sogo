@@ -60,7 +60,7 @@ export default function ModalDetalles({ open, handleClose, category }: { open: b
                         <div className="grid grid-cols-1 gap-3 font-medium">
                             <div className="flex justify-around">
                                 <FacilIcon />
-                                <span>Facil</span>
+                                <span>Fácil</span>
                             </div>
                             <div className="flex justify-around">
                                 <MedioIcon />
@@ -68,7 +68,7 @@ export default function ModalDetalles({ open, handleClose, category }: { open: b
                             </div>
                             <div className="flex justify-around">
                                 <DificilIcon />
-                                <span>Dificil</span>
+                                <span>Difícil</span>
                             </div>
 
                         </div>
@@ -86,7 +86,7 @@ const palabras = {
 }
 
 const numeros = {
-    title: 'Retos con Numeros',
+    title: 'Retos con Números',
     contentCategory: "De igual forma se manejan temas de interés dedicado a fechas o secuencias de números, y en el mejor de los casos retos con operaciones aritméticas que predecir.",
     itemsCategory: ['Deletreo', 'Autocompletado', 'Operaciones', 'Un intento']
 }

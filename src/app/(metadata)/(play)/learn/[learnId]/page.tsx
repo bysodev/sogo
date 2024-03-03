@@ -2,7 +2,7 @@
 import ModalMUI from '@/components/ModalMUI';
 import VideoPlayer from '@/components/ui/VideoPlayer';
 import data from '@/store/learnData.json';
-import { CircularProgress } from "@mui/material";
+import { Alert, CircularProgress } from "@mui/material";
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -114,6 +114,7 @@ export default function LessonVocales() {
                             <VideoPlayer src={videoPath} />
                         </div>
                         <div className="w-full h-auto relative overflow-hidden rounded-xl">
+                            <Alert severity="info">La activación de la cámara es para practicas, no es una evaluación en tiempo real</Alert>
                             <Webcam
                                 width={500}
                                 height={600}

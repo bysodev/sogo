@@ -66,7 +66,7 @@ export const FooterChallenge: React.FC<FooterLessonProps> = ({
                 (endLesson || end)  ? (
                     <FooterEndChallenge />
                 ):(
-                    <div className={`border-t-2 border-t-gray-200 p-5 mt-auto ${bg}`}>
+                    <div className={`border-t-2 border-t-gray-200 p-4 mt-auto ${bg}`}>
                         <div className="xl:px-10 mx-auto container">
                             <div className="flex flex-col lg:flex-row justify-between w-full items-center gap-4">
                                 <div className="flex gap-6">
@@ -125,7 +125,7 @@ export const FooterEndChallenge = () => {
 
     const router = useRouter();
     return (
-        <div className={`border-t-2 border-t-gray-200 p-5 mt-auto`}>
+        <div className={`border-t-2 border-t-gray-200 p-3 mt-auto`}>
             <div className="xl:px-10 mx-auto container">
                 <div className="flex justify-between w-full items-center">
                     <div className="flex gap-6">
@@ -136,7 +136,7 @@ export const FooterEndChallenge = () => {
                                 <p className="font-bold"></p>
                             </>
                             <div>
-                                <p className="text-sm font-semibold text-gray-600"> Puedes optar por regresar a los retos o vovler a intentarlo en esta categoria </p>
+                                <p className="text-sm font-semibold text-gray-600"> Puedes optar por regresar a los retos o volver a intentarlo en esta categoría </p>
                             </div>
                         </div>
                     </div>

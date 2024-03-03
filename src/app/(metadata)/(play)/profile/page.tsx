@@ -218,7 +218,7 @@ export default function ProfilePage() {
                     </div>
                     <div className="flex flex-col">
                       <div className="font-semibold whitespace-nowrap flex items-center gap-2">
-                        <span>Email:</span>
+                        <span>Correo:</span>
                         <Tooltip title="Este campo no se puede modificar" placement="right-end" arrow>
                           <div>
                             <FaQuestionCircle />

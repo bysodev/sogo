@@ -65,7 +65,7 @@ export default function ChallengesPage() {
                   <div className="grid grid-cols-1 gap-3 font-medium">
                     <div className="flex justify-around">
                       <FacilIcon />
-                      <span>Facil</span>
+                      <span>Fácil</span>
                     </div>
                     <div className="flex justify-around">
                       <MedioIcon />
@@ -73,7 +73,7 @@ export default function ChallengesPage() {
                     </div>
                     <div className="flex justify-around">
                       <DificilIcon />
-                      <span>Dificil</span>
+                      <span>Difícil</span>
                     </div>
                   </div>
                 </div>

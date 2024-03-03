@@ -20,7 +20,7 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 export const ProgressbarChallenge = ({ porcentaje, setDrawer, totalTry }: { porcentaje: number, setDrawer: Dispatch<SetStateAction<boolean>>, totalTry: number }) => {
     const { push } = useRouter();
     return (
-        <div className='w-full flex gap-5 items-center py-8 px-4 lg:px-16'>
+        <div className='w-full flex gap-5 items-center py-6 px-4 lg:px-16'>
             <div className='flex gap-2 items-center'>
                 <HiHeart color="#9333ea" size={30} />
                 <span className='text-purple-600 font-bold leading-none'>{totalTry}</span>
