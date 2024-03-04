@@ -8,8 +8,8 @@ interface ModalProps {
     children: React.ReactNode;
     width?: number | string | { [key: string]: number | string }; // Modifica el tipo de width
 }
-
 const ModalComponent: React.FC<ModalProps> = ({ open, handleClose, children, width = 450 }) => {
+
     return (
         <Modal
             open={open}

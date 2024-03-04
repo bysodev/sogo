@@ -14,18 +14,18 @@ export default function FaqSection() {
             <div className="inline-flex text-sm font-semibold py-1 px-3 m-2 text-purple-600 bg-purple-200 rounded-full mb-4">F.A.Q</div>
             <h1 className="h2 mb-4">Preguntas frecuentes</h1>
           </div>
-          <div className='grid gap-4 text-balance'>
+          <div className='grid gap-4 text-justify'>
             <Accordion className='shadow-lg btn block p-1 dark:text-white dark:bg-gray-800'>
               <AccordionSummary
                 expandIcon={<MdExpandMore className='dark:text-white' size={25} />}
                 aria-controls="panel1a-content"
                 id="panel1a-header"
               >
-                <h3 className='text-base md:text-lg xl:text-xl font-bold'>¡Empieza a utilizar Sogo Sign!</h3>
+                <h3 className='text-base md:text-lg xl:text-xl font-bold'>¿Cómo registrarse?</h3>
               </AccordionSummary>
               <AccordionDetails>
                 <p>
-                  Dirigite a <Link href={'/auth/register'} className="text-purple-600 dark:text-purple-400 text-lg">registrarme</Link>  y crea una cuenta, necesitas un correo electrónico personal al cual te pueda hacer llegar un correo de verificación y finalmente una redirección al aplicativo para finalizar el proceso, en cuestión de segundos todo estará listo para que puedas empezar.
+                  Para registrarte, dirígete a la página de <Link href={'/auth/register'} className="text-purple-600 dark:text-purple-400 text-lg">registro</Link> y crea tu cuenta. Se te pedirá un correo electrónico personal al cual tengas acceso, ya que este se utilizará en el proceso manual de verificación de la cuenta. Posteriormente, podrás ingresar rápidamente a la plataforma Sogo Sign utilizando las credenciales de acceso proporcionadas o mediante tu cuenta de Google o Github. Una vez dentro, encontrarás disponible todo el material de aprendizaje y las funciones necesarias para comenzar tu experiencia de aprendizaje en Lengua de Señas Ecuatoriana utilizando Inteligencia Artificial.
                 </p>
               </AccordionDetails>
             </Accordion>
@@ -39,7 +39,7 @@ export default function FaqSection() {
               </AccordionSummary>
               <AccordionDetails>
                 <p>
-                  Primero hay que terminar los retos de una categoría y nivel de dificultad en específico, al querer comenzar cuando la barra de progreso esté llena lo llevará a crear su nuevo reto. Pero si tienes creatividad puedes crear retos ilimitados con un truquito
+                  La creación de un reto está condicionado a terminar todos los retos de al menos una categoría y nivel de dificultad. Cuando el indicador de la barra de progreso esté al 100%, al querer comenzar un nuevo reto, lo llevará a crear un reto personalizado. No existe un límite de retos personalizados establecidos pero será menor la cantidad puntos obtenidos.
                 </p>
               </AccordionDetails>
             </Accordion>
@@ -53,7 +53,7 @@ export default function FaqSection() {
               </AccordionSummary>
               <AccordionDetails>
                 <p>
-                  Se explica que la funcionalidad de la cámara solo es para practicar y no se la usa para validar nada, sin embargo, hemos detectado buen uso de este componente al practicar de forma grupal o de forma individual con mejores resultados en memorizar las señas de los temarios.
+                  Se aclara que la función de la cámara se destina exclusivamente a prácticas y no se utiliza con fines de validación. Dado que ha demostrado beneficios significativos en la memorización de las señas presentes en los temarios, mejorando así la experiencia de aprendizaje.
                 </p>
               </AccordionDetails>
             </Accordion>
@@ -95,8 +95,8 @@ export default function FaqSection() {
               </AccordionSummary>
               <AccordionDetails>
                 <p>
-                  En primer lugar, asegúrate de realizar la señal en la parte del cuerpo indicada por el profesor y con la configuración manual correcta.
-                  Además, para garantizar un rendimiento óptimo de la plataforma, es fundamental atender a los siguientes aspectos:
+                  Se recomienda repasar el material de aprendizaje y realizar la seña con la configuración correcta según lo indicado por el profesor.
+                  Además, para garantizar un rendimiento óptimo en las predicciones de la plataforma, es fundamental atender a los siguientes aspectos:
                 </p>
                 <p>
                   A) Asegurar una iluminación adecuada. <br />
@@ -111,15 +111,15 @@ export default function FaqSection() {
                 aria-controls="panel1a-content"
                 id="panel1a-header"
               >
-                <h3 className='text-base md:text-lg xl:text-xl font-bold'>¡Aun tengo algunas dudas, como los contacto!</h3>
+                <h3 className='text-base md:text-lg xl:text-xl font-bold'>¿Cómo los contacto?</h3>
               </AccordionSummary>
               <AccordionDetails>
                 <p>
-                  Nos encantaría poder ayudarte, puedes contactarnos desde <a className="text-purple-600 dark:text-purple-400 text-lg" href="#contact">
-                  aquí
-                  </a> o directamente a nuestro correo electrónico: educaciondigital@espe.edu.ec.
+                  Nos encantaría poder ayudarte y solverta tus dudas. Puedes contactarnos desde nuestras <a className="text-purple-600 dark:text-purple-400 text-lg" href="#contact">
+                    opciones de contacto
+                  </a> o directamente a nuestro correo electrónico: <a href="mailto:educaciondigital@espe.edu.ec" className="text-black font-bold dark:text-purple-400">educaciondigital@espe.edu.ec</a>.
                 </p>
-                
+
               </AccordionDetails>
             </Accordion>
           </div>

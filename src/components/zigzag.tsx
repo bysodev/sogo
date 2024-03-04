@@ -40,8 +40,8 @@ export default function Zigzag() {
               <div className="max-w-xl md:max-w-none md:w-full mx-auto md:col-span-7 lg:col-span-6" data-aos="fade-right">
                 <div className="md:pr-4 lg:pr-12 xl:pr-16">
                   <div className="font-architects-daughter text-lg 2xl:text-xl text-purple-600 mb-2 relative before:top-1/2 before:bottom-1/2 before:-translate-y-1/2 before:content-[''] before:w-4 before:h-4 before:absolute before:bg-purple-500"><span className='ms-6 font-extrabold'>1.</span></div>
-                  <h3 className="h3 mb-3">Basado en la lengua de señas ecuatoriana</h3>
-                  <p className="text-lg 2xl:text-xl text-gray-500 dark:text-gray-300 mb-4 text-balance">Primera plataforma basada en la lengua de señas ecuatoriana &ldquo;Gabriel Román&rdquo; (LSE).</p>
+                  <h3 className="h3 mb-3">Basado en la Lengua de Señas Ecuatoriana</h3>
+                  <p className="text-lg 2xl:text-xl text-gray-500 dark:text-gray-300 mb-4 text-balance">Primera plataforma con integración de Inteligencia Artificial basada en la Lengua de Señas Ecuatoriana &ldquo;Gabriel Román&rdquo; (LSE).</p>
                   <p className="text-lg 2xl:text-xl text-gray-500 dark:text-gray-300 mb-4">Permite aprender:</p>
                   <ul className="text-base 2xl:text-lg text-gray-500 dark:text-gray-300 -mb-2">
                     <li className="flex items-center mb-2">
@@ -72,7 +72,7 @@ export default function Zigzag() {
                 <div className="md:pl-4 lg:pl-12 xl:pl-16">
                   <div className="font-architects-daughter text-lg 2xl:text-xl text-purple-600 mb-2 relative before:top-1/2 before:bottom-1/2 before:-translate-y-1/2 before:content-[''] before:w-4 before:h-4 before:absolute before:bg-purple-500"><span className='ms-6 font-extrabold'>2.</span></div>
                   <h3 className="h3 mb-3">Material didáctico para la enseñanza</h3>
-                  <p className="text-lg 2xl:text-xl text-gray-500 dark:text-gray-300 mb-4 text-balance">Uno de los módulos de la plataforma está destinada a brindar material didáctico segmentado en etapas definidas para aprender la lengua de señas ecuatoriana.</p>
+                  <p className="text-lg 2xl:text-xl text-gray-500 dark:text-gray-300 mb-4 text-balance">Uno de los módulos de la plataforma está destinada a brindar material didáctico segmentado en etapas definidas para aprender la Lengua de Señas Ecuatoriana.</p>
                   <ul className="text-base 2xl:text-lg text-gray-500 dark:text-gray-300 -mb-2">
                     <li className="flex items-center mb-2">
                       <svg className="w-3 h-3 fill-current text-purple-500 mr-2 shrink-0" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">

@@ -92,7 +92,7 @@ export default function LoginPage() {
               autoComplete="usuario"
               disabled={isLoading}
               sx={textFieldStyles}
-              className={`focus:outline-none w-full bg-transparent focus:bg-transparent btn border shadow-none border-gray-400  dark:text-gray-200 ${errors.username
+              className={`focus:outline-none w-full bg-transparent focus:bg-transparent border shadow-none border-gray-400  dark:text-gray-200 ${errors.username
                 ? "text-red-600 border-red-400"
                 : "text-gray-600 border-gray-400"
                 }`}
@@ -117,7 +117,7 @@ export default function LoginPage() {
               autoComplete="password"
               disabled={isLoading}
               sx={textFieldStyles}
-              className={`focus:outline-none w-full bg-transparent focus:bg-transparent btn border shadow-none border-gray-400  dark:text-gray-200 ${errors.password
+              className={`focus:outline-none w-full bg-transparent focus:bg-transparent border shadow-none border-gray-400  dark:text-gray-200 ${errors.password
                 ? "text-red-600 border-red-400"
                 : "text-gray-600 border-gray-400"
                 }`}

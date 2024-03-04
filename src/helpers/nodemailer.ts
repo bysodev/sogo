@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 
 import { templateConfirmUser } from '@/emails/templateConfirmUser';
+import { templateContactForm } from '@/emails/templateContactForm';
 import { templateRecoveryPassword } from '@/emails/templateRecoveryPassword';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
@@ -20,9 +21,10 @@ export const transporter = () => {
 export const sendEmail = async (
   template: any,
   username: string,
-  link: string,
   email: string,
-  subject: string
+  subject: string,
+  link?: string,
+  message?: string
 ) => {
   // const transport = transporter();
   const transport = nodemailer.createTransport({
@@ -43,16 +45,21 @@ export const sendEmail = async (
   const html = () => {
     switch (template) {
       case 'validate-email':
-        return templateConfirmUser(link, username);
+        return templateConfirmUser(link || '', username);
       case 'recovery-password':
-        return templateRecoveryPassword(link, username);
+        return templateRecoveryPassword(link || '', username);
+      case 'contact-form':
+        return templateContactForm(username, email, message || '');
       default:
-        'No template';
+        return 'No template';
     }
   };
+
+  const validatiorTo = message ? process.env.EMAIL_SERVER_USER : email;
+
   await transport.sendMail({
     from: process.env.EMAIL_SERVER_USER,
-    to: email,
+    to: validatiorTo,
     subject,
     html: html(),
   });

@@ -29,9 +29,10 @@ export async function POST(request: Request) {
             await sendEmail(
                 'recovery-password',
                 username,
-                link,
                 email,
-                'Reestablece tu cuenta de SoGo Sign'
+                'Reestablece tu cuenta de SoGo Sign',
+                link,
+                "",
             );
         }
         return new Response(JSON.stringify({ detail: body.detail }), { status: response.status, headers: { 'Content-Type': 'application/json' } })

@@ -10,10 +10,12 @@
 
 @layer components {
   /* Add your custom styles for disabled inputs and buttons here */
-  input:disabled {
+  input:disabled,
+  textarea:disabled {
     @apply bg-gray-50 cursor-not-allowed;
   }
-  .dark input:disabled {
+  .dark input:disabled,
+  .dark textarea:disabled {
     @apply bg-gray-800;
   }
 }

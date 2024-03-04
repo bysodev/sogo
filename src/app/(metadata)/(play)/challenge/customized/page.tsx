@@ -570,7 +570,7 @@ export default function ChallengesPage() {
                                     autoComplete="abc"
                                     disabled={isLoading}
                                     sx={textFieldStyles}
-                                    className={`focus:outline-none w-full bg-transparent focus:bg-transparent btn border shadow-none border-gray-400  dark:text-gray-200 ${errors.content
+                                    className={`focus:outline-none w-full bg-transparent focus:bg-transparent border shadow-none border-gray-400  dark:text-gray-200 ${errors.content
                                         ? "text-red-600 border-red-400"
                                         : "text-gray-600 border-gray-400"
                                         }`}
@@ -623,7 +623,7 @@ export default function ChallengesPage() {
                                             autoComplete="5"
                                             disabled={isLoading}
                                             sx={textFieldStyles}
-                                            className={`focus:outline-none w-full bg-transparent focus:bg-transparent btn border shadow-none border-gray-400  dark:text-gray-200 ${errors.minutes
+                                            className={`focus:outline-none w-full bg-transparent focus:bg-transparent border shadow-none border-gray-400  dark:text-gray-200 ${errors.minutes
                                                 ? "text-red-600 border-red-400"
                                                 : "text-gray-600 border-gray-400"
                                                 }`}
@@ -650,7 +650,7 @@ export default function ChallengesPage() {
                                             autoComplete="00"
                                             disabled={isLoading}
                                             sx={textFieldStyles}
-                                            className={`focus:outline-none w-full bg-transparent focus:bg-transparent btn border shadow-none border-gray-400  dark:text-gray-200 ${errors.seconds
+                                            className={`focus:outline-none w-full bg-transparent focus:bg-transparent border shadow-none border-gray-400  dark:text-gray-200 ${errors.seconds
                                                 ? "text-red-600 border-red-400"
                                                 : "text-gray-600 border-gray-400"
                                                 }`}

@@ -127,7 +127,11 @@ export const RankItem = ({ rank, rankNumber }: { rank: DetailsRankingApi, rankNu
           <ListItemText
             className={rankColors[rankNumber] + " w-full py-4 rounded-t-lg"}
             primary={
-              <Typography component="p" variant="body1" fontSize={14} fontWeight={600} color="text.primary" textAlign={"center"}>
+              <Typography component="p" variant="body1" fontSize={14} fontWeight={600} color="text.primary" textAlign={"center"} style={{
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}>
                 {rank.username}
               </Typography>
             }

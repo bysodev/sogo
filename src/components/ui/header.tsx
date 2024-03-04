@@ -79,7 +79,7 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
                     Contacto
                   </a>
                 </li>
-                <li> 
+                <li>
                   <a className="hover:text-purple-600 dark:hover:text-purple-400" onClick={() => setNavbar(false)} href="#faq">
                     F.A.Q
                   </a>
@@ -94,13 +94,25 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
                 </div>
                 {status === 'authenticated' ? (
                   <>
-                    <div className="whitespace-nowrap font-semibold"><span className="hidden xl:inline font-normal">Bienvenido,</span> {session.user.name}</div>
+                    {/* <div className="whitespace-nowrap font-semibold"><span className="hidden xl:inline font-normal">Bienvenido,</span> {session.user.name}</div> */}
                     <Link
+                      className="text-gray-800 hover:text-purple-600 dark:text-white dark:hover:text-purple-400"
                       href={'/learn'}
-                      className="btn-sm text-white bg-gray-900 hover:bg-gray-950 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
-                      aria-current="page"
+                      rel="preload"
                     >
-                      Ingresar
+                      <h2 className="text-lg whitespace-pre duration-100 leading-none">
+                        Ingresar
+                      </h2>
+                    </Link>
+                    <Link
+                      onClick={
+                        () => {
+                          signOut()
+                        }
+                      }
+                      href={'/'}
+                      className="btn-sm text-white bg-gray-900 hover:bg-gray-950 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200">
+                      Cerras Sesión
                     </Link>
                   </>
                 ) : (
@@ -126,13 +138,15 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
             <div className="font-medium hidden gap-4 dark:text-white md:flex items-center">
               {status === 'authenticated' ? (
                 <>
-                  <div className="whitespace-nowrap font-semibold"><span className="hidden xl:inline font-normal">Bienvenido,</span> {session.user.name}</div>
+                  {/* <div className="whitespace-nowrap font-semibold"><span className="hidden xl:inline font-normal">Bienvenido,</span> {session.user.name}</div> */}
                   <Link
-                    className="btn-sm text-white bg-gray-900 hover:bg-gray-950 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
+                    className="text-gray-800 hover:text-purple-600 dark:text-white dark:hover:text-purple-400"
                     href={'/learn'}
                     rel="preload"
                   >
-                    Ingresar
+                    <h2 className="text-lg whitespace-pre duration-100 leading-none">
+                      Ingresar
+                    </h2>
                   </Link>
                   <Link
                     onClick={
@@ -141,8 +155,8 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
                       }
                     }
                     href={'/'}
-                    className="text-gray-800 hover:text-purple-600 dark:text-white dark:hover:text-purple-400">
-                      <h2 className="text-lg whitespace-pre duration-100 leading-none">Cerras Sesión</h2>
+                    className="btn-sm text-white bg-gray-900 hover:bg-gray-950 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200">
+                    Cerras Sesión
                   </Link>
                 </>
               ) : (

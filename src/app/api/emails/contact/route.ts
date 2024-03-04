@@ -2,21 +2,19 @@ import { sendEmail } from '@/helpers/nodemailer';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
-  const { username, email, token } = await request.json();
-  const link = `${process.env.NEXT_PUBLIC_ROUTE_APP}/auth/verify?token=${token}`;
+  const { username, email, subject, message } = await request.json();
   try {
     await sendEmail(
-      'validate-email',
+      'contact-form',
       username,
       email,
-      'Verifica tu cuenta en SoGo Sign',
-      link,
-      ''
+      `Nuevo mensaje de contacto: ${subject}`,
+      '',
+      message
     );
     return NextResponse.json({
       ok: true,
-      message:
-        'Confirma tu correo electronico para continuar con el proceso de verficación',
+      message: 'Información enviada correctamente',
     });
   } catch (e) {
     return NextResponse.json({
