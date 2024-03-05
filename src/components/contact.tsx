@@ -94,7 +94,7 @@ export default function Contact() {
   };
 
   const handleClick = () => {
-    showErrorToast('Deshabilitado temporalmente hasta que integrar un número de télefono institucional');
+    showErrorToast('Deshabilitado temporalmente hasta integrar un número de télefono institucional');
     setOpen(false);
   };
   
