@@ -13,7 +13,6 @@ import { HiX } from 'react-icons/hi';
 import { IoLogoWhatsapp } from "react-icons/io";
 import { MdEmail } from "react-icons/md";
 import IconLoading from './icons/IconLoading';
-import { showErrorToast, showSuccessToast } from "@/utilities/sweet-alert";
 
 const url_app = process.env.NEXT_PUBLIC_ROUTE_APP
 
