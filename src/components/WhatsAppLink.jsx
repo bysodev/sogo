@@ -20,9 +20,9 @@ function WhatsAppLink({ phone = '+593980844714', children }) {
     showErrorToast('Deshabilitado temporalmente hasta que integrar un número de télefono institucional');
   };
   
+  // ref={linkRef}
   return (
     <a
-{/*       ref={linkRef} */}
       target="_blank"
       href=""
       title="Enviar mensaje por WhatsApp"
