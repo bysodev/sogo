@@ -13,6 +13,7 @@ import { HiX } from 'react-icons/hi';
 import { IoLogoWhatsapp } from "react-icons/io";
 import { MdEmail } from "react-icons/md";
 import IconLoading from './icons/IconLoading';
+import { showErrorToast, showSuccessToast } from "@/utilities/sweet-alert";
 
 const url_app = process.env.NEXT_PUBLIC_ROUTE_APP
 
@@ -93,7 +94,11 @@ export default function Contact() {
     setOpen(false);
   };
 
-
+  const handleClick = () => {
+    showErrorToast('Deshabilitado temporalmente hasta que integrar un número de télefono institucional');
+    setOpen(false);
+  };
+  
   return (
     <section id='contact' className="bg-gray-900 text-white overflow-hidden">
       {/* Illustration behind hero content */}
@@ -117,10 +122,18 @@ export default function Contact() {
                 </div>
                 <hr className='my-4' />
                 <div className="grid grid-cols-2 gap-4">
-                  <WhatsAppLink >
+{/*                   <WhatsAppLink >
                     <IoLogoWhatsapp />
                     <span>WhatsApp</span>
-                  </WhatsAppLink>
+                  </WhatsAppLink> */}
+                  <a
+                    title="Enviar mensaje por WhatsApp"
+                    className="btn text-white whitespace-nowrap flex gap-2 bg-green-500 hover:bg-green-600"
+                    onClick={handleClick}
+                  >
+                    <IoLogoWhatsapp />
+                    <span>WhatsApp</span>
+                  </a>
                   <a onClick={handleContactFormOpen} className="cursor-pointer btn text-white whitespace-nowrap flex gap-2 bg-purple-500 hover:bg-purple-600">
                     <MdEmail />
                     <span>Email</span>
