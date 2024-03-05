@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { showErrorToast, showSuccessToast } from "@/utilities/sweet-alert";
 
 function WhatsAppLink({ phone = '+593980844714', children }) {
   const linkRef = useRef(null);
@@ -15,13 +16,18 @@ function WhatsAppLink({ phone = '+593980844714', children }) {
     linkRef.current.href = `${whatsAPI}${contactMe}`;
   }, [phone]);
 
+  const handleClick = () => {
+    showErrorToast('Deshabilitado temporalmente hasta que integrar un número de télefono institucional');
+  };
+  
   return (
     <a
-      ref={linkRef}
+{/*       ref={linkRef} */}
       target="_blank"
       href=""
       title="Enviar mensaje por WhatsApp"
       className="btn text-white whitespace-nowrap flex gap-2 bg-green-500 hover:bg-green-600"
+      onClick={handleClick}
     >
       {children}
     </a>
