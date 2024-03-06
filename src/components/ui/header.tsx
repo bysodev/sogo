@@ -112,7 +112,7 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
                       }
                       href={'/'}
                       className="btn-sm text-white bg-gray-900 hover:bg-gray-950 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200">
-                      Cerras Sesión
+                      Cerrar Sesión
                     </Link>
                   </>
                 ) : (
@@ -156,7 +156,7 @@ export default function NavBar({ toggleDarkMode, theme }: any) {
                     }
                     href={'/'}
                     className="btn-sm text-white bg-gray-900 hover:bg-gray-950 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200">
-                    Cerras Sesión
+                    Cerrar Sesión
                   </Link>
                 </>
               ) : (

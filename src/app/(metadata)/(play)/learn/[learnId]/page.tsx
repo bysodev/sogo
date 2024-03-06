@@ -114,7 +114,7 @@ export default function LessonVocales() {
                             <VideoPlayer src={videoPath} />
                         </div>
                         <div className="w-full h-auto relative overflow-hidden rounded-xl">
-                            <Alert severity="info">La activación de la cámara es para practicas, no es una evaluación en tiempo real</Alert>
+                            <Alert severity="info">La activación de la cámara es para practicar, no es una evaluación en tiempo real</Alert>
                             <Webcam
                                 width={500}
                                 height={600}

@@ -32,7 +32,7 @@ export const FooterLesson: React.FC<FooterLessonProps> = ({
     const [modalOpen, setModalOpen] = useState(false);
     useEffect(() => {
         const modalPreference = localStorage.getItem('modalLesson');
-        if (modalPreference) {
+        if (!modalPreference) {
             setModalOpen(true);
         }
     }, []);
